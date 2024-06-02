@@ -30,7 +30,7 @@ export default class UsersController {
     async updateUser(req, res,next) {
         try {
             const service = new UserService();
-            await service.update(req.body,'address',req.params.id);
+            await service.update(req.body);
             res.status(200).end(`user with id: ${req.params.id} updated succefuly`);
         }
         catch (ex) {
