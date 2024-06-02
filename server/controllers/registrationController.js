@@ -6,6 +6,7 @@ export default class RegistrationController {
         try {
             console.log("I'm here login")
             const regService = new RegistrationService();
+            console.log(req.body)
             let result = await regService.login(req.body);
             console.log("result in control:" + result)
             if (result == undefined)

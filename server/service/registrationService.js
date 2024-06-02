@@ -4,7 +4,7 @@ import { executeQuery } from './query.js'
 export class RegistrationService {
 
     async login(user) {
-        const result = await executeQuery('SELECT userId,username,address,region FROM db_fp.users U, db_fp.passwords P WHERE U.userId = P.userId && U.userName=? && P.password=?',[user.username,user.password]);
+        const result = await executeQuery('SELECT U.userId,U.username,U.address,U.region FROM db_fp.users U, db_fp.passwords P WHERE U.userId = P.userId AND P.password=?',[user.password]);
         console.log("result login: "+result[0])   
         return result[0];
     }
