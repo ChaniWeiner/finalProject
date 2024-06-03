@@ -3,7 +3,7 @@ export default class UsersController {
     async getAllUser(req, res, next) {
         try {
             const service = new UserService();
-            const data = await service.getAll();
+            const data = await service.getByParam(req);
             return res.json(data);  
         }
         catch (ex) {

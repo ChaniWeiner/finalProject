@@ -1,0 +1,38 @@
+form {
+    /* display: flex; */
+    flex-direction: column;
+    align-items: center;
+    width: 300px;
+    margin: auto;
+  }
+  
+  h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  input {
+    margin-bottom: 15px;
+    padding: 8px;
+    width: 100%;
+  }
+  
+  input[type="submit"] {
+    background-color: #4caf50;
+    color: white;
+    cursor: pointer;
+  }
+  
+  button {
+    background-color: #008CBA;
+    color: white;
+    cursor: pointer;
+    padding: 10px;
+    margin-top: 10px;
+  }
+  
+  .errorMsg {
+    color: red;
+    margin-top: 5px;
+    font-size: 14px;
+  }
