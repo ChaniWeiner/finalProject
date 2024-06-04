@@ -19,17 +19,18 @@ const Register=() =>{
     } = useForm();
 
     const signUp=(data) =>{
-        fetch(`http://localhost:8082/volunteer/register`, {
+        fetch("http://localhost:8082/volunteer/register", {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'charset': 'UTF-8' },
+           
             body: JSON.stringify([{
-                id: null,
+               
                 userId: userIdentificationInformation.userId,
-                username: data.username,
+                userName: data.username,
                 address: data.address,
                 region: data.region
             },
-            { userId: null, password: userIdentificationInformation.password }
+            {    userId: userIdentificationInformation.userId,password: userIdentificationInformation.password }
             ])
         })
         .then(response => {if(!response.ok) throw new Error(`status: ${response.status}`); return response.json()})
@@ -37,7 +38,7 @@ const Register=() =>{
                 alert("added ");
                // setUser(data["user"])
               //  localStorage.setItem("user", (JSON.stringify({ userId: data["user"].userId, username: data["user"].username })));
-                navigate(`volunteer/${data.username}`);
+                navigate(`volunteer/volunteers/${dara.username}`);
                 reset()
             })
         .catch((err) => {console.error(err); alert("something went wrong please try later")})

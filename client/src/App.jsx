@@ -39,7 +39,7 @@ function App() {
                 <Route path="volunteer" element={<VolunteerLayout />} >
                     <Route index element={<Volunteer />} />
                     <Route path="login" element={<Login />} />
-                    <Route path=":username" element={<VolunteerPage />} />
+                    <Route path="volunteers" element={<VolunteerPage />} />
                     <Route path="register" element={<Register />} >
                         <Route path="details" element={<Register />} />
                     </Route>

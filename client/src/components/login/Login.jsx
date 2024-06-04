@@ -30,7 +30,7 @@ const Login=() =>{
                     let user = data["data"]
                     //setUser(user)
                     //localStorage.setItem("user", (JSON.stringify({ userId: user.id, username: user.username })))
-                    navigate(`volunteer/${username}`);
+                    navigate(`volunteer/volunteers`);
                     alert("123")
                 }
                 else alert("user does not exist please sign up")
