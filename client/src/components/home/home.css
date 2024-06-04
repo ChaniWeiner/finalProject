@@ -1,0 +1,8 @@
+.home-container {
+    text-align: center;
+  }
+  p{
+    width: 50%;
+      margin: 0 auto; /* Center the paragraph horizontally */
+
+  }
