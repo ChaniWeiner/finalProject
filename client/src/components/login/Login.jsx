@@ -1,12 +1,13 @@
 
 import React from 'react';
-import { useNavigate } from "react-router-dom";
+import { useNavigate,Navigate } from "react-router-dom";
 import { useContext } from 'react';
+  
 //import { currentUserContext } from '../Main'
 import { useForm } from 'react-hook-form';
 import './Login.css';
 const Login=() =>{
-
+    
    // const [user, setUser] = useContext(currentUserContext);
     const navigate = useNavigate();
 
@@ -28,9 +29,13 @@ const Login=() =>{
             .then(data => {
                 if (data.status == 200) {
                     let user = data["data"]
+                 
                     //setUser(user)
                     //localStorage.setItem("user", (JSON.stringify({ userId: user.id, username: user.username })))
-                    navigate(`volunteer/volunteers`);
+                 
+                   navigate('volunteers');
+                  
+                   
                     alert("123")
                 }
                 else alert("user does not exist please sign up")

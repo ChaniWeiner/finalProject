@@ -1,6 +1,7 @@
 import React from "react";
 import RequestDetails from "./RequestDetails"
 import SearchRequest from "./SearchRequest";
+import Style from './loader.module.css'
 import { useState, useEffect, useContext } from "react";
 const VolunteerPage=()=>{
     const url=`http://localhost:8080/posts`;
@@ -34,9 +35,9 @@ const VolunteerPage=()=>{
           <div className={Style.circle}></div>
         </div> : < >
           
-          {posts.map((requests, index) =>
+          {requests.map((request, index) =>
             <div className="request_item"  key={index}>
-              <span>name: {post.id}</span>
+              <span>name: </span>
               {/* {(isUpdate != index) ? <>
                 <span>TITLE: {post.title}</span>
                 <span>BODY: {post.body}</span>
