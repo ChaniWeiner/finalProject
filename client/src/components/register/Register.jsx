@@ -38,7 +38,7 @@ const Register=() =>{
                 alert("added ");
                // setUser(data["user"])
               //  localStorage.setItem("user", (JSON.stringify({ userId: data["user"].userId, username: data["user"].username })));
-                navigate(`volunteer/volunteers/${dara.username}`);
+              navigate('volunteers');
                 reset()
             })
         .catch((err) => {console.error(err); alert("something went wrong please try later")})
@@ -114,6 +114,7 @@ const Register=() =>{
             <br /> */}
             <input type="submit" value="register" />
         </form>
+        
     }
 
     return (
@@ -121,6 +122,7 @@ const Register=() =>{
             <h3>Register</h3>
             {isExtendedDetailsOpen && getInForm()}
             {!isExtendedDetailsOpen && detailesForm()}
+          
         </>)
 }
 
