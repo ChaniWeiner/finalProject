@@ -19,7 +19,7 @@ const Register=() =>{
     } = useForm();
 
     const signUp=(data) =>{
-        fetch(`http://localhost:8082/register`, {
+        fetch(`http://localhost:8082/volunteer/register`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'charset': 'UTF-8' },
             body: JSON.stringify([{
@@ -62,7 +62,7 @@ const Register=() =>{
                     else {
                         setIsExtendedDetailsOpen((isExtendedDetailsOpen) => !isExtendedDetailsOpen);
                         setUserIdentificationInformation({ userId: userId, password: password });
-                        navigate('volunteer/register/details');
+                        navigate('details');
                     }
                     reset()
                 })

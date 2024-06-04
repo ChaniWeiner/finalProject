@@ -8,7 +8,8 @@ import { useState, useEffect, useContext, createContext } from 'react'
 //import NoPageFound from './NoPageFound'
 import NavBar from './components/NavBar'
 import Volunteer from './components/volunteer/Volunteer'
-import LoginLayout from './components/login/Layout'
+import VolunteerLayout from './components/volunteer/Layout'
+import VolunteerPage from './components/volunteer/VolunteerPage'
 export const currentUserContext = createContext('');
 
 function App() {
@@ -35,10 +36,10 @@ function App() {
 
 
 
-                <Route path="volunteer" element={<LoginLayout />} >
+                <Route path="volunteer" element={<VolunteerLayout />} >
                     <Route index element={<Volunteer />} />
                     <Route path="login" element={<Login />} />
-
+                    <Route path=":username" element={<VolunteerPage />} />
                     <Route path="register" element={<Register />} >
                         <Route path="details" element={<Register />} />
                     </Route>

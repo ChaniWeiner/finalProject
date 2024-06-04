@@ -15,7 +15,7 @@ const Login=() =>{
     }
 
     function getUserFromDb(userId, password) {
-        fetch(`http://localhost:8082/login`,
+        fetch(`http://localhost:8082/volunteer/login`,
             {
                 headers: { 'Content-Type': 'application/json', 'charset': 'UTF-8' },
                 method: 'POST',
@@ -30,7 +30,7 @@ const Login=() =>{
                     let user = data["data"]
                     //setUser(user)
                     //localStorage.setItem("user", (JSON.stringify({ userId: user.id, username: user.username })))
-                    navigate(`/home/user/${parseInt((user.userId), 10)}`);
+                    navigate(`volunteer/${username}`);
                     alert("123")
                 }
                 else alert("user does not exist please sign up")
