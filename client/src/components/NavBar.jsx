@@ -1,6 +1,6 @@
 import React from 'react';
 import './NavBar.css';
-
+import { useNavigate } from "react-router-dom";
 const NavBar = () => {
   return (
     <nav className="nav-bar">
@@ -11,7 +11,7 @@ const NavBar = () => {
         <li><a href="#about">אודות</a></li>
         <li><a href="#services">שירותים</a></li>
         <li><a href="#activities">פעילויות</a></li>
-        <li><a href="#team">צוות</a></li>
+        <li><a href="volunteer">התנדבות </a></li>
         <li><a href="#contact">צור קשר</a></li>
       </ul>
     </nav>

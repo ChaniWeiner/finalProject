@@ -5,12 +5,12 @@ import { useContext } from 'react';
 //import { currentUserContext } from '../Main'
 import { useForm } from 'react-hook-form';
 import './Login.css';
-function Login() {
+const Login=() =>{
 
    // const [user, setUser] = useContext(currentUserContext);
     const navigate = useNavigate();
 
-    function login(data) {
+    const login=(data) =>{
         getUserFromDb(data.userId, data.password);
     }
 
@@ -58,8 +58,8 @@ function Login() {
                 {errors.password && errors.password.type === "required" && (
                     <p className="errorMsg">Password is required.</p>)}
             </form>
-
-            <button onClick={() => { navigate('/register') }} >sign up</button>
+            <button onClick={() => { navigate('/volunteer/register') }} >הרשמה</button>
+           
         </>)
 }
 

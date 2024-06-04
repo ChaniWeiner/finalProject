@@ -3,7 +3,7 @@ import React, { useEffect, useState, useContext } from 'react';
 import { useNavigate } from "react-router-dom";
 import { useForm } from 'react-hook-form';
 
-function Register() {
+const Register=() =>{
 
     //const [user, setUser] = useContext(currentUserContext);
     const [verifyFail, setVerifyFail] = useState(false)
@@ -18,7 +18,7 @@ function Register() {
         formState: { errors },
     } = useForm();
 
-    function signUp(data) {
+    const signUp=(data) =>{
         fetch(`http://localhost:8082/register`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'charset': 'UTF-8' },
@@ -37,7 +37,7 @@ function Register() {
                 alert("added ");
                // setUser(data["user"])
               //  localStorage.setItem("user", (JSON.stringify({ userId: data["user"].userId, username: data["user"].username })));
-                navigate(`/home/user/${data["user"].userId}`);
+                navigate(`volunteer/${data.username}`);
                 reset()
             })
         .catch((err) => {console.error(err); alert("something went wrong please try later")})
@@ -62,14 +62,14 @@ function Register() {
                     else {
                         setIsExtendedDetailsOpen((isExtendedDetailsOpen) => !isExtendedDetailsOpen);
                         setUserIdentificationInformation({ userId: userId, password: password });
-                        navigate('/register/details');
+                        navigate('volunteer/register/details');
                     }
                     reset()
                 })
         }
     }
 
-    function getInForm() {
+    const getInForm=() =>{
         return <div>
             <form onSubmit={handleSubmit(getIn)} >
                 <input type='text' placeholder='userId' {...register("userId", { required: true })} />
@@ -81,11 +81,11 @@ function Register() {
                 {verifyFail && <p className="errorMsg">Verification failed please try again.</p>}
                 <input type="submit" value="sign up" />
             </form>
-            <button onClick={() => { navigate('/login') }} >sign in</button>
+            <button onClick={() => { navigate('/volunteer/login') }} >sign in</button>
         </div>
     }
 
-    function detailesForm() {
+    const detailesForm=() =>{
 
         return <form onSubmit={handleSubmit(signUp)}>
             <h3>Just a few more details and you're in!</h3>

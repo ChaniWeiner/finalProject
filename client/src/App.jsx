@@ -7,7 +7,8 @@ import Home from './components/home/Home'
 import { useState, useEffect, useContext, createContext } from 'react'
 //import NoPageFound from './NoPageFound'
 import NavBar from './components/NavBar'
-
+import Volunteer from './components/volunteer/Volunteer'
+import LoginLayout from './components/login/Layout'
 export const currentUserContext = createContext('');
 
 function App() {
@@ -24,20 +25,25 @@ function App() {
 
 
     return (<>
-            {/* <currentUserContext.Provider value={[user, setUser]}> */}
-            <div>      <NavBar /></div>
-                <Router>
-                    <Routes>
+        {/* <currentUserContext.Provider value={[user, setUser]}> */}
+        <div>      <NavBar /></div>
+        <Router>
+            <Routes>
 
-                        <Route path="/" element={<Navigate to={"/login"} />} />
-                        <Route path="login" element={<Login />} />
+                <Route path="/" element={<Navigate to={"/home"} />} />
+                <Route path="home" element={<Home />} />
 
-                         <Route path="register" element={<Register />} >
-                            <Route path="details" element={<Register />} />
-                        </Route> 
 
-                         <Route path="home/user/:id" element={<Home />} >
-                            {/* <Route path="info" element={<Info />} />
+
+                <Route path="volunteer" element={<LoginLayout />} >
+                    <Route index element={<Volunteer />} />
+                    <Route path="login" element={<Login />} />
+
+                    <Route path="register" element={<Register />} >
+                        <Route path="details" element={<Register />} />
+                    </Route>
+                </Route>
+                {/* 
                             <Route path="todos" element={<TodosLayout />} >
                                 <Route index element={<Todos />} />
                             </Route>
@@ -48,11 +54,11 @@ function App() {
                         </Route>
                         
                         <Route path="*" element={<NoPageFound />} />  */}
-                        </Route>
-                    </Routes>
-                </Router>
-            {/* </currentUserContext.Provider > */}
-        </>)
+
+            </Routes>
+        </Router>
+        {/* </currentUserContext.Provider > */}
+    </>)
 }
 
 export default App
