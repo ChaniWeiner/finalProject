@@ -4,9 +4,8 @@ import { useNavigate } from "react-router-dom";
 const NavBar = () => {
   return (
     <nav className="nav-bar">
-      <div className="logo">
-        <a href="/">אחיות מברזל</a>
-      </div>
+      <div className="logo"><a href="/">
+          <img src="the logo.png" /></a></div>
       <ul className="nav-links">
         <li><a href="#about">אודות</a></li>
         <li><a href="#services">שירותים</a></li>

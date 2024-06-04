@@ -10,14 +10,19 @@ function getByIdQuery(tableName) {
     return query;
 }
 
-function getByParamQuery(tableName, conditions) {
+function getByParameterQuery(tableName, conditions) {
     const query = `SELECT * FROM ${process.env.DB_NAME}.${tableName} WHERE ${conditions}`;
     return query;
 }
 
-function updateQuery(tableName, type) {
-    const query = `UPDATE ${process.env.DB_NAME}.${tableName} SET userId=?, userName=?, address=?, region=? WHERE ${type}=?`;
+function updateQuery(tableName,details, type) {
+    const query = `UPDATE ${process.env.DB_NAME}.${tableName} SET ${details} WHERE ${type}=?`;
     return query;
 }
 
-export { getAllQuery, getByIdQuery, getByParamQuery,updateQuery }
+function deleteQuery(tableName) {
+    const query = `DELETE from ${process.env.DB_NAME}.${tableName} WHERE userId=?`;
+    return query;
+}
+
+export { getAllQuery, getByIdQuery, getByParameterQuery,updateQuery,deleteQuery }

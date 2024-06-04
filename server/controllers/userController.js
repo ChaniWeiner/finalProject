@@ -3,7 +3,7 @@ export default class UsersController {
     async getAllUser(req, res, next) {
         try {
             const service = new UserService();
-            const data = await service.getByParam(req);
+            const data = await service.getByParameter(req);
             return res.json(data);  
         }
         catch (ex) {
@@ -30,7 +30,7 @@ export default class UsersController {
     async updateUser(req, res,next) {
         try {
             const service = new UserService();
-            await service.update(req.body);
+            await service.update(req.body,req.params.id);
             res.status(200).end(`user with id: ${req.params.id} updated succefuly`);
         }
         catch (ex) {

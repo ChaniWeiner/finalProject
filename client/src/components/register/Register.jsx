@@ -38,7 +38,11 @@ const Register=() =>{
                 alert("added ");
                // setUser(data["user"])
               //  localStorage.setItem("user", (JSON.stringify({ userId: data["user"].userId, username: data["user"].username })));
+<<<<<<< HEAD
               navigate('volunteers');
+=======
+                navigate(`volunteer/volunteers/${data.username}`);
+>>>>>>> c37151c82ca08ccce18656619370fe149f21b4ed
                 reset()
             })
         .catch((err) => {console.error(err); alert("something went wrong please try later")})

@@ -5,7 +5,7 @@ export default class PasswordController {
         try {
             console.log(req.params.id)
             const service = new PaswwordService();
-            const data = await service.getByParameter('userId',req.params.id);
+            const data = await service.getByuserId(req.params.id);
             console.log(data)
             return res.json(data);
         }
@@ -35,12 +35,12 @@ export default class PasswordController {
         try {
             const service = new PaswwordService();
             console.log(req.body)
-            let curPswd = await service.getByParameter('userId',req.params.id)
+            let curPswd = await service.getByuserId(req.params.id)
             if (curPswd[0].password != req.body.curPswd) {
                 return res.status(404).json({status:404})
             }
-            let newPswd={userId:req.params.id,password:req.body.newPswd}
-            await service.update(newPswd);
+            let newPswd={password:req.body.newPswd}
+            await service.update(newPswd,req.params.id);
             return res.status(200).json({status:200})
         }
         catch (ex) {

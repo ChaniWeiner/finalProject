@@ -27,7 +27,7 @@ function App() {
 
     return (<>
         {/* <currentUserContext.Provider value={[user, setUser]}> */}
-        <div>      <NavBar /></div>
+        <div><NavBar /></div>
         <Router>
             <Routes>
 
