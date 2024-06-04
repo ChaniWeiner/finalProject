@@ -4,7 +4,7 @@ import SearchRequest from "./SearchRequest";
 import Style from './loader.module.css'
 import { useState, useEffect, useContext } from "react";
 const VolunteerPage=()=>{
-    const url=`http://localhost:8080/posts`;
+    const url=`http://localhost:8082/requests`;
     const [requests,setRequests]=useState();
     const [isAdd,setIsAdd]=useState(false)
   let [allRequests, setAllRequests] = useState([])
@@ -34,17 +34,17 @@ const VolunteerPage=()=>{
           <div className={Style.circle}></div>
           <div className={Style.circle}></div>
         </div> : < >
-          
+          {/* {className="request_item"} */}
           {requests.map((request, index) =>
-            <div className="request_item"  key={index}>
-              <span>name: </span>
+            <div   key={index}>
+              <span>id:{request.requestId} </span>
               {/* {(isUpdate != index) ? <>
                 <span>TITLE: {post.title}</span>
                 <span>BODY: {post.body}</span>
               </> : null} */}
              <>
               
-             <UpdatePost post={post} getPosts={getPosts} setIsUpdate={setIsUpdate} />
+             {/* <UpdatePost post={post} getPosts={getPosts} setIsUpdate={setIsUpdate} /> */}
               </>
              
             

@@ -38,11 +38,8 @@ const Register=() =>{
                 alert("added ");
                // setUser(data["user"])
               //  localStorage.setItem("user", (JSON.stringify({ userId: data["user"].userId, username: data["user"].username })));
-<<<<<<< HEAD
-              navigate('volunteers');
-=======
-                navigate(`volunteer/volunteers/${data.username}`);
->>>>>>> c37151c82ca08ccce18656619370fe149f21b4ed
+              navigate('volunteers')
+               
                 reset()
             })
         .catch((err) => {console.error(err); alert("something went wrong please try later")})
@@ -86,7 +83,7 @@ const Register=() =>{
                 {verifyFail && <p className="errorMsg">Verification failed please try again.</p>}
                 <input type="submit" value="sign up" />
             </form>
-            <button onClick={() => { navigate('/volunteer/login') }} >sign in</button>
+            <button onClick={() => { navigate('/volunteer') }} >sign in</button>
         </div>
     }
 

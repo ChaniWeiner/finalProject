@@ -5,6 +5,15 @@ function getAllQuery(tableName) {
     return query;
 }
 
+
+function getJoinTwoTablesQuery(tableName1, tableName2) {
+    const query = `
+    SELECT DISTINCT *
+FROM ${process.env.DB_NAME}.${tableName1} NATURAL JOIN ${process.env.DB_NAME}.${tableName2};
+        `;
+    return query;
+}
+
 function getByIdQuery(tableName) {
     const query = `SELECT * FROM ${process.env.DB_NAME}.${tableName} WHERE userId=?`;
     return query;
@@ -15,7 +24,7 @@ function getByParameterQuery(tableName, conditions) {
     return query;
 }
 
-function updateQuery(tableName,details, type) {
+function updateQuery(tableName, details, type) {
     const query = `UPDATE ${process.env.DB_NAME}.${tableName} SET ${details} WHERE ${type}=?`;
     return query;
 }
@@ -25,4 +34,4 @@ function deleteQuery(tableName) {
     return query;
 }
 
-export { getAllQuery, getByIdQuery, getByParameterQuery,updateQuery,deleteQuery }
+export { getAllQuery, getByIdQuery, getByParameterQuery, updateQuery, deleteQuery,getJoinTwoTablesQuery }
