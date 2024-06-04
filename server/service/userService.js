@@ -1,6 +1,6 @@
 import 'dotenv/config'
 import { executeQuery } from './query.js'
-import { getAllQuery, getByIdQuery, updateQuery, getByParamQuery } from './allQuery.js';
+import { getAllQuery, getByIdQuery, updateQuery, getByParameterQuery } from './allQuery.js';
 
 export class UserService {
     // async getAll() {
@@ -14,7 +14,7 @@ export class UserService {
         const result = await executeQuery(query, [id]);
         return result;
     }
-    async getByParam(user) {
+    async getByParameter(user) {
         let query, conditionsParams = [], conditionsValues = [];
         const queryParams = user.query;
         if (Object.entries(queryParams).length === 0) {
@@ -24,16 +24,20 @@ export class UserService {
                 conditionsParams.push(`${key} = ?`);
                 conditionsValues.push(queryParams[key]);
             });
-            query = getByParamQuery("users", conditionsParams.join(" AND "));
+            query = getByParameterQuery("users", conditionsParams.join(" AND "));
         }
         const result = await executeQuery(query, conditionsValues);
         return result;
     }
 
-    async update(item, type) {
-        const query = updateQuery("users", type || "userId");
-        const params = [item.userId, item.userName, item.address, item.region, item[type] || item.userId];
-        const result = await executeQuery(query, params);
+    async update(item, id,type) {
+        let stringToQuery = "";
+        Object.keys(item).forEach(key => { (key != "userId") && (stringToQuery += key += "=?,") });
+        stringToQuery = stringToQuery.slice(0, -1);
+        let values = Object.values(item);
+        values.push(id);
+        const query = updateQuery("users",stringToQuery,type || "userId");
+        const result = await executeQuery(query, values)
         return result;
     }
 
