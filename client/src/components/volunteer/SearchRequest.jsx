@@ -12,8 +12,8 @@ const SearchRequest = ({ setRequests, allRequests, requests }) => {
 
 
     const searchRequestsOptions = [
-        { value: 'id', label: 'id' },
-        { value: 'title', label: 'title' }]
+        { value: 'איזור', label: 'region' },
+        { value: 'סוג התנדבות', label: 'requestType' }]
 
     const searchByOption = (element) => {
         element.preventDefault();
@@ -24,11 +24,11 @@ const SearchRequest = ({ setRequests, allRequests, requests }) => {
         let tempRequests = [];
         debugger
         switch (element.target[0].name) {
-            case "id":
-                tempPosts = allPosts.filter(post => (searchValue.label != '' ))
+            case "region":
+                tempRequests = allRequests.filter(post => (searchValue.label != '' ))
                 break;
-            case "title":
-                tempPosts = allPosts.filter(post => (searchValue.label != '' ))
+            case "requestType":
+                tempRequests = allRequests.filter(post => (searchValue.label != '' ))
         }
         element.target.reset()
         setRequests(tempRequests)

@@ -1,6 +1,6 @@
 import 'dotenv/config'
 import { executeQuery } from './query.js'
-import {  getByIdQuery, updateQuery,deleteQuery,getJoinTwoTablesQuery } from './allQuery.js';
+import {  getByIdQuery, updateQuery,deleteQuery,getJoinTablesQuery,getJoinTwoTablesQuery } from './allQuery.js';
 export class RequestService {
 
     async getById(id) {
@@ -12,7 +12,7 @@ export class RequestService {
         let query, conditionsParams = [], conditionsValues = [];
         const queryParams = user.query;
         if (Object.entries(queryParams).length === 0) {
-            query = getJoinTwoTablesQuery("meals","proposalrequests");
+            query = getJoinTablesQuery("meals","proposalrequests","users");
         } else {
             Object.keys(queryParams).forEach((key) => {
                 conditionsParams.push(`${key} = ?`);
@@ -26,12 +26,13 @@ export class RequestService {
 
     async update(item, id,type) {
         let stringToQuery = "";
-        Object.keys(item).forEach(key => { (key != "userId") && (stringToQuery += key += "=?,") });
+        Object.keys(item).forEach(key => { (key != "requestId") && (stringToQuery += key += "=?,") });
         stringToQuery = stringToQuery.slice(0, -1);
         let values = Object.values(item);
         values.push(id);
-        const query = updateQuery("users",stringToQuery,type || "userId");
+        const query = updateQuery("proposalrequests",stringToQuery,type || "requestId");
         const result = await executeQuery(query, values)
+        console.log("vh");
         return result;
     }
     

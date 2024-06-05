@@ -2,6 +2,7 @@ import React from "react";
 import RequestDetails from "./RequestDetails"
 import SearchRequest from "./SearchRequest";
 import Style from './loader.module.css'
+import Request from "./request";
 import { useState, useEffect, useContext } from "react";
 const VolunteerPage=()=>{
     const url=`http://localhost:8082/requests`;
@@ -17,15 +18,18 @@ const VolunteerPage=()=>{
             response.ok ? (setRequests(data), setAllRequests(data)) : alert("oops somthing went wrong...")
           })
       }
-    
       useEffect(() => {
-        getRequests()
+        getRequests();
         setTimeout(() => {
           setLoading(false);
-        }, 1000)});
+        }, 1000)},[]);
 
+    
     return(<>
+    
+
      <h1>requests</h1>
+     
       <div className="requests_container">
         <SearchRequest setRequests={setRequests} allRequests={allRequests} requests={requests} />
         {loading ? <div className={Style.loader}>
@@ -35,9 +39,10 @@ const VolunteerPage=()=>{
           <div className={Style.circle}></div>
         </div> : < >
           {/* {className="request_item"} */}
-          {requests.map((request, index) =>
+          {requests&&requests.map((request, index) =>
             <div   key={index}>
-              <span>id:{request.requestId} </span>
+              <Request object={request} requests={requests} setRequests={setRequests}/>
+          
               {/* {(isUpdate != index) ? <>
                 <span>TITLE: {post.title}</span>
                 <span>BODY: {post.body}</span>

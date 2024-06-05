@@ -29,11 +29,11 @@ export default class requestController {
         }
     }
 
-    async updateUser(req, res,next) {
+    async updateRequest(req, res,next) {
         try {
             const service = new RequestService();
             await service.update(req.body,req.params.id);
-            res.status(200).end(`user with id: ${req.params.id} updated succefuly`);
+            res.status(200).end(`request with id: ${req.params.id} updated succefuly`);
         }
         catch (ex) {
             const err = {}
