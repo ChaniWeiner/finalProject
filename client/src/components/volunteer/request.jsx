@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 
-const Request = ({ object, setRequests, requests }) => {
+
+const Request = ({ object, setRequests, requests ,volunteerId}) => {
     const keysToDisplay = ["amountMeals", "mealType", "requestType", "requestStatus", "address", "region"];
 
+console.log(volunteerId);
     const properties = Object.entries(object);
     const url = `http://localhost:8082/requests`;
     const handleButtonClick = (id) => {
@@ -21,7 +23,8 @@ const Request = ({ object, setRequests, requests }) => {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    "requestStatus": "בוצע"
+                    "requestStatus": "בוצע",
+                    "volunteerId":volunteerId
                 })
             });
 

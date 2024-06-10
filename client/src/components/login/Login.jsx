@@ -1,55 +1,45 @@
-
-import React from 'react';
-import { useNavigate,Navigate } from "react-router-dom";
-import { useContext } from 'react';
-  
-//import { currentUserContext } from '../Main'
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import './Login.css';
-const Login=() =>{
-    
-   // const [user, setUser] = useContext(currentUserContext);
+import { useLocation } from 'react-router-dom';
+const Login = () => {
+
+    const location = useLocation();
+    const userType = location.state.userType;
+    const[userId,setId]=useState(0);
+    const [Login, setLogin] = useState("none");
     const navigate = useNavigate();
 
-    const login=(data) =>{
+    const login = (data) => {
         getUserFromDb(data.userId, data.password);
+        setId(data.userId)
     }
 
     function getUserFromDb(userId, password) {
-        fetch(`http://localhost:8082/volunteer/login`,
-            {
-                headers: { 'Content-Type': 'application/json', 'charset': 'UTF-8' },
-                method: 'POST',
-                body: JSON.stringify({
-                    userId: userId,
-                    password: password
-                })
+        fetch(`http://localhost:8082/volunteer/login`, {
+            headers: { 'Content-Type': 'application/json', 'charset': 'UTF-8' },
+            method: 'POST',
+            body: JSON.stringify({
+                userId: userId,
+                password: password
             })
-            .then(result=>result.json())
-            .then(data => {
-                if (data.status == 200) {
-                    let user = data["data"]
-                 
-                    //setUser(user)
-                    //localStorage.setItem("user", (JSON.stringify({ userId: user.id, username: user.username })))
-                 
-                   navigate('volunteers');
-                  
-                   
-                    alert("123")
-                }
-                else alert("user does not exist please sign up")
-                reset()
-            })
+        })
+        .then(result => result.json())
+        .then(data => {
+            if (data.status === 200) {
+                let user = data["data"];
+                setLogin("inline");
+                alert(123);
+               {userType=="volunteer"?navigate(`/volunteer/volunteers`, { state: { userId: userId } }):navigate(`/helpRequest/requests`, { state: { userId: userId } })} ;
+            } else {
+                alert("user does not exist please sign up");
+            }
+            reset();
+        })
     }
 
-
-    const {
-        reset,
-        register,
-        handleSubmit,
-        formState: { errors },
-    } = useForm();
+    const { reset, register, handleSubmit, formState: { errors } } = useForm();
 
     return (
         <>
@@ -57,15 +47,22 @@ const Login=() =>{
                 <h2>sign in</h2>
                 <input type='text' placeholder='userId' {...register("userId", { required: true })} />
                 <input type='password' placeholder='password' {...register("password", { required: true })} />
-                <input type="submit" value="sign in" />
+               
+                <input type="submit" value="sign in" /> 
+                   
                 {errors.userId && errors.userId.type === "required" && (
                     <p className="errorMsg">userId is required.</p>)}
                 {errors.password && errors.password.type === "required" && (
                     <p className="errorMsg">Password is required.</p>)}
+                   
             </form>
-            <button onClick={() => { navigate('/volunteer/register') }} >הרשמה</button>
+            <button onClick={() => { navigate('/volunteer/register') }}>הרשמה</button>
            
-        </>)
+            <div style={{ display: Login }}>
+                <Link   to={`/volunteer/volunteers`} state={{ userId: userId }}>  </Link>
+            </div>  
+        </>
+    );
 }
 
-export default Login
+export default Login;

@@ -3,8 +3,12 @@ import RequestDetails from "./RequestDetails"
 import SearchRequest from "./SearchRequest";
 import Style from './loader.module.css'
 import Request from "./request";
+import { useLocation } from 'react-router-dom';
 import { useState, useEffect, useContext } from "react";
 const VolunteerPage=()=>{
+
+  const location = useLocation();
+  const volunteerId = location.state.userId;
     const url=`http://localhost:8082/requests`;
     const [requests,setRequests]=useState();
     const [isAdd,setIsAdd]=useState(false)
@@ -41,7 +45,7 @@ const VolunteerPage=()=>{
           {/* {className="request_item"} */}
           {requests&&requests.map((request, index) =>
             <div   key={index}>
-              <Request object={request} requests={requests} setRequests={setRequests}/>
+              <Request  volunteerId={volunteerId}object={request} requests={requests} setRequests={setRequests}/>
           
               {/* {(isUpdate != index) ? <>
                 <span>TITLE: {post.title}</span>

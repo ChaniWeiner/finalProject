@@ -10,6 +10,9 @@ import NavBar from './components/NavBar'
 import Volunteer from './components/volunteer/Volunteer'
 import VolunteerLayout from './components/volunteer/Layout'
 import VolunteerPage from './components/volunteer/VolunteerPage'
+import HelpRequestPage from './components/helpRequest/HelpRequestPage'
+import HelpRequest from './components/helpRequest/HelpRequest'
+import HelpRequestLayout from './components/helpRequest/Layout'
 export const currentUserContext = createContext('');
 
 function App() {
@@ -34,12 +37,18 @@ function App() {
                 <Route path="/" element={<Navigate to={"/home"} />} />
                 <Route path="home" element={<Home />} />
 
-
-
+                <Route path="helpRequest" element={<HelpRequestLayout />} >
+                    <Route index element={<HelpRequest />} />
+                    <Route path="login" element={<Login />} />
+                    <Route path="requests" element={<HelpRequestPage />} />
+                    <Route path="register" element={<Register />} >
+                        <Route path="details" element={<Register />} />
+                    </Route>
+                </Route>
                 <Route path="volunteer" element={<VolunteerLayout />} >
                     <Route index element={<Volunteer />} />
                     <Route path="login" element={<Login />} />
-                    <Route path="login/volunteers" element={<VolunteerPage />} />
+                    <Route path="volunteers" element={<VolunteerPage />} />
                     <Route path="register" element={<Register />} >
                         <Route path="details" element={<Register />} />
                     </Route>

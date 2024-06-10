@@ -8,7 +8,7 @@ const NavBar = () => {
           <img src="the logo.png" /></a></div>
       <ul className="nav-links">
         <li><a href="#about">אודות</a></li>
-        <li><a href="#services">שירותים</a></li>
+        <li><a href="helpRequest">בקשת סיוע</a></li>
         <li><a href="#activities">פעילויות</a></li>
         <li><a href="volunteer">התנדבות </a></li>
         <li><a href="#contact">צור קשר</a></li>

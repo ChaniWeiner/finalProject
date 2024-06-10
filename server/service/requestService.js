@@ -32,7 +32,7 @@ export class RequestService {
         values.push(id);
         const query = updateQuery("proposalrequests",stringToQuery,type || "requestId");
         const result = await executeQuery(query, values)
-        console.log("vh");
+       
         return result;
     }
     
