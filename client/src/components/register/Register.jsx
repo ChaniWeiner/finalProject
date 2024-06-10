@@ -3,7 +3,7 @@ import React, { useEffect, useState, useContext } from 'react';
 import { useNavigate } from "react-router-dom";
 import { useForm } from 'react-hook-form';
 
-const Register=() =>{
+const Register = () => {
 
     //const [user, setUser] = useContext(currentUserContext);
     const [verifyFail, setVerifyFail] = useState(false)
@@ -18,31 +18,33 @@ const Register=() =>{
         formState: { errors },
     } = useForm();
 
-    const signUp=(data) =>{
+    const signUp = (data) => {
         fetch("http://localhost:8082/volunteer/register", {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'charset': 'UTF-8' },
-           
+
             body: JSON.stringify([{
-               
+
                 userId: userIdentificationInformation.userId,
                 userName: data.username,
                 address: data.address,
-                region: data.region
+                region: data.region,
+                email: data.email,
+                phoneNumber: data.phoneNumber
             },
-            {    userId: userIdentificationInformation.userId,password: userIdentificationInformation.password }
+            { userId: userIdentificationInformation.userId, password: userIdentificationInformation.password }
             ])
         })
-        .then(response => {if(!response.ok) throw new Error(`status: ${response.status}`); return response.json()})
-        .then((data) => {
+            .then(response => { if (!response.ok) throw new Error(`status: ${response.status}`); return response.json() })
+            .then((data) => {
                 alert("added ");
-               // setUser(data["user"])
-              //  localStorage.setItem("user", (JSON.stringify({ userId: data["user"].userId, username: data["user"].username })));
-              navigate('volunteers')
-               
+                // setUser(data["user"])
+                //  localStorage.setItem("user", (JSON.stringify({ userId: data["user"].userId, username: data["user"].username })));
+                navigate('volunteers')
+
                 reset()
             })
-        .catch((err) => {console.error(err); alert("something went wrong please try later")})
+            .catch((err) => { console.error(err); alert("something went wrong please try later") })
 
     }
 
@@ -71,7 +73,7 @@ const Register=() =>{
         }
     }
 
-    const getInForm=() =>{
+    const getInForm = () => {
         return <div>
             <form onSubmit={handleSubmit(getIn)} >
                 <input type='text' placeholder='userId' {...register("userId", { required: true })} />
@@ -87,7 +89,7 @@ const Register=() =>{
         </div>
     }
 
-    const detailesForm=() =>{
+    const detailesForm = () => {
 
         return <form onSubmit={handleSubmit(signUp)}>
             <h3>Just a few more details and you're in!</h3>
@@ -97,8 +99,22 @@ const Register=() =>{
             <input type='text' placeholder='address'  {...register("address", { required: true })} />
             {errors.address && errors.address.type === "required" && (<p className="errorMsg">address is required.</p>)}
             <br />
-           <input type='text' placeholder='region'  {...register("region", { required: true })} />
-            {errors.region && errors.region.type === "required" && (<p className="errorMsg">region is required.</p>)}
+            <select {...register("region", { required: true })}>
+                <option value="">בחר אזור</option>
+                <option value="north">צפון</option>
+                <option value="south">דרום</option>
+                <option value="central">מרכז</option>
+                <option value="jerusalem">ירושלים</option>
+                <option value="haifa">חיפה</option>
+                <option value="tel-aviv">תל אביב</option>
+            </select>
+            {errors.region && errors.region.type === "required" && (<p className="">אזור הוא שדה חובה.</p>)}
+            <br />
+            <input type='email' placeholder='email'  {...register("email", { required: true })} />
+            {errors.email && errors.email.type === "required" && (<p className="errorMsg">email is required.</p>)}
+            <br />
+            <input type='tel' placeholder='phoneNumber'  {...register("phoneNumber", { required: true })} />
+            {errors.phoneNumber && errors.phoneNumber.type === "required" && (<p className="errorMsg">phoneNumber is required.</p>)}
             {/* <br />
             <input type='email' placeholder='email' {...register("email", {
                 required: true,
@@ -115,7 +131,7 @@ const Register=() =>{
             <br /> */}
             <input type="submit" value="register" />
         </form>
-        
+
     }
 
     return (
@@ -123,7 +139,7 @@ const Register=() =>{
             <h3>Register</h3>
             {isExtendedDetailsOpen && getInForm()}
             {!isExtendedDetailsOpen && detailesForm()}
-          
+
         </>)
 }
 

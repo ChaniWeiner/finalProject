@@ -92,10 +92,10 @@ const Home = () => {
       requestAnimationFrame(animationFrame);
     };
 
-    animateCounter(counterRefs[0], 2000, 200, 0);
-    animateCounter(counterRefs[1], 2000, 100, 0);
-    animateCounter(counterRefs[2], 2000, 536, 0);
-    animateCounter(counterRefs[3], 2000, 2000, 0);
+    animateCounter(counterRefs[0], 2000, 5, 0);
+    animateCounter(counterRefs[1], 2000, 9, 0);
+    animateCounter(counterRefs[2], 2000, 10, 0);
+    animateCounter(counterRefs[3], 2000, 20, 0);
   }, []);
 
   return (
