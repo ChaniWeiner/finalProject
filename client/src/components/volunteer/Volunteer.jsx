@@ -15,7 +15,7 @@ const Volunteer = () => {
             <h1>הי ברוכים הבאים </h1>
             <h2>חיכנו לך:)</h2>
             <button onClick={() => { navigate('/volunteer/register', { state: { userType: "volunteer" }}) }} >הרשמה</button>
-            <button onClick={() => { navigate('/volunteer/login') , { state: { userType: "volunteer" }}}} >כניסה</button>
+            <button onClick={() => { navigate('/volunteer/login' , { state: { userType: "volunteer" }})}} >כניסה</button>
         </>
     );
 }

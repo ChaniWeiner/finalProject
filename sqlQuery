@@ -1,32 +1,28 @@
-
-http requests;
-CREATE TABLE  db_fp.users (
-    ID INT AUTO_INCREMENT PRIMARY KEY,
-   userId INT UNIQUE NOT NULL,
-    userName VARCHAR(20) NOT NULL,
-    address VARCHAR(30) NOT NULL,
-    region VARCHAR(10) NOT NULL
+CREATE TABLE passwords (
+    userId int PRIMARY KEY,
+    password varchar(10)
+);
+CREATE TABLE users (
+    ID int AUTO_INCREMENT PRIMARY KEY,
+    userId int,
+    userName varchar(20),
+    address varchar(30),
+    region varchar(10),
+    email varchar(20),
+    phoneNumber varchar(20)
 );
 
-CREATE TABLE db_fp.passwords (
-    userId INT NOT NULL,
-    password VARCHAR(10) NOT NULL,
-    PRIMARY KEY (userId),
-    UNIQUE INDEX userId_UNIQUE (userId ASC) VISIBLE,
-    FOREIGN KEY (userId) REFERENCES db_fp.users(userId)
+CREATE TABLE proposalrequests (
+    requestId int AUTO_INCREMENT PRIMARY KEY,
+    requestType enum('ארוחה','בייביסיטר'),
+    requestStatus enum('בוצע','המתנה'),
+    userId int,
+    volunteerId int
 );
 
-CREATE TABLE db_fp.proposalRequests (
-    requestId INT AUTO_INCREMENT PRIMARY KEY,
-    userId INT NOT NULL,
-    requestType VARCHAR(15) NOT NULL,
-    FOREIGN KEY (userId) REFERENCES users(userId)
-);
-
-CREATE TABLE db_fp.meals (
-    mealId INT AUTO_INCREMENT PRIMARY KEY,
-    requestId INT NOT NULL,
-    amountMeals INT NOT NULL,
-    mealType VARCHAR(15) NOT NULL,
-    FOREIGN KEY (requestId) REFERENCES proposalRequests(requestId)
+CREATE TABLE meals (
+    mealId int AUTO_INCREMENT PRIMARY KEY,
+    requestId int,
+    amountMeals int,
+    mealType varchar(255)
 );
