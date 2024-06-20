@@ -42,4 +42,9 @@ function deleteQuery(tableName) {
     return query;
 }
 
+// function addQuery(tableName) {
+//     const query = `INSERT INTO ${process.env.DB_NAME}.${tableName} (userId, column1, column2, column3) VALUES (?, ?, ?, ?)`;
+//      return query;
+
+// }
 export { getAllQuery, getByIdQuery, getByParameterQuery, updateQuery, deleteQuery, getJoinTablesQuery,getJoinTwoTablesQuery }

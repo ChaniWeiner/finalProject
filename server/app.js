@@ -14,6 +14,5 @@ const app = express()
  app.use('/', regRouter);
  app.use(logErrors);
 
-app.listen(8082, () => {
-    console.log("start server port: 8082");
-})
+export default app
+   

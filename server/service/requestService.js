@@ -1,6 +1,6 @@
 import 'dotenv/config'
 import { executeQuery } from './query.js'
-import {  getByIdQuery, updateQuery,deleteQuery,getJoinTablesQuery,getJoinTwoTablesQuery } from './allQuery.js';
+import { getByIdQuery, updateQuery, deleteQuery, getJoinTablesQuery, getJoinTwoTablesQuery } from './allQuery.js';
 export class RequestService {
 
     async getById(id) {
@@ -12,7 +12,7 @@ export class RequestService {
         let query, conditionsParams = [], conditionsValues = [];
         const queryParams = user.query;
         if (Object.entries(queryParams).length === 0) {
-            query = getJoinTablesQuery("meals","proposalrequests","users");
+            query = getJoinTablesQuery("meals", "proposalrequests", "users");
         } else {
             Object.keys(queryParams).forEach((key) => {
                 conditionsParams.push(`${key} = ?`);
@@ -24,16 +24,24 @@ export class RequestService {
         return result;
     }
 
-    async update(item, id,type) {
+    async update(item, id, type) {
         let stringToQuery = "";
         Object.keys(item).forEach(key => { (key != "requestId") && (stringToQuery += key += "=?,") });
         stringToQuery = stringToQuery.slice(0, -1);
         let values = Object.values(item);
         values.push(id);
-        const query = updateQuery("proposalrequests",stringToQuery,type || "requestId");
+        const query = updateQuery("proposalrequests", stringToQuery, type || "requestId");
         const result = await executeQuery(query, values)
-       
+
         return result;
     }
-    
+    async addReq(item) {
+        const result = await executeQuery(`INSERT INTO ${process.env.DB_NAME}.proposalrequests ( requestType, requestStatus, userId  ) VALUES (?,?,?)`, [item.requestType, item.requestStatus, item.userId]);
+        return result;
+    }
+    async addMeal(item) {
+        const result = await executeQuery(`INSERT INTO ${process.env.DB_NAME}.meals ( requestId , amountMeals, mealType) VALUES (?, ?, ?)`, [item.requestId, item.amountMeals, item.mealType]);
+        return result;
+    }
+
 }
