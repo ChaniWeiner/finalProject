@@ -9,9 +9,9 @@ const io = socketIo(server);
 io.on('connection', socket => {
     console.log('לקוח מחובר');
 
-    socket.on('disconnect', () => {
-        console.log('לקוח מנותק');
-    });
+    // socket.on('disconnect', () => {
+    //     console.log('לקוח מנותק');
+    // });
 
     socket.on('takeRequest', requestId => {
         // עדכן את מצב הבקשה בשרת ושלח עדכון ללקוחות המעורבים

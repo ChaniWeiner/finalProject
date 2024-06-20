@@ -41,8 +41,8 @@ const Register = () => {
                 alert("added ");
                 // setUser(data["user"])
                 //  localStorage.setItem("user", (JSON.stringify({ userId: data["user"].userId, username: data["user"].username })));
-                navigate('volunteers')
-
+          
+                {userType=="volunteer"?navigate(`/volunteer/volunteers`, { state: { userId: userId } }):navigate(`/helpRequest/requests`, { state: { userId: userId } })} ;
                 reset()
             })
             .catch((err) => { console.error(err); alert("something went wrong please try later") })

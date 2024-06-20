@@ -6,7 +6,7 @@ function sendRatingEmail(userEmail) {
     service: 'gmail',
     auth: {
       user: 'achaiotbaam@gmail.com', // כתובת האימייל שלך
-      pass: 'ShoahChanFp!' // הסיסמה שלך
+      pass: 'ueax xamk troa flvl!' // הסיסמה שלך
     }
   });
 

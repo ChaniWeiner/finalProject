@@ -88,11 +88,10 @@
 
 // }
 
-// export default HelpRequestPage;
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useLocation } from 'react-router-dom';
-//import io from 'socket.io-client';
+import { io } from "socket.io-client";
 
 const HelpRequestPage = () => {
     const location = useLocation();
@@ -101,26 +100,26 @@ const HelpRequestPage = () => {
 
     const { register, handleSubmit, formState: { errors } } = useForm();
 
-    // useEffect(() => {
-    //     const socket = io('http://localhost:8082');
+    useEffect(() => {
+        const socket = io('http://localhost:8082');
 
-    //     socket.on('connect', () => {
-    //         console.log('Connected to server');
-    //     });
+        socket.on('connect', () => {
+            console.log('Connected to server');
+        });
 
-    //     socket.on('disconnect', () => {
-    //         console.log('Disconnected from server');
-    //     });
+        socket.on('disconnect', () => {
+            console.log('Disconnected from server');
+        });
 
-    //     socket.on('newRequest', (response) => {
-    //         console.log('New request received:', response);
-    //         // עדכון המצב של הקומפוננטה שלך או ביצוע פעולה אחרת
-    //     });
+        socket.on('getAllRequests', (response) => { // שים לב לאירוע הנכון
+            console.log('New request received:', response);
+            // עדכון המצב של הקומפוננטה שלך או ביצוע פעולה אחרת
+        });
 
-    //     return () => {
-    //         socket.disconnect();
-    //     };
-    // }, []);
+        return () => {
+            socket.disconnect();
+        };
+    }, []);
 
     const onSubmit = async (data) => {
         try {
@@ -128,7 +127,7 @@ const HelpRequestPage = () => {
                 requests: {
                     userId: userId,
                     requestStatus: "המתנה",
-                    requestType: "ארוחה"
+                    requestType: data.requestType // וודא שאתה שולח את הנתון הנכון
                 },
                 meals: {
                     amountMeals: data.amountMeals,
@@ -185,3 +184,4 @@ const HelpRequestPage = () => {
 }
 
 export default HelpRequestPage;
+

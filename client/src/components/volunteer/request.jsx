@@ -36,6 +36,7 @@ console.log(volunteerId);
       
             const data = await response.json();
             console.log('Request updated successfully:', data);
+            
         } catch (error) {
             console.error('Error updating request:', error.message);
         }

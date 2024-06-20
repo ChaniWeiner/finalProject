@@ -8,26 +8,49 @@ const server = createServer(app);
 const io = new Server(server, {
   cors: {
     origin: 'http://localhost:5173',
-    methods: ['GET', 'POST']
+    methods: ['GET', 'POST','put']
   }
 });
 
-// Socket.io event handling
+let clientConnected = false;
+
 io.on('connection', (socket) => {
-    console.log('Client connected');
+    if (!clientConnected) {
+        console.log('Client connected');
+        clientConnected = true;
+    }
 
     socket.on('postRequest', (request) => {
         console.log('New request received:', request);
-        io.emit('getAllRequests', request);
-       sendRatingEmail('chani03630@gmail.com')
-    
-      });
+        io.emit('newRequest', request); // שליחת הבקשה האחרונה בלבד
+    });
 
     socket.on('disconnect', () => {
         console.log('Client disconnected');
-
+        clientConnected = false;
     });
 });
+
+
+// // Socket.io event handling
+// io.on('connection', (socket) => {
+//     console.log('Client connected');
+//     socket.on('postRequest', (request) => {
+//       console.log('New request received:', request);
+//       io.emit('newRequest', request); // שליחת הבקשה האחרונה בלבד
+//     });
+//     // socket.on('postRequest', (request) => {
+//     //     console.log('New request received:', request);
+//     //     io.emit('getAllRequests', request);
+//     //   //  sendRatingEmail('chani03630@gmail.com')
+    
+//     //   });
+
+//     socket.on('disconnect', () => {
+//         console.log('Client disconnected');
+
+//     });
+// });
 
 
 server.listen(process.env.PORT, () => {
