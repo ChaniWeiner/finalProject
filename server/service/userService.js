@@ -1,6 +1,7 @@
 import 'dotenv/config'
 import { executeQuery } from './query.js'
 import { getAllQuery, getByIdQuery, updateQuery, getByParameterQuery } from './allQuery.js';
+//import { sendRatingEmail } from './email.js'; 
 
 export class UserService {
     // async getAll() {

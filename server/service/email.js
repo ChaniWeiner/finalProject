@@ -6,17 +6,41 @@ function sendRatingEmail(userEmail) {
     service: 'gmail',
     auth: {
       user: 'achaiotbaam@gmail.com', // כתובת האימייל שלך
-      pass: 'ueax xamk troa flvl!' // הסיסמה שלך
+      pass: 'guyq iirx afyv eopp' // הסיסמה שלך
     }
   });
+  
 
   // הגדרות האימייל שיישלח
+  // let mailOptions = {
+  //   from: 'achaiotbaam@gmail.com',
+  //   to: userEmail, // כתובת האימייל של המשתמש שקיבל את הדירוג
+  //   subject: 'הבקשה שלך נלקחה', // נושא האימייל
+  //   text: 'נעדכן אותך שהיא בדרך אליך' // תוכן האימייל
+  // };
   let mailOptions = {
     from: 'achaiotbaam@gmail.com',
     to: userEmail, // כתובת האימייל של המשתמש שקיבל את הדירוג
-    subject: 'הודעת דירוג', // נושא האימייל
-    text: ' הבקשה שלך נלקחה לעשיה' // תוכן האימייל
+    subject: 'עדכון לגבי בקשתך:)', // נושא האימייל
+    html: `
+      <div style="font-family: Arial, sans-serif; text-align: right; direction: rtl; color: #0066cc;">
+        <p style="font-size: 18px;">הי אחותי!</p>
+        <p>איך את?</p>
+        <p>שמחות לבשר לך שבקשתך נלקחה ע"י אחות אחרת וכבר נעדכן אותך מה איתו...</p>
+        <p>לכל שאלה או עזרה ניתן לפניות למייל <a href="mailto:achaiotbaam@gmail.com">achaiotbaam@gmail.com</a></p>
+        <p>צוות אחיות בע"מ</p>
+        <img src="cid:unique@nodemailer.com" alt="תמונה">
+      </div>
+    `,
+    attachments: [{
+      filename: 'the_logo.png',
+      path: 'C:\\finalProject\\server\\the logo.png',
+      cid: 'unique@nodemailer.com' // זיהוי ייחודי לתמונה בגוף האימייל
+    }]
   };
+  
+  
+  
 
   // שליחת האימייל
   transporter.sendMail(mailOptions, function(error, info) {

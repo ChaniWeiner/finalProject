@@ -1,6 +1,8 @@
 import 'dotenv/config'
 import { executeQuery } from './query.js'
 import { getByIdQuery, updateQuery, deleteQuery, getJoinTablesQuery, getJoinTwoTablesQuery } from './allQuery.js';
+import { sendRatingEmail } from './email.js';
+
 export class RequestService {
 
     async getById(id) {
@@ -25,6 +27,7 @@ export class RequestService {
     }
 
     async update(item, id, type) {
+        console.log("item"+item)
         let stringToQuery = "";
         Object.keys(item).forEach(key => { (key != "requestId") && (stringToQuery += key += "=?,") });
         stringToQuery = stringToQuery.slice(0, -1);
@@ -32,7 +35,9 @@ export class RequestService {
         values.push(id);
         const query = updateQuery("proposalrequests", stringToQuery, type || "requestId");
         const result = await executeQuery(query, values)
-
+        console.log("i am before email")
+        sendRatingEmail(item.email);
+        console.log("i am after email")
         return result;
     }
     async addReq(item) {

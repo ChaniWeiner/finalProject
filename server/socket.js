@@ -1,7 +1,6 @@
 import { Server } from 'socket.io'; // Import Server from socket.io for server-side operations
 import app from './app.js';
 import { createServer } from 'http';
-import { sendRatingEmail } from './service/email.js'; 
 
 
 const server = createServer(app);
@@ -17,13 +16,21 @@ let clientConnected = false;
 io.on('connection', (socket) => {
     if (!clientConnected) {
         console.log('Client connected');
-        clientConnected = true;
+        clientConnected = true;     
+
     }
 
     socket.on('postRequest', (request) => {
         console.log('New request received:', request);
         io.emit('newRequest', request); // שליחת הבקשה האחרונה בלבד
     });
+
+
+    socket.on('putRequest', (request) => {
+      console.log('request was taken:', request);
+      io.emit('newRequest', request); // שליחת הבקשה האחרונה בלבד
+  });
+
 
     socket.on('disconnect', () => {
         console.log('Client disconnected');
@@ -41,7 +48,7 @@ io.on('connection', (socket) => {
 //     });
 //     // socket.on('postRequest', (request) => {
 //     //     console.log('New request received:', request);
-//     //     io.emit('getAllRequests', request);
+//     //     io.emit('getAllReשquests', request);
 //     //   //  sendRatingEmail('chani03630@gmail.com')
     
 //     //   });
