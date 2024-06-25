@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { io } from "socket.io-client";
 import RequestDetails from "./RequestDetails";
 import SearchRequest from "./SearchRequest";
 import Style from './loader.module.css';
 import Request from "./request";
 import { useLocation } from 'react-router-dom';
-import { io } from "socket.io-client";
 
 const VolunteerPage = () => {
   const location = useLocation();
@@ -12,25 +12,36 @@ const VolunteerPage = () => {
   const url = `http://localhost:8082/requests`;
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(true);
-  const socket = io('http://localhost:8082');
 
   useEffect(() => {
+    const socket = io('http://localhost:8082');
+
     socket.on('connect', () => {
       console.log('Connected to server');
     });
-
     socket.on('newRequest', (newRequest) => {
-      // עדכון הבקשות כאשר מתקבלת בקשה חדשה
-      setRequests((prevRequests) => [...prevRequests, newRequest]);
-      // כאן תוכל להוסיף כל פעולה נוספת שאתה רוצה לבצע כאשר מתקבלת בקשה חדשה
+    
+      //   const updatedRequests = requests.concat(newRequest);
+      //   setRequests(updatedRequests);
+   
+      getRequests();
+      // console.log(requests);
     });
-
+  //   socket.on('newRequest', (newRequest) => {
+  //     setRequests(prevRequests => {
+  //         const updatedRequests = [...prevRequests]; // יצירת העתק של המערך הקודם
+  //         updatedRequests.push(newRequest); // הוספת הבקשה החדשה למערך העתיק
+  //         return updatedRequests; // החזרת המערך המעודכן לסטייט
+  //     });
+  // });
+    
     socket.on('disconnect', () => {
       console.log('Disconnected from server');
     });
 
     const getRequests = async () => {
       try {
+  
         const response = await fetch(url);
         const data = await response.json();
         if (response.ok) {
@@ -51,7 +62,7 @@ const VolunteerPage = () => {
     return () => {
       socket.disconnect();
     };
-  }, [url, socket]);
+  }, [url]);
 
   return (
     <>

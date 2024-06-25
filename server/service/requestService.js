@@ -36,7 +36,7 @@ export class RequestService {
         const query = updateQuery("proposalrequests", stringToQuery, type || "requestId");
         const result = await executeQuery(query, values)
         console.log("i am before email")
-        sendRatingEmail(item.email);
+        sendRatingEmail("shoshgrilak@gmail.com");
         console.log("i am after email")
         return result;
     }

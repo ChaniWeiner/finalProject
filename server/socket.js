@@ -22,14 +22,15 @@ io.on('connection', (socket) => {
 
     socket.on('postRequest', (request) => {
         console.log('New request received:', request);
+        console.log(request);
         io.emit('newRequest', request); // שליחת הבקשה האחרונה בלבד
     });
 
 
-    socket.on('putRequest', (request) => {
-      console.log('request was taken:', request);
-      io.emit('newRequest', request); // שליחת הבקשה האחרונה בלבד
-  });
+  //   socket.on('putRequest', (request) => {
+  //     console.log('request was taken:', request);
+  //     io.emit('newRequest', request); // שליחת הבקשה האחרונה בלבד
+  // });
 
 
     socket.on('disconnect', () => {

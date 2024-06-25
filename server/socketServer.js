@@ -13,11 +13,11 @@ io.on('connection', socket => {
     //     console.log('לקוח מנותק');
     // });
 
-    socket.on('takeRequest', requestId => {
-        // עדכן את מצב הבקשה בשרת ושלח עדכון ללקוחות המעורבים
-        // כאן תצטרך לקבל את הבקשה לפי ה-requestId ולעדכן את המצב שלה
-        io.emit('requestTaken', requestId);
-    });
+    // socket.on('takeRequest', requestId => {
+    //     // עדכן את מצב הבקשה בשרת ושלח עדכון ללקוחות המעורבים
+    //     // כאן תצטרך לקבל את הבקשה לפי ה-requestId ולעדכן את המצב שלה
+    //     io.emit('requestTaken', requestId);
+    // });
 });
 
 const PORT = process.env.PORT || 8080;
