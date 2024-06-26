@@ -5,7 +5,8 @@ import { useForm } from 'react-hook-form';
 import { useLocation } from 'react-router-dom';
 const Register = () => {
     const location = useLocation();
-    const userType = location.state.userType;
+    // const userType = location.state.userType;
+    const userType="volunteer";
     //const [user, setUser] = useContext(currentUserContext);
     const [verifyFail, setVerifyFail] = useState(false)
     const [isExtendedDetailsOpen, setIsExtendedDetailsOpen] = useState(true);

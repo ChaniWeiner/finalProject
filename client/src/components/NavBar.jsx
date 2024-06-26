@@ -9,9 +9,10 @@ const NavBar = () => {
       <ul className="nav-links">
         <li><a href="#about">אודות</a></li>
         <li><a href="/helpRequest">בקשת סיוע</a></li>
-        <li><a href="/">איזור אישי</a></li>
+        {/* <li><a href="/personalSpot">איזור אישי</a></li> */}
         <li><a href="/volunteer">התנדבות </a></li>
         <li><a href="#contact">צור קשר</a></li>
+        
       </ul>
     </nav>
   );
