@@ -86,7 +86,7 @@ const Register = () => {
                 {verifyFail && <p className="errorMsg">Verification failed please try again.</p>}
                 <input type="submit" value="sign up" />
             </form>
-            <button onClick={() => { navigate('/volunteer/login') }} >sign in</button>
+           { <button onClick={() => {userType=="volunteer"? navigate('/volunteer/login', { state: { userType: "volunteer" }}):navigate('/helpRequest/login', { state: { userType: "request" }}) }} >כניסה</button>}
         </div>
     }
 

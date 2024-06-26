@@ -2,13 +2,24 @@ import nodemailer from 'nodemailer';
 // פונקציה שמקבלת דואל של משתמש ושולחת לו אימייל
 function sendRatingEmail(userEmail) {
   // יצירת ספק השירות של דוא"ל
-  let transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-      user: 'achaiotbaam@gmail.com', // כתובת האימייל שלך
-      pass: 'guyq iirx afyv eopp' // הסיסמה שלך
-    }
-  });
+  // let transporter = nodemailer.createTransport({
+  //   service: 'gmail',
+  //   auth: {
+  //     user: 'achaiotbaam@gmail.com', // כתובת האימייל שלך
+  //     pass: 'guyq iirx afyv eopp' // הסיסמה שלך
+  //   }
+    let transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: 'achaiotbaam@gmail.com',
+        pass: 'guyq iirx afyv eopp'
+      },
+      tls: {
+        rejectUnauthorized: false
+      }
+    });
+ 
+ 
   
 
   // הגדרות האימייל שיישלח
@@ -34,7 +45,7 @@ function sendRatingEmail(userEmail) {
     `,
     attachments: [{
       filename: 'the_logo.png',
-      path: 'C:\\finalProject\\server\\the logo.png',
+      path: 'C:\\finalProject\\finalProject\\server\\the logo.png',
       cid: 'unique@nodemailer.com' // זיהוי ייחודי לתמונה בגוף האימייל
     }]
   };

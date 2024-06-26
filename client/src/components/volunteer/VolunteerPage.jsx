@@ -19,21 +19,17 @@ const VolunteerPage = () => {
     socket.on('connect', () => {
       console.log('Connected to server');
     });
-    socket.on('newRequest', (newRequest) => {
-    
-      //   const updatedRequests = requests.concat(newRequest);
-      //   setRequests(updatedRequests);
-   
+    socket.on('addRequest', (newRequest) => {
+      // <Request volunteerId={volunteerId} object={request} requests={requests} setRequests={setRequests} />
       getRequests();
-      // console.log(requests);
+      
     });
-  //   socket.on('newRequest', (newRequest) => {
-  //     setRequests(prevRequests => {
-  //         const updatedRequests = [...prevRequests]; // יצירת העתק של המערך הקודם
-  //         updatedRequests.push(newRequest); // הוספת הבקשה החדשה למערך העתיק
-  //         return updatedRequests; // החזרת המערך המעודכן לסטייט
-  //     });
-  // });
+    // socket.on('updateRequest', (newRequest) => {
+    //   // <Request volunteerId={volunteerId} object={request} requests={requests} setRequests={setRequests} />
+    //   getRequests();
+      
+    // });
+  
     
     socket.on('disconnect', () => {
       console.log('Disconnected from server');

@@ -6,13 +6,24 @@ function getAllQuery(tableName) {
 }
 
 
-function getJoinTablesQuery(tableName1, tableName2, tableName3) {
+// function getJoinTablesQuery(tableName1, tableName2, tableName3) {
+//     const query = `
+//     SELECT DISTINCT *
+// FROM ${process.env.DB_NAME}.${tableName1} NATURAL JOIN ${process.env.DB_NAME}.${tableName2} NATURAL JOIN ${process.env.DB_NAME}.${tableName3};
+//         `;
+//     return query;
+// }
+function getJoinTablesQuery(tableName1, tableName2, tableName3, statusColumn = 'requestStatus', statusValue = 'המתנה') {
     const query = `
     SELECT DISTINCT *
-FROM ${process.env.DB_NAME}.${tableName1} NATURAL JOIN ${process.env.DB_NAME}.${tableName2} NATURAL JOIN ${process.env.DB_NAME}.${tableName3};
-        `;
+    FROM ${process.env.DB_NAME}.${tableName1}
+    NATURAL JOIN ${process.env.DB_NAME}.${tableName2}
+    NATURAL JOIN ${process.env.DB_NAME}.${tableName3}
+    WHERE ${statusColumn} = '${statusValue}';
+    `;
     return query;
 }
+
 
 function getJoinTwoTablesQuery(tableName1, tableName2) {
     const query = `

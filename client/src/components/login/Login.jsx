@@ -56,11 +56,11 @@ const Login = () => {
                     <p className="errorMsg">Password is required.</p>)}
                    
             </form>
-            <button onClick={() => { navigate('/volunteer/register') }}>הרשמה</button>
-           
-            <div style={{ display: Login }}>
+            
+          {  <button onClick={() => {userType=="volunteer"? navigate('/volunteer/login', { state: { userType: "volunteer" }}):navigate('/helpRequest/login', { state: { userType: "request" }}) }} >כניסה</button>}
+            {/* <div style={{ display: Login }}>
                 <Link   to={`/volunteer/volunteers`} state={{ userId: userId }}>  </Link>
-            </div>  
+            </div>   */}
         </>
     );
 }
