@@ -1,97 +1,210 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useLocation } from 'react-router-dom';
 import { io } from "socket.io-client";
 
 const HelpRequestPage = () => {
-  const location = useLocation();
-  const userId = location.state.userId;
-  const url = `http://localhost:8082/requests`;
+    const location = useLocation();
+    const userId = location.state.userId;
+    const url = `http://localhost:8082/requests`;
 
-  const { register, handleSubmit, formState: { errors } } = useForm();
+    const { register, handleSubmit, formState: { errors }, reset, watch } = useForm();
+    const [requestType, setRequestType] = useState('');
 
-  useEffect(() => {
-    const socket = io('http://localhost:8082');
+    const amountMeals = watch("amountMeals")
 
-    socket.on('connect', () => {
-      console.log('Connected to server');
-    });
+    useEffect(() => {
+        const socket = io('http://localhost:8082');
 
-    socket.on('disconnect', () => {
-      console.log('Disconnected from server');
-    });
+        socket.on('connect', () => {
+            console.log('Connected to server');
+        });
 
-    return () => {
-      socket.disconnect();
+        socket.on('disconnect', () => {
+            console.log('Disconnected from server');
+        });
+
+        return () => {
+            socket.disconnect();
+        };
+    }, []);
+
+    const onSubmit = async (data) => {
+        try {
+            reset();
+            const socket = io('http://localhost:8082');
+
+                    let body = {
+                        requests: {
+                            userId: userId,
+                            requestStatus: "המתנה",
+                            requestType: data.requestType
+                        }
+                    };
+            
+                    switch (data.requestType) {
+                        case "ארוחה":
+                            body.meals = {
+                                amountMeals: data.amountMeals,
+                                mealType: data.mealType
+                            };
+                            break;
+                        case "ביביסיטר":
+                            body.babysitter = {
+                                childrenAge: data.childrenAge
+                            };
+                            break;
+                        case "נקיון":
+                            body.cleaning = {
+                                houseSize: data.houseSize
+                            };
+                            break;
+                        case "קניות":
+                            body.shopping = {
+                                shoppingList: data.shoppingList
+                            };
+                            break;
+                        case "אוזן קשבת":
+                            body.support = {
+                                supportCall: data.supportCall
+                            };
+                            break;
+                        default:
+                            throw new Error('Unsupported request type');
+                    }
+            
+                    const response = await fetch(url, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(body)
+                    });
+            
+                    if (!response.ok) {
+                        throw new Error('Failed to add request');
+                    }
+            
+                    const responseData = await response.json();
+                    alert("הבקשה נוספה בהצלחה אנא המתינה לפרטי התקשרות ");
+                    console.log('Request added successfully:', responseData);
+            
+                    // שליחת הבקשה החדשה דרך Socket.io
+                    socket.emit('postRequest', body);
+            
+                } catch (error) {
+                    console.error('Error adding request:', error.message);
+                }
+            };
+            
+    const handleRequestTypeChange = (event) => {
+        setRequestType(event.target.value);
     };
-  }, []);
 
-  const onSubmit = async (data) => {
-    try {
-      const socket = io('http://localhost:8082');
+    return (
+        <>
+            <h1>פניית עזרה</h1>
+            <form onSubmit={handleSubmit(onSubmit)}>
+                <label>
+                    סוג הבקשה:
+                    <select {...register("requestType", { required: true })} onChange={handleRequestTypeChange}>
+                        <option value="">בחר סוג בקשה</option>
+                        <option value="ארוחה">ארוחה</option>
+                        <option value="ביביסיטר">ביביסיטר</option>
+                        <option value="נקיון">נקיון</option>
+                        <option value="קניות">קניות</option>
+                        <option value="אוזן קשבת">אוזן קשבת</option>
+                    </select>
+                    {errors.requestType && <span>שדה חובה</span>}
+                </label>
+                <br />
 
-      const body = {
-        requests: {
-          userId: userId,
-          requestStatus: "המתנה",
-          requestType: data.requestType
-        },
-        meals: {
-          amountMeals: data.amountMeals,
-          mealType: data.mealType
-        }
-      };
+                {requestType === "ארוחה" && (
+                    <>
+                        <label>
+                            כמות ארוחות:
+                            <input
+                                type="number"
+                                {...register("amountMeals", {
+                                    required: true,
+                                    min: {
+                                        value: 1,
+                                        message: "הכמות המינימלית היא 1"
+                                    },
+                                    max: {
+                                        value: 20,
+                                        message: "הכמות המקסימלית היא 20"
+                                    }
+                                })}
+                            />
+                            {errors.amountMeals && <span>{errors.amountMeals.message}</span>}
+                            {(amountMeals <= 0 || amountMeals > 20) && (
+                                <span>אנא כתוב מספר בין 1 ל-20 כולל</span>
+                            )}
+                        </label>
+                        <br />
+                        <label>
+                            סוג הארוחה:
+                            <select {...register("mealType", { required: true })}>
+                                <option value="">בחר סוג הארוחה</option>
+                                <option value="פרווה">פרווה</option>
+                                <option value="חלבי">חלבי</option>
+                                <option value="בשרי">בשרי</option>
+                            </select>
+                            {errors.mealType && <span>שדה חובה</span>}
+                        </label>
+                        <br />
+                    </>
+                )}
 
-      const response = await fetch(url, {
-        method: 'post',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(body)
-      });
+                {requestType === "ביביסיטר" && (
+                    <>
+                        <label>
+                            גיל הילדים:
+                            <input type="number" {...register("childrenAge", { required: true })} />
+                            {errors.childrenAge && <span>שדה חובה</span>}
+                        </label>
+                        <br />
+                    </>
+                )}
 
-      if (!response.ok) {
-        throw new Error('Failed to update request');
-      }
+                {requestType === "נקיון" && (
+                    <>
+                        <label>
+                            גודל הבית:
+                            <input type="number" {...register("houseSize", { required: true })} />
+                            {errors.houseSize && <span>שדה חובה</span>}
+                        </label>
+                        <br />
+                    </>
+                )}
 
-      const responseData = await response.json();
-      alert("הבקשה נוספה בהצלחה אנא המתינה לפרטי התקשרות ");
-      console.log('Request added successfully:', responseData);
+                {requestType === "קניות" && (
+                    <>
+                        <label>
+                            רשימת מוצרים:
+                            <textarea {...register("shoppingList", { required: true })} />
+                            {errors.shoppingList && <span>שדה חובה</span>}
+                        </label>
+                        <br />
+                    </>
+                )}
 
-      // שליחת הבקשה החדשה דרך Socket.io
-      socket.emit('postRequest', body);
+                {requestType === "אוזן קשבת" && (
+                    <>
+                        <label>
+                            שיחת תמיכה:
+                            <textarea {...register("supportCall", { required: true })} />
+                            {errors.supportCall && <span>שדה חובה</span>}
+                        </label>
+                        <br />
+                    </>
+                )}
 
-    } catch (error) {
-      console.error('Error adding request:', error.message);
-    }
-  };
-
-  return (
-    <>
-      <h1>פניית עזרה</h1>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <label>
-          סוג הבקשה:
-          <input type="text" {...register("requestType", { required: true })} />
-          {errors.requestType && <span>שדה חובה</span>}
-        </label>
-        <br />
-        <label>
-          כמות ארוחות:
-          <input type="number" {...register("amountMeals", { required: true })} />
-          {errors.amountMeals && <span>שדה חובה</span>}
-        </label>
-        <br />
-        <label>
-          סוג הארוחה:
-          <input type="text" {...register("mealType", { required: true })} />
-          {errors.mealType && <span>שדה חובה</span>}
-        </label>
-        <br />
-        <button type="submit">שליחה</button>
-      </form>
-    </>
-  );
-}
+                <button type="submit">שליחה</button>
+            </form>
+        </>
+    );
+};
 
 export default HelpRequestPage;
