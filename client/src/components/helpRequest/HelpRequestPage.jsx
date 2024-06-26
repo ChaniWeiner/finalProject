@@ -11,7 +11,7 @@ const HelpRequestPage = () => {
     const { register, handleSubmit, formState: { errors }, reset, watch } = useForm();
     const [requestType, setRequestType] = useState('');
 
-    const amountMeals = watch("amountMeals")
+    const amountMeals = watch("amountMeals");
 
     useEffect(() => {
         const socket = io('http://localhost:8082');
@@ -34,69 +34,72 @@ const HelpRequestPage = () => {
             reset();
             const socket = io('http://localhost:8082');
 
-                    let body = {
-                        requests: {
-                            userId: userId,
-                            requestStatus: "המתנה",
-                            requestType: data.requestType
-                        }
-                    };
-            
-                    switch (data.requestType) {
-                        case "ארוחה":
-                            body.meals = {
-                                amountMeals: data.amountMeals,
-                                mealType: data.mealType
-                            };
-                            break;
-                        case "ביביסיטר":
-                            body.babysitter = {
-                                childrenAge: data.childrenAge
-                            };
-                            break;
-                        case "נקיון":
-                            body.cleaning = {
-                                houseSize: data.houseSize
-                            };
-                            break;
-                        case "קניות":
-                            body.shopping = {
-                                shoppingList: data.shoppingList
-                            };
-                            break;
-                        case "אוזן קשבת":
-                            body.support = {
-                                supportCall: data.supportCall
-                            };
-                            break;
-                        default:
-                            throw new Error('Unsupported request type');
-                    }
-            
-                    const response = await fetch(url, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify(body)
-                    });
-            
-                    if (!response.ok) {
-                        throw new Error('Failed to add request');
-                    }
-            
-                    const responseData = await response.json();
-                    alert("הבקשה נוספה בהצלחה אנא המתינה לפרטי התקשרות ");
-                    console.log('Request added successfully:', responseData);
-            
-                    // שליחת הבקשה החדשה דרך Socket.io
-                    socket.emit('postRequest', body);
-            
-                } catch (error) {
-                    console.error('Error adding request:', error.message);
+            let body = {
+                requests: {
+                    userId: userId,
+                    requestStatus: "המתנה",
+                    requestType: data.requestType
                 }
             };
-            
+
+            switch (data.requestType) {
+                case "ארוחה":
+                    body.meals = {
+                        amountMeals: data.amountMeals,
+                        mealType: data.mealType
+                    };
+                    break;
+                case "ביביסיטר":
+                    body.babysitter = {
+                        numberOfChildren: data.numberOfChildren,
+                        babysittingHours: data.babysittingHours
+                    };
+                    break;
+                case "נקיון":
+                    body.cleaning = {
+                        cleaningHours: data.cleaningHours,
+                        cleaningDay: data.cleaningDay
+                    };
+                    break;
+                case "קניות":
+                    body.shopping = {
+                        shoppingList: data.shoppingList
+                    };
+                    break;
+                case "אוזן קשבת":
+                    body.support = {
+                        supportCall: data.supportCall
+                    };
+                    break;
+                default:
+                    throw new Error('Unsupported request type');
+            }
+
+            const response = await fetch(url, {
+                method: 'post',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+        
+                body: JSON.stringify(body)
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to add request');
+            }
+
+            const responseData = await response.json();
+            alert("הבקשה נוספה בהצלחה אנא המתינה לפרטי התקשרות ");
+            console.log('Request added successfully:', responseData);
+
+            // שליחת הבקשה החדשה דרך Socket.io
+            socket.emit('postRequest', body);
+
+        } catch (error) {
+            console.error('Error adding request:', error.message);
+        }
+    };
+
     const handleRequestTypeChange = (event) => {
         setRequestType(event.target.value);
     };
@@ -160,9 +163,15 @@ const HelpRequestPage = () => {
                 {requestType === "ביביסיטר" && (
                     <>
                         <label>
-                            גיל הילדים:
-                            <input type="number" {...register("childrenAge", { required: true })} />
-                            {errors.childrenAge && <span>שדה חובה</span>}
+                            מספר ילדים:
+                            <input type="number" {...register("numberOfChildren", { required: true })} />
+                            {errors.numberOfChildren && <span>שדה חובה</span>}
+                        </label>
+                        <br />
+                        <label>
+                            מספר שעות בייביסיטר:
+                            <input type="number" {...register("babysittingHours", { required: true })} />
+                            {errors.babysittingHours && <span>שדה חובה</span>}
                         </label>
                         <br />
                     </>
@@ -171,9 +180,15 @@ const HelpRequestPage = () => {
                 {requestType === "נקיון" && (
                     <>
                         <label>
-                            גודל הבית:
-                            <input type="number" {...register("houseSize", { required: true })} />
-                            {errors.houseSize && <span>שדה חובה</span>}
+                            מספר שעות נקיון:
+                            <input type="number" {...register("cleaningHours", { required: true })} />
+                            {errors.cleaningHours && <span>שדה חובה</span>}
+                        </label>
+                        <br />
+                        <label>
+                            יום נקיון:
+                            <input type="text" {...register("cleaningDay", { required: true })} />
+                            {errors.cleaningDay && <span>שדה חובה</span>}
                         </label>
                         <br />
                     </>

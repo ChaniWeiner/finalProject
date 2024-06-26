@@ -10,6 +10,7 @@ export class RequestService {
         const result = await executeQuery(query, [id]);
         return result;
     }
+
     async getByParameter(user) {
         let query, conditionsParams = [], conditionsValues = [];
         const queryParams = user.query;
@@ -27,7 +28,7 @@ export class RequestService {
     }
 
     async update(item, id, type) {
-        console.log("item"+item)
+        console.log("item" + item)
         let stringToQuery = "";
         Object.keys(item).forEach(key => { (key != "requestId") && (stringToQuery += key += "=?,") });
         stringToQuery = stringToQuery.slice(0, -1);
@@ -40,13 +41,34 @@ export class RequestService {
         console.log("i am after email")
         return result;
     }
+
     async addReq(item) {
-        const result = await executeQuery(`INSERT INTO ${process.env.DB_NAME}.proposalrequests ( requestType, requestStatus, userId  ) VALUES (?,?,?)`, [item.requestType, item.requestStatus, item.userId]);
-        return result;
-    }
-    async addMeal(item) {
-        const result = await executeQuery(`INSERT INTO ${process.env.DB_NAME}.meals ( requestId , amountMeals, mealType) VALUES (?, ?, ?)`, [item.requestId, item.amountMeals, item.mealType]);
+        const result = await executeQuery(`INSERT INTO ${process.env.DB_NAME}.proposalrequests (requestType, requestStatus, userId) VALUES (?,?,?)`, [item.requestType, item.requestStatus, item.userId]);
         return result;
     }
 
+    async addMeal(item) {
+        const result = await executeQuery(`INSERT INTO ${process.env.DB_NAME}.meals (requestId, amountMeals, mealType) VALUES (?, ?, ?)`, [item.requestId, item.amountMeals, item.mealType]);
+        return result;
+    }
+
+    async addBabysitter(item) {
+        const result = await executeQuery(`INSERT INTO ${process.env.DB_NAME}.babysitter (requestId, numberOfChildren, babysittingHours) VALUES (?, ?, ?)`, [item.requestId, item.numberOfChildren, item.babysittingHours]);
+        return result;
+    }
+
+    async addCleaning(item) {
+        const result = await executeQuery(`INSERT INTO ${process.env.DB_NAME}.cleaning (requestId, cleaningHours, cleaningDay) VALUES (?, ?, ?)`, [item.requestId, item.cleaningHours, item.cleaningDay]);
+        return result;
+    }
+
+    async addShopping(item) {
+        const result = await executeQuery(`INSERT INTO ${process.env.DB_NAME}.shopping (requestId, shoppingList) VALUES (?, ?)`, [item.requestId, item.shoppingList]);
+        return result;
+    }
+
+    async addSupport(item) {
+        const result = await executeQuery(`INSERT INTO ${process.env.DB_NAME}.support (requestId, supportCall) VALUES (?, ?)`, [item.requestId, item.supportCall]);
+        return result;
+    }
 }
