@@ -49,7 +49,7 @@ const HelpRequestPage = () => {
                         mealType: data.mealType
                     };
                     break;
-                case "ביביסיטר":
+                case "בייביסיטר":
                     body.babysitter = {
                         numberOfChildren: data.numberOfChildren,
                         babysittingHours: data.babysittingHours
@@ -113,7 +113,7 @@ const HelpRequestPage = () => {
                     <select {...register("requestType", { required: true })} onChange={handleRequestTypeChange}>
                         <option value="">בחר סוג בקשה</option>
                         <option value="ארוחה">ארוחה</option>
-                        <option value="ביביסיטר">ביביסיטר</option>
+                        <option value="בייביסיטר">בייביסיטר</option>
                         <option value="נקיון">נקיון</option>
                         <option value="קניות">קניות</option>
                         <option value="אוזן קשבת">אוזן קשבת</option>
@@ -160,7 +160,7 @@ const HelpRequestPage = () => {
                     </>
                 )}
 
-                {requestType === "ביביסיטר" && (
+                {requestType === "בייביסיטר" && (
                     <>
                         <label>
                             מספר ילדים:

@@ -70,7 +70,7 @@ export default class requestController {
                     await service.addMeal(mealItem);
                     resultMessage += " and meal added successfully";
                     break;
-                case "ביביסיטר":
+                case "בייביסיטר":
                     const babysitterItem = {
                         requestId,
                         numberOfChildren: babysitter.numberOfChildren,
