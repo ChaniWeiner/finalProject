@@ -5,6 +5,7 @@ import SearchRequest from "./SearchRequest";
 import Style from './loader.module.css';
 import Request from "./request";
 import { useLocation } from 'react-router-dom';
+import PersonalProfile from "../personalProfile/PersonalProfile";
 
 const VolunteerPage = () => {
   const location = useLocation();
@@ -62,6 +63,7 @@ const VolunteerPage = () => {
 
   return (
     <>
+          <PersonalProfile UserId={volunteerId}>פרטים אישיים</PersonalProfile>
       <h1>Requests</h1>
       <div className="requests_container">
         <SearchRequest setRequests={setRequests} allRequests={requests} requests={requests} />
@@ -82,6 +84,7 @@ const VolunteerPage = () => {
           </>
         )}
       </div>
+
     </>
   );
 }

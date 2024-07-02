@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useLocation } from 'react-router-dom';
 import { io } from "socket.io-client";
+import PersonalProfile from "../personalProfile/PersonalProfile";
 
 const HelpRequestPage = () => {
     const location = useLocation();
@@ -107,6 +108,7 @@ const HelpRequestPage = () => {
     return (
         <>
             <h1>פניית עזרה</h1>
+            <PersonalProfile userId={userId}>פרטיםם</PersonalProfile>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <label>
                     סוג הבקשה:
