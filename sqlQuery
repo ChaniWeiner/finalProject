@@ -58,3 +58,6 @@ CREATE TABLE db_fp.support (
     supportCall TEXT NOT NULL,
     FOREIGN KEY (requestId) REFERENCES db_fp.proposalrequests(requestId)
 );
+
+ALTER TABLE proposalrequests
+MODIFY requestType ENUM('ארוחה', 'בייביסיטר', 'נקיון', 'קניות', 'אוזן קשבת');
