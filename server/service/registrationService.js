@@ -1,23 +1,23 @@
-// registrationService.js
 import { executeQuery } from './query.js'; // וודא שהנתיב לקובץ query.js נכון
 import jwt from 'jsonwebtoken';
 
 export class RegistrationService {
 
     async login(user) {
-        console.log("hellooofvkf")
-        const userT ={
-            userId:user.userId,
-        }
-        console.log("bbbbbbbbbbbb")
+        console.log("hellooofvkf");
+        const userT = {
+            userId: user.userId,
+        };
+        console.log("bbbbbbbbbbbb");
 
+        // יצירת הטוקן
         const token = jwt.sign(userT, process.env.JWT_SECRET, {
             expiresIn: '1h',
         });
-        console.log("aaaaa")
+        console.log("Generated token:", token); // הוספת הדפסה של הטוקן
 
         const result = await executeQuery('SELECT U.userId, U.username, U.address, U.region FROM db_fp.users U, db_fp.passwords P WHERE U.userId = P.userId AND P.userId=? AND P.password=?', [user.userId, user.password]);
-        return {user:result,token:token};
+        return { user: result, token: token };
     }
 
     async addPassword(item) {
@@ -30,3 +30,4 @@ export class RegistrationService {
         return result;
     }
 }
+``

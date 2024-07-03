@@ -84,7 +84,7 @@ const HelpRequestPage = () => {
             }
 
             const token = getCookie('token'); // קבלת הטוקן מהעוגיה
-
+            console.log(token);
             const response = await fetch(url, {
                 method: 'POST',
                 headers: {

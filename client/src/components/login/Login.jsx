@@ -23,7 +23,7 @@ const Login = () => {
                 'Content-Type': 'application/json',
                 'charset': 'UTF-8'
             },
-            credentials: 'include', // הכרחי כדי שהעוגיות יישלחו
+            //credentials: 'include', // הכרחי כדי שהעוגיות יישלחו
             body: JSON.stringify({
                 userId: userId,
                 password: password
@@ -32,12 +32,11 @@ const Login = () => {
         .then(result => result.json())
         .then(data => {
             if (data.status === 200) {
-                let user = data["data"];
-                let token = data["token"]; // קבלת ה-Token מהשרת
+                let token = data.data.token; // קבלת ה-Token מהשרת
                 setLoginStatus("inline");
 
                 // שמירת ה-Token בקוקיז
-                document.cookie = `token=${token}; path=/; secure; HttpOnly; SameSite=Lax`; // secure ו-HttpOnly מומלץ להוסיף לאבטחה נוספת
+                document.cookie = `token=${token}; path=/; secure; samesite=strict`; // secure ו-HttpOnly מומלץ להוסיף לאבטחה נוספת
 
                 // ניתוב על פי סוג המשתמש
                 userType === "volunteer"

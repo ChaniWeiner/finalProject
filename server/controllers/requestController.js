@@ -1,17 +1,17 @@
 import { RequestService } from "../service/requestService.js";
 
 export default class requestController {
-
     async getAllRequests(req, res, next) {
         try {
             const service = new RequestService();
             const data = await service.getByParameter(req);
             return res.json(data);  
         } catch (ex) {
-            const err = {}
+            console.error('Error in getAllRequests:', ex);
+            const err = {};
             err.statusCode = 500;
-            err.message = ex;
-            next(err)
+            err.message = ex.message || 'Internal Server Error';
+            next(err);
         }
     }
 
@@ -21,10 +21,11 @@ export default class requestController {
             const data = await service.getById(req.params.id);
             return res.json(data);  
         } catch (ex) {
-            const err = {}
+            console.error('Error in getUserById:', ex);
+            const err = {};
             err.statusCode = 500;
-            err.message = ex;
-            next(err)
+            err.message = ex.message || 'Internal Server Error';
+            next(err);
         }
     }
 
@@ -32,20 +33,22 @@ export default class requestController {
         try {
             const service = new RequestService();
             await service.update(req.body, req.params.id);
-            res.status(200).end(`Request with id: ${req.params.id} updated successfully`);
+            res.status(200).json({ message: `Request with id: ${req.params.id} updated successfully` }); // Send response as JSON
         } catch (ex) {
-            const err = {}
+            console.error('Error in updateRequest:', ex);
+            const err = {};
             err.statusCode = 500;
-            err.message = ex;
-            next(err)
+            err.message = ex.message || 'Internal Server Error';
+            next(err);
         }
     }
+    
 
     async postRequest(req, res, next) {
         try {
             const service = new RequestService();
             const { requests, meals, babysitter, cleaning, shopping, support } = req.body;
-            console.log(req.body);
+            console.log('Request body:', req.body);
 
             // הוספת בקשה חדשה
             const requestItem = {
@@ -54,9 +57,11 @@ export default class requestController {
                 userId: requests.userId
             };
             const requestResult = await service.addReq(requestItem);
+            console.log('Request result:', requestResult);
 
             // קבלת ה-requestId מהבקשה שנוצרה
             const requestId = requestResult.insertId;
+            console.log('New request ID:', requestId);
 
             // הוספת הבקשה לפי סוג הבקשה
             let resultMessage = "Request added successfully";
@@ -114,9 +119,10 @@ export default class requestController {
                 requestId
             });
         } catch (ex) {
+            console.error('Error in postRequest:', ex);
             const err = {};
             err.statusCode = 500;
-            err.message = ex;
+            err.message = ex.message || 'Internal Server Error';
             next(err);
         }
     }
