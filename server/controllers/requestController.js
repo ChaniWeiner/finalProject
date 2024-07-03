@@ -46,77 +46,12 @@ export default class requestController {
 
     async postRequest(req, res, next) {
         try {
-            const service = new RequestService();
-            const { requests, meals, babysitter, cleaning, shopping, support } = req.body;
-            console.log('Request body:', req.body);
-
-            // הוספת בקשה חדשה
-            const requestItem = {
-                requestType: requests.requestType,
-                requestStatus: "המתנה", // דוגמה לסטטוס התחלה, ניתן לשנות לפי הצורך
-                userId: requests.userId
-            };
-            const requestResult = await service.addReq(requestItem);
+            const requestService = new RequestService();
+            const requestResult = await requestService.addRequest(req.body);
             console.log('Request result:', requestResult);
 
-            // קבלת ה-requestId מהבקשה שנוצרה
-            const requestId = requestResult.insertId;
-            console.log('New request ID:', requestId);
-
-            // הוספת הבקשה לפי סוג הבקשה
-            let resultMessage = "Request added successfully";
-            switch (requests.requestType) {
-                case "ארוחה":
-                    const mealItem = {
-                        requestId,
-                        amountMeals: meals.amountMeals,
-                        mealType: meals.mealType
-                    };
-                    await service.addMeal(mealItem);
-                    resultMessage += " and meal added successfully";
-                    break;
-                case "בייביסיטר":
-                    const babysitterItem = {
-                        requestId,
-                        numberOfChildren: babysitter.numberOfChildren,
-                        babysittingHours: babysitter.babysittingHours
-                    };
-                    await service.addBabysitter(babysitterItem);
-                    resultMessage += " and babysitting added successfully";
-                    break;
-                case "נקיון":
-                    const cleaningItem = {
-                        requestId,
-                        cleaningHours: cleaning.cleaningHours,
-                        cleaningDay: cleaning.cleaningDay
-                    };
-                    await service.addCleaning(cleaningItem);
-                    resultMessage += " and cleaning added successfully";
-                    break;
-                case "קניות":
-                    const shoppingItem = {
-                        requestId,
-                        shoppingList: shopping.shoppingList
-                    };
-                    await service.addShopping(shoppingItem);
-                    resultMessage += " and shopping added successfully";
-                    break;
-                case "אוזן קשבת":
-                    const supportItem = {
-                        requestId,
-                        supportCall: support.supportCall
-                    };
-                    await service.addSupport(supportItem);
-                    resultMessage += " and support call added successfully";
-                    break;
-                default:
-                    throw new Error('Unsupported request type');
-            }
-
-            // החזרת תגובה עם תוצאות ההוספה
-            res.status(201).json({
-                message: resultMessage,
-                requestId
+            res.json({
+                message: requestResult
             });
         } catch (ex) {
             console.error('Error in postRequest:', ex);

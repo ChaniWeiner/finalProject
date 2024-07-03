@@ -6,6 +6,15 @@ function getAllQuery(tableName) {
 }
 
 
+function executeInsertQuery(tableName, data) {
+    const columns = Object.keys(data).join(', ');
+    const values = Object.values(data);
+    const placeholders = new Array(values.length).fill('?').join(', ');
+    const query = `INSERT INTO ${process.env.DB_NAME}.${tableName} (${columns}) VALUES (${placeholders})`;
+    return { query, values };
+}
+
+
 // function getJoinTablesQuery(tableName1, tableName2, tableName3) {
 //     const query = `
 //     SELECT DISTINCT *
@@ -58,4 +67,10 @@ function deleteQuery(tableName) {
 //      return query;
 
 // }
-export { getAllQuery, getByIdQuery, getByParameterQuery, updateQuery, deleteQuery, getJoinTablesQuery,getJoinTwoTablesQuery }
+const addQuery = (table,columns) => {
+    const columnsNames=Object.keys(columns);
+    const query = `INSERT INTO nodeproject.${table} (${columnsNames.map((column)=>column)}) VALUES (${columnsNames.map((column)=>'?')})`;
+    console.log(query);
+    return query
+}
+export { getAllQuery, getByIdQuery, getByParameterQuery, updateQuery, deleteQuery, getJoinTablesQuery,getJoinTwoTablesQuery,executeInsertQuery}

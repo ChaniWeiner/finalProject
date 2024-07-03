@@ -41,7 +41,7 @@ export class RequestService {
     async update(item, id, type) {
         try {
             const service = new UserService();
-            const data = await service.getById(item.volunteerId);         
+            const data = await service.getById(item.volunteerId);
             console.log("Update item:", item);
             let stringToQuery = "";
             Object.keys(item).forEach(key => {
@@ -55,16 +55,73 @@ export class RequestService {
             const query = updateQuery("proposalrequests", stringToQuery, type || "requestId");
             const result = await executeQuery(query, values);
             console.log("Update result:", result);
-           console.log(data[0]);
-            sendRatingEmail( data[0].email);
+            console.log(data[0]);
+            sendRatingEmail(data[0].email);
             return { message: `Request with id: ${id} updated successfully` }; // Return as JSON object
         } catch (ex) {
             console.error('Error in update:', ex);
             throw ex;
         }
     }
-    
-    
+    async addRequest(body) {
+        const { requests, meals, babysitter, cleaning, shopping, support } = body;
+        let resultMessage = "Request added successfully";
+        const requestItem = {
+            requestType: requests.requestType,
+            requestStatus: "המתנה",
+            userId: requests.userId
+        };
+      let requestResult= await  this.addReq(requestItem);
+      const requestId = requestResult.insertId;
+        switch (requests.requestType) {
+            case "ארוחה":
+                const mealItem = {
+                    requestId,
+                    amountMeals: meals.amountMeals,
+                    mealType: meals.mealType
+                };
+                await this.addMeal(mealItem);
+                resultMessage += " and meal added successfully";
+                break;
+            case "בייביסיטר":
+                const babysitterItem = {
+                    requestId,
+                    numberOfChildren: babysitter.numberOfChildren,
+                    babysittingHours: babysitter.babysittingHours
+                };
+                await this.addBabysitter(babysitterItem);
+                resultMessage += " and babysitting added successfully";
+                break;
+            case "נקיון":
+                const cleaningItem = {
+                    requestId,
+                    cleaningHours: cleaning.cleaningHours,
+                    cleaningDay: cleaning.cleaningDay
+                };
+                await this.addCleaning(cleaningItem);
+                resultMessage += " and cleaning added successfully";
+                break;
+            case "קניות":
+                const shoppingItem = {
+                    requestId,
+                    shoppingList: shopping.shoppingList
+                };
+                await this.addShopping(shoppingItem);
+                resultMessage += " and shopping added successfully";
+                break;
+            case "אוזן קשבת":
+                const supportItem = {
+                    requestId,
+                    supportCall: support.supportCall
+                };
+                await service.this(supportItem);
+                resultMessage += " and support call added successfully";
+                break;
+            default:
+                throw new Error('Unsupported request type');
+        }
+return resultMessage
+    }
 
     async addReq(item) {
         try {
