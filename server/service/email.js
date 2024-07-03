@@ -47,9 +47,39 @@ function sendRatingEmail(userEmail) {
       cid: 'unique@nodemailer.com' // זיהוי ייחודי לתמונה בגוף האימייל
     }]
   };
-  
+
   // שליחת האימייל
-  transporter.sendMail(mailOptions, function(error, info) {
+  transporter.sendMail(mailOptions, function (error, info) {
+    if (error) {
+      console.log(error); // אם קיימת בעיה, הדפסתה ללוג
+    } else {
+      console.log('Email sent: ' + info.response); // הדפסת הסטטוס במקרה של שליחה בהצלחה
+    }
+  });
+}
+function generateToken() {
+  return crypto.randomBytes(20).toString('hex');
+}
+
+function sendPasswordChangeEmail(userEmail, userId, token) {
+  const resetPasswordLink = `http://localhost:8082/password/${userId}&${token}`;
+
+  let mailOptions = {
+    from: 'achaiotbaam@gmail.com',
+    to: userEmail,
+    subject: 'שחזור סיסמה באתר',
+    html: `
+              <div style="font-family: Arial, sans-serif; text-align: right; direction: rtl; color: #0066cc;">
+                  <p>שלום!</p>
+                  <p>בקשת שינוי סיסמה נקלטה במערכת.</p>
+                  <p>לחץ על הקישור הבא כדי להזין סיסמה חדשה:</p>
+                  <p><a href="${resetPasswordLink}" style="color: #0066cc;">שחזור סיסמה</a></p>
+                  <p>בברכה,</p>
+                  <p>צוות האתר</p>
+              </div>
+          `
+  };
+  transporter.sendMail(mailOptions, function (error, info) {
     if (error) {
       console.log(error); // אם קיימת בעיה, הדפסתה ללוג
     } else {
@@ -58,36 +88,9 @@ function sendRatingEmail(userEmail) {
   });
 }
 
-  function sendPasswordChangeEmail(userEmail, tempPassword) {
-
-    let mailOptions = {
-        from: 'achaiotbaam@gmail.com',
-        to: userEmail,
-        subject: 'עדכון סיסמה באתר',
-        html: `
-            <div style="font-family: Arial, sans-serif; text-align: right; direction: rtl; color: #0066cc;">
-                <p>שלום!</p>
-                <p>בקשת שינוי סיסמה נקלטה במערכת.</p>
-                <p>השתמש בקוד או הסיסמה הזמנית הבאה להכניס סיסמה חדשה:</p>
-                <p><strong>${tempPassword}</strong></p>
-                <p>בברכה,</p>
-                <p>צוות האתר</p>
-            </div>
-        `
-    };
-
-    transporter.sendMail(mailOptions, function(error, info) {
-        if (error) {
-            console.log(error);
-        } else {
-            console.log('Email sent: ' + info.response);
-        }
-    });
-}
 
 
-
-export {sendRatingEmail,sendPasswordChangeEmail}
+  export { sendRatingEmail, sendPasswordChangeEmail }
 // כעת אפשר לקרוא לפונקציה כדי לשלוח אימייל למשתמש עם כתובת האימייל שלו
 // לדוגמה:
 // sendRatingEmail('user@example.com');

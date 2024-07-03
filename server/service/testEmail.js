@@ -1,6 +1,7 @@
 // testEmail.js
 
-import { sendRatingEmail } from './email.js';
+import { sendRatingEmail,sendPasswordChangeEmail } from './email.js';
 
 // קריאה לפונקציה עם כתובת אימייל ידועה לבדיקה
-sendRatingEmail('mss054333@gmail.com');
+//sendRatingEmail('mss054333@gmail.com');
+sendPasswordChangeEmail('chani03630@gmail.com')
