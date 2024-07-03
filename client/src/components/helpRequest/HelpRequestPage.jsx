@@ -4,6 +4,13 @@ import { useLocation } from 'react-router-dom';
 import { io } from "socket.io-client";
 import PersonalProfile from "../personalProfile/PersonalProfile";
 
+// פונקציה לשליפת ערך מעוגיה
+const getCookie = (name) => {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+};
+
 const HelpRequestPage = () => {
     const location = useLocation();
     const userId = location.state.userId;
@@ -76,12 +83,14 @@ const HelpRequestPage = () => {
                     throw new Error('Unsupported request type');
             }
 
+            const token = getCookie('token'); // קבלת הטוקן מהעוגיה
+
             const response = await fetch(url, {
-                method: 'post',
+                method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
                 },
-        
                 body: JSON.stringify(body)
             });
 
@@ -108,7 +117,7 @@ const HelpRequestPage = () => {
     return (
         <>
             <h1>פניית עזרה</h1>
-            <PersonalProfile userId={userId}>פרטיםם</PersonalProfile>
+            {/* <PersonalProfile userId={userId}>פרטיםם</PersonalProfile> */}
             <form onSubmit={handleSubmit(onSubmit)}>
                 <label>
                     סוג הבקשה:

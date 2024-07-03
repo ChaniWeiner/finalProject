@@ -2,11 +2,11 @@ import jwt from 'jsonwebtoken';
 
 const secretKey = process.env.JWT_SECRET || 'your_secret_key';
 
-export const createToken = (user) => {
+const createToken = (user) => {
     return jwt.sign({ userId: user.userId, username: user.userName }, secretKey, { expiresIn: '1h' });
 }
 
-export const verifyToken = (req, res, next) => {
+const verifyToken = (req, res, next) => {
     const token = req.headers['authorization'];
 
     if (!token) {
@@ -21,4 +21,9 @@ export const verifyToken = (req, res, next) => {
         req.userId = decoded.userId; // שינוי ל-decoded.userId במקום decoded.id
         next();
     });
+}
+
+export default {
+    createToken,
+    verifyToken
 }

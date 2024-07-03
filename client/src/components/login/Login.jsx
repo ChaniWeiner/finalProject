@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import './Login.css';
-import { useLocation } from 'react-router-dom';
+import ForgotPassword from './ForgotPassword'; // ייבוא הקומפוננטה החדשה
 
 const Login = () => {
     const location = useLocation();
-    const userType = location.state.userType;
+    const userType = location.state?.userType || 'volunteer';
     const [userId, setId] = useState(0);
-    const [Login, setLogin] = useState("none");
+    const [loginStatus, setLoginStatus] = useState("none");
     const navigate = useNavigate();
+    const { reset, register, handleSubmit, formState: { errors } } = useForm();
 
     const login = (data) => {
         getUserFromDb(data.userId, data.password);
@@ -18,8 +18,12 @@ const Login = () => {
 
     function getUserFromDb(userId, password) {
         fetch(`http://localhost:8082/volunteer/login`, {
-            headers: { 'Content-Type': 'application/json', 'charset': 'UTF-8' },
             method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'charset': 'UTF-8'
+            },
+            credentials: 'include', // הכרחי כדי שהעוגיות יישלחו
             body: JSON.stringify({
                 userId: userId,
                 password: password
@@ -30,11 +34,10 @@ const Login = () => {
             if (data.status === 200) {
                 let user = data["data"];
                 let token = data["token"]; // קבלת ה-Token מהשרת
-                setLogin("inline");
-                alert(123);
+                setLoginStatus("inline");
 
-                // שמירת ה-Token בעוגיה או localStorage
-                document.cookie = `token=${token}; path=/;`;
+                // שמירת ה-Token בקוקיז
+                document.cookie = `token=${token}; path=/; secure; HttpOnly; SameSite=Lax`; // secure ו-HttpOnly מומלץ להוסיף לאבטחה נוספת
 
                 // ניתוב על פי סוג המשתמש
                 userType === "volunteer"
@@ -50,8 +53,6 @@ const Login = () => {
             alert("Error logging in. Please try again later.");
         });
     }
-
-    const { reset, register, handleSubmit, formState: { errors } } = useForm();
 
     return (
         <>
@@ -74,6 +75,7 @@ const Login = () => {
                     ? navigate('/volunteer/login', { state: { userType: "volunteer" } })
                     : navigate('/helpRequest/login', { state: { userType: "request" } });
             }}>כניסה</button>
+            <ForgotPassword userId={userId} />
         </>
     );
 }

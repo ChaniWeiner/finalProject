@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from 'react';
 
+// פונקציה לשליפת ערך מעוגיה
+const getCookie = (name) => {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+};
+
 const PersonalProfile = (props) => {
     const [user, setUser] = useState(null);
     const [formData, setFormData] = useState({
@@ -13,13 +20,29 @@ const PersonalProfile = (props) => {
     const [isEditing, setIsEditing] = useState(false);
 
     useEffect(() => {
-        fetch(`http://localhost:8082/user?userId=${props.userId}`)
-            .then((response) => response.json())
-            .then(data => {
+        const fetchUserData = async () => {
+            try {
+                const token = getCookie('token'); // קבלת הטוקן מהעוגיה
+
+                const response = await fetch(`http://localhost:8082/user?userId=${props.userId}`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}` // הוספת הטוקן ל-Headers
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to fetch user data');
+                }
+
+                const data = await response.json();
                 setUser(data[0]);
                 setFormData(data[0]);
-            })
-            .catch(error => console.error('Error fetching user data:', error));
+            } catch (error) {
+                console.error('Error fetching user data:', error);
+            }
+        };
+
+        fetchUserData();
     }, [props.userId]);
 
     const handleChange = (e) => {
@@ -30,34 +53,56 @@ const PersonalProfile = (props) => {
         });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        fetch(`http://localhost:8082/user/${formData.userId}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                userName: formData.userName,
-                address: formData.address,
-                region: formData.region,
-                email: formData.email,
-                phoneNumber: formData.phoneNumber
-            })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.error) {
-                throw new Error(data.error);
+        try {
+            const token = getCookie('token'); // קבלת הטוקן מהעוגיה
+
+            const response = await fetch(`http://localhost:8082/user/${formData.userId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}` // הוספת הטוקן ל-Headers
+                },
+                body: JSON.stringify({
+                    userName: formData.userName,
+                    address: formData.address,
+                    region: formData.region,
+                    email: formData.email,
+                    phoneNumber: formData.phoneNumber
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to update user data');
             }
-            setUser(data);
-            setIsEditing(false); // Set to read-only mode
-            alert('המשתמש עודכן בהצלחה');
-        })
-        .catch(error => {
+
+            // Check if the response is JSON
+            const contentType = response.headers.get('Content-Type');
+            if (contentType && contentType.includes('application/json')) {
+                const data = await response.json();
+                if (data.error) {
+                    throw new Error(data.error);
+                }
+                setUser(data);
+                setIsEditing(false); // Set to read-only mode
+                alert('המשתמש עודכן בהצלחה');
+            } else {
+                // If it's not JSON, assume it's a success message
+                const text = await response.text();
+                // Check if the text includes success indication
+                if (text.includes('updated successfully')) {
+                    setUser(formData); // Update local user state
+                    setIsEditing(false); // Set to read-only mode
+                    alert('המשתמש עודכן בהצלחה');
+                } else {
+                    throw new Error(text);
+                }
+            }
+        } catch (error) {
             console.error('Error updating user data:', error);
-            alert('התרחשה שגיאה בעדכון המשתמש');
-        });
+            alert(`התרחשה שגיאה בעדכון המשתמש: ${error.message}`);
+        }
     };
 
     return (

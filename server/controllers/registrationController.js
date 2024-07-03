@@ -1,7 +1,5 @@
-
-import { RegistrationService } from '../service/registrationService.js'; // Update import statement
-import { createToken } from '../auth.js';
-
+import auth from "../middleware/auth.js"; // ייבוא אובייקט ברמת ברירת מחדל
+import { RegistrationService } from "../service/registrationService.js";
 export default class RegistrationController {
 
     async login(req, res, next) {
@@ -11,16 +9,16 @@ export default class RegistrationController {
             console.log(req.body);
             let result = await regService.login(req.body);
             console.log("result in control:", result);
-            if (!result) {
+            console.log(result.user)
+            if (result.user.length==0) {
                 return res.status(404).json({ status: 404 });
             }
-
-            const token = createToken(result);
-            return res.status(200).json({ status: 200, data: { user: result, token: token } });
+             res.cookie('token', result.token, { httpOnly: true, secure: true, maxAge: 259200000 })
+            return res.status(200).json({ status: 200, data: { user: result.userId, token: result.token } });
         } catch (ex) {
             const err = {};
             err.status = 500;
-            err.message = ex;
+            err.message = ex.message; // תיקון הודעת השגיאה
             next(err);
         }
     }
@@ -37,12 +35,11 @@ export default class RegistrationController {
             let user = req.body[0];
             await service.addPassword(pswd);
 
-            const token = createToken(user);
             return res.status(201).json({ user: user, token: token });
         } catch (ex) {
             const err = {};
             err.status = 500;
-            err.message = ex;
+            err.message = ex.message; // תיקון הודעת השגיאה
             next(err);
         }
     }
