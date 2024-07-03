@@ -31,7 +31,7 @@ export default class UsersController {
         try {
             const service = new UserService();
             await service.update(req.body,req.params.id);
-            res.status(200).end(`user with id: ${req.params.id} updated succefuly`);
+            res.status(200).json(`user with id: ${req.params.id} updated succefuly`);
         }
         catch (ex) {
             const err = {}

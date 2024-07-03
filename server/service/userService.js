@@ -39,7 +39,8 @@ export class UserService {
         values.push(id);
         const query = updateQuery("users",stringToQuery,type || "userId");
         const result = await executeQuery(query, values)
-        return result;
+        console.log("Update result:", result);
+        return { message: `user with id: ${id} updated successfully` }; // Return as JSON object
     }
 
 }

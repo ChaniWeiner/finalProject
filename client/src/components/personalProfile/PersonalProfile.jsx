@@ -58,7 +58,7 @@ const PersonalProfile = (props) => {
         try {
             const token = getCookie('token'); // קבלת הטוקן מהעוגיה
 
-            const response = await fetch(`http://localhost:8082/user/${formData.userId}`, {
+            const response = await fetch(`http://localhost:8082/user/${props.userId}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -77,28 +77,11 @@ const PersonalProfile = (props) => {
                 throw new Error('Failed to update user data');
             }
 
-            // Check if the response is JSON
-            const contentType = response.headers.get('Content-Type');
-            if (contentType && contentType.includes('application/json')) {
-                const data = await response.json();
-                if (data.error) {
-                    throw new Error(data.error);
-                }
-                setUser(data);
-                setIsEditing(false); // Set to read-only mode
-                alert('המשתמש עודכן בהצלחה');
-            } else {
-                // If it's not JSON, assume it's a success message
-                const text = await response.text();
-                // Check if the text includes success indication
-                if (text.includes('updated successfully')) {
-                    setUser(formData); // Update local user state
-                    setIsEditing(false); // Set to read-only mode
-                    alert('המשתמש עודכן בהצלחה');
-                } else {
-                    throw new Error(text);
-                }
-            }
+            // אם התגובה היא JSON, עדכן את המשתמש בהצלחה
+            const data = await response.json();
+            setUser(data);
+            setIsEditing(false); // הגדר למצב קריאה בלבד
+            alert('המשתמש עודכן בהצלחה');
         } catch (error) {
             console.error('Error updating user data:', error);
             alert(`התרחשה שגיאה בעדכון המשתמש: ${error.message}`);
