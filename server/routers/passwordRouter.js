@@ -7,7 +7,7 @@ const password = new passwordController();
 
 passwordRouter.get("/:id",password.getPasswordById)
 passwordRouter.delete("/:id", password.deletePassword)
-passwordRouter.put("/:id", password.updatePassword)
+// passwordRouter.put("/:id", password.updatePassword)
 
 export {
     passwordRouter

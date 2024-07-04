@@ -11,7 +11,7 @@ let transporter = nodemailer.createTransport({
     rejectUnauthorized: false
   }
 });
-function sendRatingEmail(userEmail) {
+function sendHelpRequestEmail(userEmail) {
 
   let mailOptions = {
     from: 'achaiotbaam@gmail.com',
@@ -22,6 +22,39 @@ function sendRatingEmail(userEmail) {
         <p style="font-size: 18px;">הי אחותי!</p>
         <p>איך את?</p>
         <p>שמחות לבשר לך שבקשתך נלקחה ע"י אחות אחרת וכבר נעדכן אותך מה איתו...</p>
+        <p>לכל שאלה או עזרה ניתן לפניות למייל <a href="mailto:achaiotbaam@gmail.com">achaiotbaam@gmail.com</a></p>
+        <p>צוות אחיות בע"מ</p>
+        <img src="cid:unique@nodemailer.com" alt="תמונה">
+      </div>
+    `,
+    attachments: [{
+      filename: 'the_logo.png',
+      path: 'C:\\finalProject\\server\\the logo.png',
+      cid: 'unique@nodemailer.com' 
+    }]
+  };
+
+  transporter.sendMail(mailOptions, function (error, info) {
+    if (error) {
+      console.log(error); 
+    } else {
+      console.log('Email sent: ' + info.response);
+    }
+  });
+}
+
+
+function sendVolunteerEmail(userEmail) {
+
+  let mailOptions = {
+    from: 'achaiotbaam@gmail.com',
+    to: userEmail,
+    subject: 'תודה:)',
+    html: `
+      <div style="font-family: Arial, sans-serif; text-align: right; direction: rtl; color: #0066cc;">
+        <p style="font-size: 18px;">הי אחותי!</p>
+        <p>איך את?</p>
+        <p>תודה רבה על העזרה.... נשמח לפגושך שוב</p>
         <p>לכל שאלה או עזרה ניתן לפניות למייל <a href="mailto:achaiotbaam@gmail.com">achaiotbaam@gmail.com</a></p>
         <p>צוות אחיות בע"מ</p>
         <img src="cid:unique@nodemailer.com" alt="תמונה">
@@ -74,7 +107,7 @@ function sendPasswordChangeEmail(userEmail, otp) {
 
 
 
-  export { sendRatingEmail, sendPasswordChangeEmail }
+  export { sendHelpRequestEmail, sendPasswordChangeEmail,sendVolunteerEmail }
 // כעת אפשר לקרוא לפונקציה כדי לשלוח אימייל למשתמש עם כתובת האימייל שלו
 // לדוגמה:
 // sendRatingEmail('user@example.com');

@@ -1,7 +1,7 @@
 import 'dotenv/config';
 import { executeQuery } from './query.js';
 import { getByIdQuery, updateQuery, deleteQuery, getJoinTablesQuery, getJoinTwoTablesQuery, getByParameterQuery } from './allQuery.js';
-import { sendRatingEmail } from './email.js';
+import { sendVolunteerEmail,sendHelpRequestEmail } from './email.js';
 import { UserService } from './userService.js';
 import { json } from 'express';
 export class RequestService {
@@ -45,8 +45,11 @@ export class RequestService {
 
     async update(item, id, type) {
         try {
-            const service = new UserService();
-            const data = await service.getById(item.volunteerId);
+            //console.log(item.userId)
+             //const service = new UserService();
+            // const user = await service.getById(item.userId);
+            const service1 = new UserService();
+           const volunteer = await service1.getById(item.volunteerId);
             console.log("Update item:", item);
             let stringToQuery = "";
             Object.keys(item).forEach(key => {
@@ -60,8 +63,9 @@ export class RequestService {
             const query = updateQuery("proposalrequests", stringToQuery, type || "requestId");
             const result = await executeQuery(query, values);
             console.log("Update result:", result);
-            console.log(data[0]);
-            sendRatingEmail(data[0].email);
+            //console.log(user[0]);
+            //sendHelpRequestEmail(user[0].email);
+             sendVolunteerEmail(volunteer[0].email);
             return { message: `Request with id: ${id} updated successfully` }; // Return as JSON object
         } catch (ex) {
             console.error('Error in update:', ex);
