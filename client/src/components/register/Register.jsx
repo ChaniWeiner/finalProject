@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate,useLocation } from "react-router-dom";
 import { useForm } from 'react-hook-form';
 import { getCookie, setCookie } from './cookie'; // ייבוא פונקציות לטיפול בעוגיות
-
+import Cookies from 'js-cookie';
 const Register = () => {
     const location = useLocation();
     const userType = location.state?.userType || 'profile';
@@ -43,7 +43,10 @@ const Register = () => {
             })
             .then((data) => {
                 console.log("User registered successfully:", data.user);
-                setCookie("token", data.token, 1); // שמירת הטוקן בעוגייה ל-1 שעה
+              
+                Cookies.set('token', data.token, { secure: true, sameSite: 'strict' });
+
+                Cookies.set('userId', userId, { secure: true, sameSite: 'strict' });
                 if (userType === "volunteer") {
                     navigate(`/volunteer/volunteers`, { state: { userId: userId } });
                 } else if (userType === "helpRequest") {
@@ -61,6 +64,8 @@ const Register = () => {
     }
 
     const getIn = (data) => {
+           // שמירת ה-UserID בקוקיז
+          
         setVerifyFail(false);
         let userId = data.userId;
         let password = data.password;

@@ -1,19 +1,18 @@
 import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import ForgotPassword from './ForgotPassword'; // ייבוא הקומפוננטה החדשה
+import Cookies from 'js-cookie'; // ייבוא הספריה
 
 const Login = () => {
     const location = useLocation();
     const userType = location.state?.userType || 'profile';
-    const [userId, setId] = useState(0);
+    const [userId, setId] = useState('');
     const [loginStatus, setLoginStatus] = useState("none");
     const navigate = useNavigate();
     const { reset, register, handleSubmit, formState: { errors } } = useForm();
 
     const login = (data) => {
         getUserFromDb(data.userId, data.password);
-        setId(data.userId);
     }
 
     function getUserFromDb(userId, password) {
@@ -35,7 +34,10 @@ const Login = () => {
                 setLoginStatus("inline");
 
                 // שמירת ה-Token בקוקיז
-                document.cookie = `token=${token}; path=/; secure; samesite=strict`; // secure ו-HttpOnly מומלץ להוסיף לאבטחה נוספת
+                Cookies.set('token', token, { secure: true, sameSite: 'strict' });
+
+                // שמירת ה-UserID בקוקיז
+                Cookies.set('userId', userId, { secure: true, sameSite: 'strict' });
 
                 // ניתוב על פי סוג המשתמש
                 if (userType === "volunteer") {
@@ -46,7 +48,7 @@ const Login = () => {
                     navigate(`/profile`, { state: { userId: userId } });
                 }
             } else {
-                alert("user does not exist please sign up");
+                alert("User does not exist. Please sign up.");
             }
             reset();
         })
@@ -59,13 +61,13 @@ const Login = () => {
     return (
         <>
             <form onSubmit={handleSubmit(login)}>
-                <h2>sign in</h2>
-                <input type='text' placeholder='userId' {...register("userId", { required: true })} />
-                <input type='password' placeholder='password' {...register("password", { required: true })} />
-                <input type="submit" value="sign in" />
+                <h2>Sign in</h2>
+                <input type='text' placeholder='User ID' {...register("userId", { required: true })} />
+                <input type='password' placeholder='Password' {...register("password", { required: true })} />
+                <input type="submit" value="Sign in" />
 
                 {errors.userId && errors.userId.type === "required" && (
-                    <p className="errorMsg">userId is required.</p>
+                    <p className="errorMsg">User ID is required.</p>
                 )}
                 {errors.password && errors.password.type === "required" && (
                     <p className="errorMsg">Password is required.</p>
@@ -73,9 +75,9 @@ const Login = () => {
             </form>
 
             <button onClick={() => {
-               navigate("/register", { state: { userType: userType } });
-            }}>הרשמה</button>
-            <ForgotPassword userId={userId} />
+                navigate("/register", { state: { userType: userType } });
+            }}>Register</button>
+            {/* <ForgotPassword userId={userId} /> */}
         </>
     );
 }

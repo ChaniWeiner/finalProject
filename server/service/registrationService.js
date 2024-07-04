@@ -29,9 +29,6 @@ export class RegistrationService {
             expiresIn: '1h',
         });
 
-      
-        
-
         await this.adduser(item[0]);
       
         let pswd = { userId: item[0].userId, password: item[1].password };

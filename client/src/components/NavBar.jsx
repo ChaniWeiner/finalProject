@@ -12,7 +12,7 @@ const NavBar = () => {
         {/* <li><a href="/personalSpot">איזור אישי</a></li> */}
         <li><a href="/volunteer">התנדבות </a></li>
         <li><a href="#contact">צור קשר</a></li>
-        <li><a href="/login">כניסת משתמש</a></li>
+        <li><a href="/profile">כניסת משתמש</a></li>
       
       </ul>
     </nav>
