@@ -48,7 +48,7 @@ export class RegistrationService {
 
     async adduser(item) {
        // הוספת הדפסה של הטוקן
-        const result = await executeQuery(`INSERT INTO ${process.env.DB_NAME}.users (userId, userName, address, region) VALUES (?, ?, ?, ?)`, [item.userId, item.userName, item.address, item.region]);
+        const result = await executeQuery(`INSERT INTO ${process.env.DB_NAME}.users (userId, userName, address, region,email,phoneNumber) VALUES (?, ?, ?, ?,?,?)`, [item.userId, item.userName, item.address, item.region,item.email,item.phoneNumber]);
         return  result;
      
     

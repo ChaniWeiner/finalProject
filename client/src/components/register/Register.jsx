@@ -51,6 +51,7 @@ const Register = () => {
                 } else {
                     navigate(`/profile`, { state: { userId: userId } });
                 }
+                
                 reset();
             })
             .catch((err) => {
