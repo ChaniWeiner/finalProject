@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-// פונקציה לשליפת ערך מעוגיה
+
+import { useNavigate } from 'react-router-dom';
+const removeCookie = (name) => {
+    document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+};
 const getCookie = (name) => {
     const value = `; ${document.cookie}`;
     const parts = value.split(`; ${name}=`);
@@ -8,7 +12,6 @@ const getCookie = (name) => {
 };
 
 const PersonalProfile = () => {
-
     const [user, setUser] = useState(null);
     const [formData, setFormData] = useState({
         userName: '',
@@ -21,15 +24,16 @@ const PersonalProfile = () => {
     const location = useLocation();
     const userId = location.state.userId;
     const [isEditing, setIsEditing] = useState(false);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchUserData = async () => {
             try {
-                const token = getCookie('token'); // קבלת הטוקן מהעוגיה
+                const token = getCookie('token');
 
                 const response = await fetch(`http://localhost:8082/user?userId=${userId}`, {
                     headers: {
-                        'Authorization': `Bearer ${token}` // הוספת הטוקן ל-Headers
+                        'Authorization': `Bearer ${token}`
                     }
                 });
 
@@ -59,13 +63,13 @@ const PersonalProfile = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const token = getCookie('token'); // קבלת הטוקן מהעוגיה
+            const token = getCookie('token');
 
             const response = await fetch(`http://localhost:8082/user/${userId}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}` // הוספת הטוקן ל-Headers
+                    'Authorization': `Bearer ${token}`
                 },
                 body: JSON.stringify({
                     userName: formData.userName,
@@ -80,15 +84,19 @@ const PersonalProfile = () => {
                 throw new Error('Failed to update user data');
             }
 
-            // אם התגובה היא JSON, עדכן את המשתמש בהצלחה
             const data = await response.json();
             setUser(data);
-            setIsEditing(false); // הגדר למצב קריאה בלבד
+            setIsEditing(false);
             alert('המשתמש עודכן בהצלחה');
         } catch (error) {
             console.error('Error updating user data:', error);
             alert(`התרחשה שגיאה בעדכון המשתמש: ${error.message}`);
         }
+    };
+
+    const handleLogout = () => {
+        removeCookie('token');
+        navigate('/login');
     };
 
     return (
@@ -166,6 +174,7 @@ const PersonalProfile = () => {
                             עדכן
                         </button>
                     )}
+                    <button onClick={handleLogout}>התנתק</button>
                 </form>
             ) : (
                 <h1>טוען...</h1>
