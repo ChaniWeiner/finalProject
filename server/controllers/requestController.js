@@ -4,7 +4,8 @@ export default class requestController {
     async getAllRequests(req, res, next) {
         try {
             const service = new RequestService();
-            const data = await service.getByParameter(req);
+            console.log("jnj",req.params.type);
+            const data = await service.getByParameter(req,req.params.type);
             return res.json(data);  
         } catch (ex) {
             console.error('Error in getAllRequests:', ex);

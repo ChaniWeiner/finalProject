@@ -57,7 +57,7 @@ const requests = new requestController();
 //     });
 // });
 
-requestRouter.get("/", requests.getAllRequests);
+requestRouter.get("/:type", requests.getAllRequests);
 requestRouter.get("/:id", requests.getUserById);
 requestRouter.put("/:id", requests.updateRequest);
 requestRouter.post("/", requests.postRequest);

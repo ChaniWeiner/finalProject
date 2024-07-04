@@ -1,8 +1,12 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { io } from "socket.io-client";
+import MealsReq from "./mealsReq";
+import BabysitterReq from "./babysitterReq";
+import CleaningReq from "./cleaningReq";
+import ShoppingReq from "./shoppingReq";
+import SupportReq from "./supportReq";
 
 const Request = ({ object, setRequests, requests, volunteerId }) => {
-    const keysToDisplay = ["amountMeals", "mealType", "requestType", "requestStatus", "address", "region"];
     const url = `http://localhost:8082/requests`;
 
     useEffect(() => {
@@ -67,18 +71,29 @@ const Request = ({ object, setRequests, requests, volunteerId }) => {
         if (parts.length === 2) return parts.pop().split(';').shift();
     };
 
-    const properties = Object.entries(object);
+    const renderRequest = () => {
+        console.log(object.requestType);
+        switch (object.requestType) {
+            case 'ארוחה':
+                return <MealsReq object={object} />;
+            case 'בייביסיטר':
+                return <BabysitterReq object={object} />;
+            case 'נקיון':
+                return <CleaningReq object={object} />;
+            case 'קניות':
+                return <ShoppingReq object={object} />;
+            case 'אוזן קשבת':
+                return <SupportReq object={object} />;
+            default:
+                return null;
+        }
+    };
 
     return (
-        <div>
-            {properties && properties.map(([key, value], index) => {
-                return (
-                    (keysToDisplay.includes(key)) ? <p key={index}>
-                        {key}: {value}
-                    </p> : null
-                );
-            })}
-            <button onClick={() => { handleButtonClick(object.requestId) }}>לקחתי</button>
+        <div className="request">
+            {renderRequest()}
+      {/* {      object.requestType=="meals" ?<MealsReq object={object} />:null} */}
+            <button onClick={() => handleButtonClick(object.requestId)}>לקחתי</button>
         </div>
     );
 };

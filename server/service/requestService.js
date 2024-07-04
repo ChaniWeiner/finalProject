@@ -17,12 +17,17 @@ export class RequestService {
         }
     }
 
-    async getByParameter(user) {
+    async getByParameter(user,type) {
         try {
             let query, conditionsParams = [], conditionsValues = [];
             const queryParams = user.query;
             if (Object.entries(queryParams).length === 0) {
-                query = getJoinTablesQuery("meals", "proposalrequests", "users");
+            console.log("type :",type);
+                // query = getJoinTablesQuery("meals", "proposalrequests", "users");
+             query = getJoinTablesQuery(type, "proposalrequests", "users");
+                
+                // query = getJoinTablesQuery("shopping", "proposalrequests", "users");
+                //query = getJoinTablesQuery("support", "proposalrequests", "users");
             } else {
                 Object.keys(queryParams).forEach((key) => {
                     conditionsParams.push(`${key} = ?`);
@@ -114,7 +119,7 @@ export class RequestService {
                     requestId,
                     supportCall: support.supportCall
                 };
-                await service.this(supportItem);
+                await this.addSupport(supportItem);
                 resultMessage += " and support call added successfully";
                 break;
             default:
