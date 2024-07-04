@@ -69,16 +69,7 @@ const VolunteerPage = () => {
     <>
       {/* <PersonalProfile userId={volunteerId}>פרטים אישיים</PersonalProfile> */}
     
-      <div>
-        <button onClick={() => {
-          setFilter("meals")
-    
-        }}>Meals Requests</button>
-        <button onClick={() => setFilter("babysitter")}>Babysitter Requests</button>
-        <button onClick={() => setFilter("cleaning")}>Cleaning Requests</button>
-        <button onClick={() => setFilter("shopping")}>Shopping Requests</button>
-        <button onClick={() => setFilter("support")}>Support Requests</button>
-      </div>
+     
       <div className="requests_container">
         {loading ? (
           <div className="loader">
@@ -93,6 +84,16 @@ const VolunteerPage = () => {
             ))}
           </>
         )}
+      </div>
+      <div>
+        <button onClick={() => {
+          setFilter("meals")
+    
+        }}>Meals Requests</button>
+        <button onClick={() => setFilter("babysitter")}>Babysitter Requests</button>
+        <button onClick={() => setFilter("cleaning")}>Cleaning Requests</button>
+        <button onClick={() => setFilter("shopping")}>Shopping Requests</button>
+        <button onClick={() => setFilter("support")}>Support Requests</button>
       </div>
     </>
   );
