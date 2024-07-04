@@ -1,43 +1,64 @@
 import React, { useState } from 'react';
 
 const ForgotPassword = () => {
-    const [email, setEmail] = useState('');
+    const [otp, setOtp] = useState('');
     const [id, setId] = useState('');
     const [message, setMessage] = useState('');
     const [loading, setLoading] = useState(false);
+    const [newPas, setNewPas] = useState('');
     const getCookie = (name) => {
         const value = `; ${document.cookie}`;
         const parts = value.split(`; ${name}=`);
         if (parts.length === 2) return parts.pop().split(';').shift();
     };
-    const handleSubmit = async (e) => {
+
+    const handleSendOtp = async (e) => {
         e.preventDefault();
         setLoading(true);
         setMessage('');
 
         try {
-            const token = getCookie('token'); // קבלת הטוקן מהעוגיה
-
-            // מבצע קריאה לשרת עם האימייל של המשתמש
-            const response = await fetch(`http://localhost:8082/password/${id}&${token}`, {
-                method: 'PUT',
+            const response = await fetch('http://localhost:8082/resetPassword/request-otp', {
+                method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'charset': 'UTF-8',
-                    'Authorization': `Bearer ${token}`
                 },
-                body: JSON.stringify({ id,email }),
+                body: JSON.stringify({ userId: id }), // שליחת ID בלבד לבקשת OTP
             });
 
             if (!response.ok) {
-                throw new Error('Something went wrong');
+                throw new Error('Failed to send OTP');
             }
 
-            // מצליח, מציג הודעה למשתמש
-            setMessage('An email has been sent with instructions to reset your password.');
+            setMessage('OTP has been sent to your email.');
         } catch (error) {
-            // טופל שגיאות
-            setMessage('Failed to send reset instructions. Please try again.');
+            setMessage('Failed to send OTP. Please try again.');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleResetPassword = async (e) => {
+        e.preventDefault();
+        setLoading(true);
+        setMessage('');
+
+        try {
+            const response = await fetch('http://localhost:8082/resetPassword/reset-password', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ userId: id, otp: otp, newPassword: newPas }), // 'yourNewPassword' יש להחליף בסיסמה החדשה
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to reset password');
+            }
+
+            setMessage('Password has been reset successfully.');
+        } catch (error) {
+            setMessage('Failed to reset password. Please try again.');
         } finally {
             setLoading(false);
         }
@@ -46,19 +67,11 @@ const ForgotPassword = () => {
     return (
         <div>
             <h2>Forgot Password</h2>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSendOtp}>
                 <div>
-                    <label htmlFor="email">Email:</label>
+                    <label htmlFor="id">User ID:</label>
                     <input
-                        type="email"
-                        id="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                    />
-                    <label htmlFor="id">id:</label>
-                    <input
-                        type="id"
+                        type="text"
                         id="id"
                         value={id}
                         onChange={(e) => setId(e.target.value)}
@@ -66,7 +79,32 @@ const ForgotPassword = () => {
                     />
                 </div>
                 <button type="submit" disabled={loading}>
-                    {loading ? 'Sending...' : 'Send Reset Link'}
+                    {loading ? 'Sending OTP...' : 'Send OTP'}
+                </button>
+            </form>
+            <form onSubmit={handleResetPassword}>
+                <div>
+                    <label htmlFor="otp">OTP:</label>
+                    <input
+                        type="text"
+                        id="otp"
+                        value={otp}
+                        onChange={(e) => setOtp(e.target.value)}
+                        required
+                    />
+                </div>
+                <div>
+                    <label htmlFor="newPas">קוד חדש:</label>
+                    <input
+                        type="text"
+                        id="newPas"
+                        value={newPas}
+                        onChange={(e) => setNewPas(e.target.value)}
+                        required
+                    />
+                </div>
+                <button type="submit" disabled={loading}>
+                    {loading ? 'Resetting Password...' : 'Reset Password'}
                 </button>
             </form>
             {message && <p>{message}</p>}

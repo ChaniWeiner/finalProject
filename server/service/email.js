@@ -12,25 +12,11 @@ let transporter = nodemailer.createTransport({
   }
 });
 function sendRatingEmail(userEmail) {
-  // יצירת ספק השירות של דוא"ל
-  // let transporter = nodemailer.createTransport({
-  //   service: 'gmail',
-  //   auth: {
-  //     user: 'achaiotbaam@gmail.com', // כתובת האימייל שלך
-  //     pass: 'guyq iirx afyv eopp' // הסיסמה שלך
-  //   }
 
-  // הגדרות האימייל שיישלח
-  // let mailOptions = {
-  //   from: 'achaiotbaam@gmail.com',
-  //   to: userEmail, // כתובת האימייל של המשתמש שקיבל את הדירוג
-  //   subject: 'הבקשה שלך נלקחה', // נושא האימייל
-  //   text: 'נעדכן אותך שהיא בדרך אליך' // תוכן האימייל
-  // };
   let mailOptions = {
     from: 'achaiotbaam@gmail.com',
-    to: userEmail, // כתובת האימייל של המשתמש שקיבל את הדירוג
-    subject: 'עדכון לגבי בקשתך:)', // נושא האימייל
+    to: userEmail,
+    subject: 'עדכון לגבי בקשתך:)',
     html: `
       <div style="font-family: Arial, sans-serif; text-align: right; direction: rtl; color: #0066cc;">
         <p style="font-size: 18px;">הי אחותי!</p>
@@ -44,25 +30,21 @@ function sendRatingEmail(userEmail) {
     attachments: [{
       filename: 'the_logo.png',
       path: 'C:\\finalProject\\server\\the logo.png',
-      cid: 'unique@nodemailer.com' // זיהוי ייחודי לתמונה בגוף האימייל
+      cid: 'unique@nodemailer.com' 
     }]
   };
 
-  // שליחת האימייל
   transporter.sendMail(mailOptions, function (error, info) {
     if (error) {
-      console.log(error); // אם קיימת בעיה, הדפסתה ללוג
+      console.log(error); 
     } else {
-      console.log('Email sent: ' + info.response); // הדפסת הסטטוס במקרה של שליחה בהצלחה
+      console.log('Email sent: ' + info.response);
     }
   });
 }
-function generateToken() {
-  return crypto.randomBytes(20).toString('hex');
-}
 
-function sendPasswordChangeEmail(userEmail, userId, token) {
-  const resetPasswordLink = `http://localhost:8082/password/${userId}&${token}`;
+
+function sendPasswordChangeEmail(userEmail, otp) {
 
   let mailOptions = {
     from: 'achaiotbaam@gmail.com',
@@ -70,20 +52,22 @@ function sendPasswordChangeEmail(userEmail, userId, token) {
     subject: 'שחזור סיסמה באתר',
     html: `
               <div style="font-family: Arial, sans-serif; text-align: right; direction: rtl; color: #0066cc;">
-                  <p>שלום!</p>
-                  <p>בקשת שינוי סיסמה נקלטה במערכת.</p>
-                  <p>לחץ על הקישור הבא כדי להזין סיסמה חדשה:</p>
-                  <p><a href="${resetPasswordLink}" style="color: #0066cc;">שחזור סיסמה</a></p>
-                  <p>בברכה,</p>
-                  <p>צוות האתר</p>
-              </div>
+            <p>שלום!</p>
+            <p>בקשת שינוי סיסמה נקלטה במערכת.</p>
+            <p>הקוד לשחזור הסיסמה שלך הוא: <strong>${otp}</strong></p>
+            <p>הזן את הקוד בדף שחזור הסיסמה באתר כדי להמשיך בתהליך.</p>
+            <p>בברכה,</p>
+            <p>צוות האתר</p>
+        </div>
           `
   };
+
+
   transporter.sendMail(mailOptions, function (error, info) {
     if (error) {
-      console.log(error); // אם קיימת בעיה, הדפסתה ללוג
+      console.log(error); 
     } else {
-      console.log('Email sent: ' + info.response); // הדפסת הסטטוס במקרה של שליחה בהצלחה
+      console.log('Email sent: ' + info.response); 
     }
   });
 }

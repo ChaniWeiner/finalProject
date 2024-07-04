@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import ForgotPassword from './ForgotPassword'; // ייבוא הקומפוננטה החדשה
+ import ForgotPassword from './ForgotPassword'; // ייבוא הקומפוננטה החדשה
 
 const Login = () => {
     const location = useLocation();
