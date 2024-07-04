@@ -12,7 +12,7 @@ import HelpRequestPage from './components/helpRequest/HelpRequestPage';
 import HelpRequest from './components/helpRequest/HelpRequest';
 import HelpRequestLayout from './components/helpRequest/Layout';
 import ProtectedRoute from './protectRoute';
-
+import PersonalProfile from './components/personalProfile/PersonalProfile';
 function App() {
     return (
             <>
@@ -34,7 +34,11 @@ function App() {
                                 <Route path="details" element={<Register />} />
                             </Route>
                         </Route>
-    
+                        <Route path="register" element={<Register />}>
+                                <Route path="details" element={<Register />} />
+                            </Route>
+                        <Route path="login" element={<Login />} />
+
                         <Route path="/volunteer" element={<VolunteerLayout />}>
                             <Route index element={<Volunteer />} />
                             <Route path="login" element={<Login />} />
@@ -48,11 +52,11 @@ function App() {
                             </Route>
                         </Route>
     
-                        {/* <Route path="/profile" element={
+                        <Route path="/profile" element={
                             <ProtectedRoute>
                                 <PersonalProfile />
                             </ProtectedRoute>
-                        } /> */}
+                        } />
     
                         {/* Add other routes here if needed */}
     

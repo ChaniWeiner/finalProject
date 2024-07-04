@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
- import ForgotPassword from './ForgotPassword'; // ייבוא הקומפוננטה החדשה
+import ForgotPassword from './ForgotPassword'; // ייבוא הקומפוננטה החדשה
 
 const Login = () => {
     const location = useLocation();
-    const userType = location.state?.userType || 'volunteer';
+    const userType = location.state?.userType || 'profile';
     const [userId, setId] = useState(0);
     const [loginStatus, setLoginStatus] = useState("none");
     const navigate = useNavigate();
@@ -17,13 +17,12 @@ const Login = () => {
     }
 
     function getUserFromDb(userId, password) {
-        fetch(`http://localhost:8082/volunteer/login`, {
+        fetch(`http://localhost:8082/login`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'charset': 'UTF-8'
             },
-            //credentials: 'include', // הכרחי כדי שהעוגיות יישלחו
             body: JSON.stringify({
                 userId: userId,
                 password: password
@@ -39,9 +38,13 @@ const Login = () => {
                 document.cookie = `token=${token}; path=/; secure; samesite=strict`; // secure ו-HttpOnly מומלץ להוסיף לאבטחה נוספת
 
                 // ניתוב על פי סוג המשתמש
-                userType === "volunteer"
-                    ? navigate(`/volunteer/volunteers`, { state: { userId: userId } })
-                    : navigate(`/helpRequest/requests`, { state: { userId: userId } });
+                if (userType === "volunteer") {
+                    navigate(`/volunteer/volunteers`, { state: { userId: userId } });
+                } else if (userType === "helpRequest") {
+                    navigate(`/helpRequest/requests`, { state: { userId: userId } });
+                } else {
+                    navigate(`/profile`, { state: { userId: userId } });
+                }
             } else {
                 alert("user does not exist please sign up");
             }
@@ -70,10 +73,8 @@ const Login = () => {
             </form>
 
             <button onClick={() => {
-                userType === "volunteer"
-                    ? navigate('/volunteer/login', { state: { userType: "volunteer" } })
-                    : navigate('/helpRequest/login', { state: { userType: "request" } });
-            }}>כניסה</button>
+               navigate("/register", { state: { userType: userType } });
+            }}>הרשמה</button>
             <ForgotPassword userId={userId} />
         </>
     );

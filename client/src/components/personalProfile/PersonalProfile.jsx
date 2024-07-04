@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-
+import { useLocation } from 'react-router-dom';
 // פונקציה לשליפת ערך מעוגיה
 const getCookie = (name) => {
     const value = `; ${document.cookie}`;
@@ -7,7 +7,8 @@ const getCookie = (name) => {
     if (parts.length === 2) return parts.pop().split(';').shift();
 };
 
-const PersonalProfile = (props) => {
+const PersonalProfile = () => {
+
     const [user, setUser] = useState(null);
     const [formData, setFormData] = useState({
         userName: '',
@@ -17,6 +18,8 @@ const PersonalProfile = (props) => {
         email: '',
         phoneNumber: ''
     });
+    const location = useLocation();
+    const userId = location.state.userId;
     const [isEditing, setIsEditing] = useState(false);
 
     useEffect(() => {
@@ -24,7 +27,7 @@ const PersonalProfile = (props) => {
             try {
                 const token = getCookie('token'); // קבלת הטוקן מהעוגיה
 
-                const response = await fetch(`http://localhost:8082/user?userId=${props.userId}`, {
+                const response = await fetch(`http://localhost:8082/user?userId=${userId}`, {
                     headers: {
                         'Authorization': `Bearer ${token}` // הוספת הטוקן ל-Headers
                     }
@@ -43,7 +46,7 @@ const PersonalProfile = (props) => {
         };
 
         fetchUserData();
-    }, [props.userId]);
+    }, [userId]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -58,7 +61,7 @@ const PersonalProfile = (props) => {
         try {
             const token = getCookie('token'); // קבלת הטוקן מהעוגיה
 
-            const response = await fetch(`http://localhost:8082/user/${props.userId}`, {
+            const response = await fetch(`http://localhost:8082/user/${userId}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

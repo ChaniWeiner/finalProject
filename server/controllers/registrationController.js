@@ -30,16 +30,12 @@ export default class RegistrationController {
     async register(req, res, next) {
         try {
             const service = new RegistrationService();
-            console.log(req.body);
+        
 
-            await service.addUser(req.body[0]);
-            console.log(req.body[0].userId);
-            console.log(req.body[1].password);
-            let pswd = { userId: req.body[0].userId, password: req.body[1].password };
-            let user = req.body[0];
-            await service.addPassword(pswd);
+         const result=   await service.addUser(req.body);
+          
 
-            return res.status(201).json({ user: user, token: token });
+            return res.status(201).json({ user: result.user, token: result.token });
         } catch (ex) {
             const err = {};
             err.status = 500;

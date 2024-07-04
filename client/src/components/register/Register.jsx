@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from "react-router-dom";
+import { useNavigate,useLocation } from "react-router-dom";
 import { useForm } from 'react-hook-form';
 import { getCookie, setCookie } from './cookie'; // ייבוא פונקציות לטיפול בעוגיות
 
 const Register = () => {
-    const userType = "volunteer";
+    const location = useLocation();
+    const userType = location.state?.userType || 'profile';
     const [verifyFail, setVerifyFail] = useState(false);
     const [isExtendedDetailsOpen, setIsExtendedDetailsOpen] = useState(true);
     const [userIdentificationInformation, setUserIdentificationInformation] = useState({ userId: "", password: "" });
@@ -22,7 +23,7 @@ const Register = () => {
     const { reset, register, handleSubmit, formState: { errors } } = useForm();
 
     const signUp = (data) => {
-        fetch("http://localhost:8082/volunteer/register", {
+        fetch("http://localhost:8082/register", {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify([{
@@ -43,7 +44,13 @@ const Register = () => {
             .then((data) => {
                 console.log("User registered successfully:", data.user);
                 setCookie("token", data.token, 1); // שמירת הטוקן בעוגייה ל-1 שעה
-                navigate(`/volunteer/volunteers`, { state: { userId: userIdentificationInformation.userId } });
+                if (userType === "volunteer") {
+                    navigate(`/volunteer/volunteers`, { state: { userId: userId } });
+                } else if (userType === "helpRequest") {
+                    navigate(`/helpRequest/requests`, { state: { userId: userId } });
+                } else {
+                    navigate(`/profile`, { state: { userId: userId } });
+                }
                 reset();
             })
             .catch((err) => {
@@ -93,7 +100,7 @@ const Register = () => {
                     {verifyFail && <p className="errorMsg">Verification failed, please try again.</p>}
                     <input type="submit" value="Sign Up" />
                 </form>
-                <button onClick={() => navigate('/volunteer/login', { state: { userType: "volunteer" } })}>כניסה</button>
+                <button onClick={() => navigate('/login', { state: { userType: "volunteer" } })}>כניסה</button>
             </div>
         );
     }
@@ -109,14 +116,15 @@ const Register = () => {
                 {errors.address && errors.address.type === "required" && (<p className="errorMsg">Address is required.</p>)}
                 <br />
                 <select {...register("region", { required: true })}>
-                    <option value="">Select region</option>
-                    <option value="north">North</option>
-                    <option value="south">South</option>
-                    <option value="central">Central</option>
-                    <option value="jerusalem">Jerusalem</option>
-                    <option value="haifa">Haifa</option>
-                    <option value="tel-aviv">Tel Aviv</option>
+                    <option value="">בחר אזור</option>
+                    <option value="צפון">צפון</option>
+                    <option value="דרום">דרום</option>
+                    <option value="מרכז">מרכז</option>
+                    <option value="ירושלים">ירושלים</option>
+                    <option value="חיפה">חיפה</option>
+                    <option value="תל אביב">תל אביב</option>
                 </select>
+
                 {errors.region && errors.region.type === "required" && (<p className="">Region is required.</p>)}
                 <br />
                 <input type='email' placeholder='email'  {...register("email", { required: true })} />
