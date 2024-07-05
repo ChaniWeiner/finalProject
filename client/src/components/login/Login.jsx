@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import Cookies from 'js-cookie'; // ייבוא הספריה
-
+import ForgotPassword from './ForgotPassword';
 const Login = () => {
     const location = useLocation();
     const userType = location.state?.userType || 'profile';
@@ -77,7 +77,7 @@ const Login = () => {
             <button onClick={() => {
                 navigate("/register", { state: { userType: userType } });
             }}>Register</button>
-            {/* <ForgotPassword userId={userId} /> */}
+            <ForgotPassword userId={userId} />
         </>
     );
 }

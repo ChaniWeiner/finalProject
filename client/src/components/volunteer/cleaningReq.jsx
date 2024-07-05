@@ -1,5 +1,5 @@
 import React from "react";
-import './RequestStyles.css'; // קובץ CSS לעיצוב
+import './requestStyles.css'; // קובץ CSS לעיצוב
 
 const CleaningReq = ({ object }) => {
     return (

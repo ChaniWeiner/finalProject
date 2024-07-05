@@ -37,7 +37,8 @@ const Request = ({ object, setRequests, requests, volunteerId }) => {
                 },
                 body: JSON.stringify({
                     "requestStatus": "בוצע",
-                    "email": object.email
+                    "volunteerId": volunteerId,
+                    // "email": object.email
                 })
             });
 

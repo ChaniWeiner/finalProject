@@ -1,11 +1,11 @@
 import React from "react";
-import './MealReq.css'; // קובץ CSS לעיצוב
+import './requestStyles.css'; // קובץ CSS לעיצוב
 
 const MealsReq = ({ object }) => {
     {console.log("55",object);}
     return (
    
-        <div className="meal-request">
+        <div className="request">
             <h3>פרטי הארוחה</h3>
             <p><strong>מספר מנות:</strong> {object.amountMeals}</p>
             <p><strong>סוג ארוחה:</strong> {object.mealType}</p>

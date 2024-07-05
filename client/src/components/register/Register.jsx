@@ -14,7 +14,6 @@ const Register = () => {
     useEffect(() => {
         const token = getCookie("token");
         if (token) {
-            // פעולות לקריאה או שימוש בטוקן המצוי
             console.log("Token found:", token);
         }
         setVerifyFail(false);
@@ -64,8 +63,6 @@ const Register = () => {
     }
 
     const getIn = (data) => {
-           // שמירת ה-UserID בקוקיז
-          
         setVerifyFail(false);
         let userId = data.userId;
         let password = data.password;

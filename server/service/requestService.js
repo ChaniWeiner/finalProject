@@ -49,7 +49,8 @@ export class RequestService {
              //const service = new UserService();
             // const user = await service.getById(item.userId);
             const service1 = new UserService();
-           const email = item.email;
+            const volunteer = await service1.getById(item.volunteerId);
+           //const email = item.email;
             console.log("Update item:", item);
             let stringToQuery = "";
             Object.keys(item).forEach(key => {
@@ -64,8 +65,8 @@ export class RequestService {
             const result = await executeQuery(query, values);
             console.log("Update result:", result);
             //console.log(user[0]);
-            //sendHelpRequestEmail(user[0].email);
-             sendVolunteerEmail(email);
+            //sendHelpRequestEmail(item.email);
+             sendVolunteerEmail(volunteer[0].email);
             return { message: `Request with id: ${id} updated successfully` }; // Return as JSON object
         } catch (ex) {
             console.error('Error in update:', ex);

@@ -84,7 +84,7 @@ const ForgotPassword = () => {
             </form>
             <form onSubmit={handleResetPassword}>
                 <div>
-                    <label htmlFor="otp">OTP:</label>
+                    <label htmlFor="otp">קוד חד פעמי:</label>
                     <input
                         type="text"
                         id="otp"

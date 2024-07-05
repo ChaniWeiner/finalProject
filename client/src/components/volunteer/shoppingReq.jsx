@@ -1,5 +1,5 @@
 import React from "react";
-import './RequestStyles.css'; // קובץ CSS לעיצוב
+import './requestStyles.css'; 
 
 const ShoppingReq = ({ object }) => {
     return (

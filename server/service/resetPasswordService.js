@@ -83,10 +83,10 @@ export class ResetPasswordService {
             return false; // OTP לא תואם
         }
 
-        //const hashedPassword = await bcrypt.hash(newPassword, saltRounds);
+        const hashedPassword = await bcrypt.hash(newPassword, saltRounds);
         const updatePasswordQuery = 'UPDATE db_fp.passwords SET password = ?, OTP = NULL WHERE userId = ?';
-        //await executeQuery(updatePasswordQuery, [hashedPassword, userId]);
-        await executeQuery(updatePasswordQuery, [newPassword, userId]);
+        await executeQuery(updatePasswordQuery, [hashedPassword, userId]);
+        //await executeQuery(updatePasswordQuery, [newPassword, userId]);
         return true; // סיסמה הוזנה בהצלחה
     }
 }

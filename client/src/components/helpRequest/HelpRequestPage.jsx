@@ -3,6 +3,8 @@ import { useForm } from "react-hook-form";
 import { useLocation } from 'react-router-dom';
 import { io } from "socket.io-client";
 import PersonalProfile from "../personalProfile/PersonalProfile";
+import './helpRequest.css'
+import { IoSend } from "react-icons/io5";
 
 // פונקציה לשליפת ערך מעוגיה
 const getCookie = (name) => {
@@ -198,6 +200,7 @@ const HelpRequestPage = () => {
                         <br />
                         <label>
                             יום נקיון:
+                            <br />
                             <input type="text" {...register("cleaningDay", { required: true })} />
                             {errors.cleaningDay && <span>שדה חובה</span>}
                         </label>
@@ -219,7 +222,7 @@ const HelpRequestPage = () => {
                 {requestType === "אוזן קשבת" && (
                     <>
                         <label>
-                            שיחת תמיכה:
+                            נושא השיחה:
                             <textarea {...register("supportCall", { required: true })} />
                             {errors.supportCall && <span>שדה חובה</span>}
                         </label>
@@ -227,7 +230,7 @@ const HelpRequestPage = () => {
                     </>
                 )}
 
-                <button type="submit">שליחה</button>
+                <button type="submit">שליחה <IoSend /></button>
             </form>
         </>
     );
