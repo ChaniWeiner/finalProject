@@ -19,7 +19,7 @@ const Login = () => {
         try {
             const response = await loginUser(data.userId, data.password);
 
-            if (response.status === 200) {
+            if (response) {
                 const token = response.data.token;
                 setLoginStatus("inline");
 
@@ -34,7 +34,7 @@ const Login = () => {
                     navigate(`/profile`, { state: { userId: data.userId } });
                 }
             } else {
-                alert("User does not exist. Please sign up.");
+                alert("משתמש אינו קיים אנא הרשמי");
             }
             reset();
         } catch (error) {

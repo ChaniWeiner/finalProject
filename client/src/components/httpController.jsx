@@ -38,7 +38,7 @@ const fetchData = async (url, method, body = null) => {
         const response = await fetch(url, options);
         const data = await response.json();
 
-        if (!response.ok) {
+        if (!response) {
             throw new Error(data.message || 'Failed to fetch');
         }
 
