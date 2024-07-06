@@ -33,7 +33,9 @@ export default class requestController {
     async updateRequest(req, res, next) {
         try {
             const service = new RequestService();
-            await service.update(req.body, req.params.id);
+            console.log(req.body[1].email) ;
+            await service.update(req.body[0], req.params.id,req.body[1].email);
+       
             res.status(200).json({ message: `Request with id: ${req.params.id} updated successfully` }); // Send response as JSON
         } catch (ex) {
             console.error('Error in updateRequest:', ex);

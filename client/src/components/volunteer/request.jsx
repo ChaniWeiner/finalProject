@@ -35,11 +35,11 @@ const Request = ({ object, setRequests, requests, volunteerId }) => {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
                 },
-                body: JSON.stringify({
+                body: JSON.stringify([{
                     "requestStatus": "בוצע",
                     "volunteerId": volunteerId,
-                    // "email": object.email
-                })
+                   
+                },{  "email": object.email}])
             });
 
             if (!response.ok) {
@@ -93,6 +93,7 @@ const Request = ({ object, setRequests, requests, volunteerId }) => {
     return (
         <div className="request">
             {renderRequest()}
+            {console.log("re",object.email)}
             <button onClick={() => handleButtonClick(object.requestId)}>לקחתי</button>
         </div>
     );

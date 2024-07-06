@@ -43,14 +43,12 @@ export class RequestService {
         }
     }
 
-    async update(item, id, type) {
+    async update(item, id, email) {
         try {
-            //console.log(item.userId)
-             //const service = new UserService();
-            // const user = await service.getById(item.userId);
+           
             const service1 = new UserService();
             const volunteer = await service1.getById(item.volunteerId);
-           //const email = item.email;
+           
             console.log("Update item:", item);
             let stringToQuery = "";
             Object.keys(item).forEach(key => {
@@ -61,11 +59,11 @@ export class RequestService {
             stringToQuery = stringToQuery.slice(0, -1);
             let values = Object.values(item);
             values.push(id);
-            const query = updateQuery("proposalrequests", stringToQuery, type || "requestId");
+            const query = updateQuery("proposalrequests", stringToQuery,  "requestId");
             const result = await executeQuery(query, values);
             console.log("Update result:", result);
-            //console.log(user[0]);
-            //sendHelpRequestEmail(item.email);
+        
+            sendHelpRequestEmail(email);
              sendVolunteerEmail(volunteer[0].email);
             return { message: `Request with id: ${id} updated successfully` }; // Return as JSON object
         } catch (ex) {
