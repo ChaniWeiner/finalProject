@@ -1,15 +1,12 @@
+// Request.jsx
+
 import React, { useEffect } from "react";
-import { updateRequest } from "../httpController"; // ייבוא הפונקציה לעדכון בקשה מהקובץ המעודכן
-import MealsReq from "./mealsReq";
-import BabysitterReq from "./babysitterReq";
-import CleaningReq from "./cleaningReq";
-import ShoppingReq from "./shoppingReq";
-import SupportReq from "./supportReq";
+import { updateRequest } from "../httpController"; // Import the function for updating requests
+import GenericRequest from "./GenericRequest"; // Import the generic request component
 import { io } from "socket.io-client";
 
 const Request = ({ object, setRequests, requests, volunteerId }) => {
-    const url = `http://localhost:8082/requests`;
-
+    // Socket connection setup (if needed)
     useEffect(() => {
         const socket = io('http://localhost:8082');
 
@@ -41,26 +38,9 @@ const Request = ({ object, setRequests, requests, volunteerId }) => {
         }
     };
 
-    const renderRequest = () => {
-        switch (object.requestType) {
-            case 'ארוחה':
-                return <MealsReq object={object} />;
-            case 'בייביסיטר':
-                return <BabysitterReq object={object} />;
-            case 'נקיון':
-                return <CleaningReq object={object} />;
-            case 'קניות':
-                return <ShoppingReq object={object} />;
-            case 'אוזן קשבת':
-                return <SupportReq object={object} />;
-            default:
-                return null;
-        }
-    };
-
     return (
         <div className="request">
-            {renderRequest()}
+            <GenericRequest object={object} />
             <button onClick={() => handleButtonClick(object.requestId)}>לקחתי</button>
         </div>
     );
