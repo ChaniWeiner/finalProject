@@ -1,15 +1,9 @@
 import 'dotenv/config'
 import { executeQuery } from './query.js'
 import { getAllQuery, getByIdQuery, updateQuery, getByParameterQuery } from './allQuery.js';
-//import { sendRatingEmail } from './email.js'; 
 
 export class UserService {
-    // async getAll() {
-    //     const query = getAllQuery("users");
-    //     const result = await executeQuery(query);
-    //     return result;
-    // }
-
+   
     async getById(id) {
         const query = getByIdQuery("users");
         const result = await executeQuery(query, [id]);
@@ -38,9 +32,8 @@ export class UserService {
         let values = Object.values(item);
         values.push(id);
         const query = updateQuery("users",stringToQuery,type || "userId");
-        const result = await executeQuery(query, values)
-        console.log("Update result:", result);
-        return { message: `user with id: ${id} updated successfully` }; // Return as JSON object
+        await executeQuery(query, values)
+        return { message: `user with id: ${id} updated successfully` }; 
     }
 
 }

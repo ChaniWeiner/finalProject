@@ -15,14 +15,5 @@ export class PaswwordService {
         const result = await executeQuery(query, [id]);
         return result;
     }
-    // async update(item,id, type) {
-    //     let stringToQuery = "";
-    //     Object.keys(item).forEach(key => { (key != "userId") && (stringToQuery += key += "=?,") });
-    //     stringToQuery = stringToQuery.slice(0, -1);
-    //     let values = Object.values(item);
-    //     values.push(id);
-    //     const query = updateQuery("passwords",stringToQuery,type || "userId");
-    //     const result = await executeQuery(query, values)
-    //     return result;
-    // }
+   
 }

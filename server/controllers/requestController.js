@@ -4,7 +4,6 @@ export default class requestController {
     async getAllRequests(req, res, next) {
         try {
             const service = new RequestService();
-            console.log("jnj",req.params.type);
             const data = await service.getByParameter(req,req.params.type);
             return res.json(data);  
         } catch (ex) {
@@ -33,10 +32,9 @@ export default class requestController {
     async updateRequest(req, res, next) {
         try {
             const service = new RequestService();
-            console.log(req.body[1].email) ;
             await service.update(req.body[0], req.params.id,req.body[1].email);
        
-            res.status(200).json({ message: `Request with id: ${req.params.id} updated successfully` }); // Send response as JSON
+            res.json({ message: `Request with id: ${req.params.id} updated successfully` });
         } catch (ex) {
             console.error('Error in updateRequest:', ex);
             const err = {};
@@ -51,7 +49,6 @@ export default class requestController {
         try {
             const requestService = new RequestService();
             const requestResult = await requestService.addRequest(req.body);
-            console.log('Request result:', requestResult);
 
             res.json({
                 message: requestResult
