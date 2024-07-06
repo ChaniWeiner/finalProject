@@ -14,14 +14,6 @@ function executeInsertQuery(tableName, data) {
     return { query, values };
 }
 
-
-// function getJoinTablesQuery(tableName1, tableName2, tableName3) {
-//     const query = `
-//     SELECT DISTINCT *
-// FROM ${process.env.DB_NAME}.${tableName1} NATURAL JOIN ${process.env.DB_NAME}.${tableName2} NATURAL JOIN ${process.env.DB_NAME}.${tableName3};
-//         `;
-//     return query;
-// }
 function getJoinTablesQuery(tableName1, tableName2, tableName3, statusColumn = 'requestStatus', statusValue = 'המתנה') {
     const query = `
     SELECT DISTINCT *
@@ -35,10 +27,8 @@ function getJoinTablesQuery(tableName1, tableName2, tableName3, statusColumn = '
 
 
 function getJoinTwoTablesQuery(tableName1, tableName2) {
-    const query = `
-    SELECT DISTINCT *
-FROM ${process.env.DB_NAME}.${tableName1} NATURAL JOIN ${process.env.DB_NAME}.${tableName2} ;
-        `;
+    const query = ` SELECT DISTINCT *
+FROM ${process.env.DB_NAME}.${tableName1} NATURAL JOIN ${process.env.DB_NAME}.${tableName2}`;
     return query;
 }
 
@@ -62,15 +52,9 @@ function deleteQuery(tableName) {
     return query;
 }
 
-// function addQuery(tableName) {
-//     const query = `INSERT INTO ${process.env.DB_NAME}.${tableName} (userId, column1, column2, column3) VALUES (?, ?, ?, ?)`;
-//      return query;
-
-// }
 const addQuery = (table,columns) => {
     const columnsNames=Object.keys(columns);
     const query = `INSERT INTO nodeproject.${table} (${columnsNames.map((column)=>column)}) VALUES (${columnsNames.map((column)=>'?')})`;
-    console.log(query);
     return query
 }
-export { getAllQuery, getByIdQuery, getByParameterQuery, updateQuery, deleteQuery, getJoinTablesQuery,getJoinTwoTablesQuery,executeInsertQuery}
+export { addQuery,getAllQuery, getByIdQuery, getByParameterQuery, updateQuery, deleteQuery, getJoinTablesQuery,getJoinTwoTablesQuery,executeInsertQuery}

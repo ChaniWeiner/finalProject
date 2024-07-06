@@ -20,7 +20,7 @@ const verifyToken = (req, res, next) => {
             return res.status(500).json({ message: 'Failed to authenticate token.' });
         }
 
-        req.userId = decoded.userId; // או כל שדה אחר שמתאים למבנה ה-Token שלך
+        req.userId = decoded.userId; 
         next();
     });
 };
