@@ -2,21 +2,13 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useLocation } from 'react-router-dom';
 import { io } from "socket.io-client";
-import PersonalProfile from "../personalProfile/PersonalProfile";
-import './helpRequest.css'
 import { IoSend } from "react-icons/io5";
-
-// פונקציה לשליפת ערך מעוגיה
-const getCookie = (name) => {
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) return parts.pop().split(';').shift();
-};
+import { addRequest } from '../httpController'; // ייבוא הפונקציה מהקובץ החדש
+import './helpRequest.css'
 
 const HelpRequestPage = () => {
     const location = useLocation();
     const userId = location.state.userId;
-    const url = `http://localhost:8082/requests`;
 
     const { register, handleSubmit, formState: { errors }, reset, watch } = useForm();
     const [requestType, setRequestType] = useState('');
@@ -42,7 +34,6 @@ const HelpRequestPage = () => {
     const onSubmit = async (data) => {
         try {
             reset();
-            const socket = io('http://localhost:8082');
 
             let body = {
                 requests: {
@@ -85,26 +76,11 @@ const HelpRequestPage = () => {
                     throw new Error('Unsupported request type');
             }
 
-            const token = getCookie('token'); // קבלת הטוקן מהעוגיה
-            console.log(token);
-            const response = await fetch(url, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify(body)
-            });
-
-            if (!response.ok) {
-                throw new Error('Failed to add request');
-            }
-
-            const responseData = await response.json();
+            const responseData = await addRequest(body);
             alert("הבקשה נוספה בהצלחה אנא המתינה לפרטי התקשרות ");
             console.log('Request added successfully:', responseData);
 
-            // שליחת הבקשה החדשה דרך Socket.io
+            const socket = io('http://localhost:8082');
             socket.emit('postRequest', body);
 
         } catch (error) {
@@ -119,7 +95,6 @@ const HelpRequestPage = () => {
     return (
         <>
             <h1>פניית עזרה</h1>
-            {/* <PersonalProfile userId={userId}>פרטיםם</PersonalProfile> */}
             <form onSubmit={handleSubmit(onSubmit)}>
                 <label>
                     סוג הבקשה:

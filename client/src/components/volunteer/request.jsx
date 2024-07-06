@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react";
-import { io } from "socket.io-client";
+import React, { useEffect } from "react";
+import { updateRequest } from "../httpController"; // ייבוא הפונקציה לעדכון בקשה מהקובץ המעודכן
 import MealsReq from "./mealsReq";
 import BabysitterReq from "./babysitterReq";
 import CleaningReq from "./cleaningReq";
 import ShoppingReq from "./shoppingReq";
 import SupportReq from "./supportReq";
+import { io } from "socket.io-client";
 
 const Request = ({ object, setRequests, requests, volunteerId }) => {
     const url = `http://localhost:8082/requests`;
@@ -25,55 +26,22 @@ const Request = ({ object, setRequests, requests, volunteerId }) => {
         };
     }, []);
 
-    const updateRequest = async (id) => {
-        try {
-            const token = getCookie('token');
-
-            const response = await fetch(`${url}/${id}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify([{
-                    "requestStatus": "בוצע",
-                    "volunteerId": volunteerId,
-                   
-                },{  "email": object.email}])
-            });
-
-            if (!response.ok) {
-                throw new Error('Failed to update request');
-            }
-
-            const updatedRequests = requests.filter(item => item.requestId !== object.requestId);
-            setRequests(updatedRequests);
-            console.log(updatedRequests);
-
-            const data = await response.json();
-            console.log('Request updated successfully:', data);
-
-        } catch (error) {
-            console.error('Error updating request:', error.message);
-        }
-    };
-
-    const handleButtonClick = (id) => {
+    const handleButtonClick = async (id) => {
         const confirmed = window.confirm('האם אתה בטוח שברצונך לקחתי?');
         if (confirmed) {
-            updateRequest(id);
-            alert(" !!תזכי למצוות ");
+            try {
+                await updateRequest(id, volunteerId, object.email);
+                alert(" !!תזכי למצוות ");
+                const updatedRequests = requests.filter(item => item.requestId !== object.requestId);
+                setRequests(updatedRequests);
+                console.log(updatedRequests);
+            } catch (error) {
+                console.error('Error updating request:', error.message);
+            }
         }
-    };
-
-    const getCookie = (name) => {
-        const value = `; ${document.cookie}`;
-        const parts = value.split(`; ${name}=`);
-        if (parts.length === 2) return parts.pop().split(';').shift();
     };
 
     const renderRequest = () => {
-        console.log(object.requestType);
         switch (object.requestType) {
             case 'ארוחה':
                 return <MealsReq object={object} />;
@@ -93,7 +61,6 @@ const Request = ({ object, setRequests, requests, volunteerId }) => {
     return (
         <div className="request">
             {renderRequest()}
-            {console.log("re",object.email)}
             <button onClick={() => handleButtonClick(object.requestId)}>לקחתי</button>
         </div>
     );

@@ -1,14 +1,9 @@
-
 import React, { useEffect, useState } from "react";
 import { io } from "socket.io-client";
 import Request from "./request";
 import { useLocation } from 'react-router-dom';
-import './volunteerPage.css'
-const getCookie = (name) => {
-  const value = `; ${document.cookie}`;
-  const parts = value.split(`; ${name}=`);
-  if (parts.length === 2) return parts.pop().split(';').shift();
-};
+import './volunteerPage.css';
+import { getRequests } from '../httpController'; // הוספתי את היבוא של פונקציית getRequests מה-HTTP Controller
 
 const VolunteerPage = () => {
   const location = useLocation();
@@ -16,8 +11,6 @@ const VolunteerPage = () => {
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState("meals"); // ברירת מחדל: "meals"
-
-  const url = `http://localhost:8082/requests/${filter}`;
 
   useEffect(() => {
     const socket = io('http://localhost:8082');
@@ -27,42 +20,19 @@ const VolunteerPage = () => {
     });
 
     socket.on('addRequest', (newRequest) => {
-      getRequests();
+      getRequests(filter, setRequests, setLoading); // קריאה לפונקציה getRequests מה-HTTP Controller עם הפרמטרים המתאימים
     });
 
     socket.on('disconnect', () => {
       console.log('Disconnected from server');
     });
 
-    const getRequests = async () => {
-      try {
-        const token = getCookie('token'); // קבלת הטוקן מהעוגיה
-        const response = await fetch(url, {
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
-        });
-        const data = await response.json();
-        if (response.ok) {
-          setRequests(data);
-          console.log(requests);
-        } else {
-          alert("Oops, something went wrong...");
-        }
-      } catch (error) {
-        console.error("Error fetching requests:", error);
-        alert("Error fetching requests. Please try again later.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    getRequests();
+    getRequests(filter, setRequests, setLoading); // קריאה ראשונית לפונקציה getRequests מה-HTTP Controller עם הפרמטרים המתאימים
 
     return () => {
       socket.disconnect();
     };
-  }, [url]);
+  }, [filter]);
 
   return (
     <div className="volunteer-page">
@@ -80,17 +50,16 @@ const VolunteerPage = () => {
             <button onClick={() => setFilter("support")}>אוזן קשבת</button>
           </div>
           <div className="requests_container">
-
-            {requests && requests.map((request, index) => (
-              console.log(request),
-              <div key={index}>
-                <Request volunteerId={volunteerId} object={request} requests={requests} setRequests={setRequests} />
-              </div>      
-
-            ))}</div>
-            <div>
-            {requests.length==0&& <h2>אין בקשות מסוג זה</h2>}
-            </div>
+            {requests.length > 0 ? (
+              requests.map((request, index) => (
+                <div key={index}>
+                  <Request volunteerId={volunteerId} object={request} requests={requests} setRequests={setRequests} />
+                </div>
+              ))
+            ) : (
+              <h2>אין בקשות מסוג זה</h2>
+            )}
+          </div>
         </>
       )}
     </div>

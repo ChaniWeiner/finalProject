@@ -19,6 +19,7 @@
 // };
 
 // export default NavBar;
+import { getUserData, updateUser,getCookie,removeCookie } from '../httpController'; 
 import React, { useState } from 'react';
 import './NavBar.css';
 import { useNavigate } from 'react-router-dom';
@@ -26,11 +27,7 @@ import { useEffect } from 'react';
 const NavBar = () => {
 
   const navigate = useNavigate();
-  const getCookie = (name) => {
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) return parts.pop().split(';').shift();
-};
+
   const handleContactClick = (event) => {
     event.preventDefault();
     navigate('/home/contact');
@@ -40,24 +37,9 @@ const NavBar = () => {
   useEffect(() => {
     const fetchUserData = async () => {
         try {
-            const token = getCookie('token');
-            if (!token) {
-              setUser('');
-              return;
-            }
+          const data = await getUserData(userId); // קריאה לפונקצית getUserData מה-HTTP Controller
 
-            const response = await fetch(`http://localhost:8082/user?userId=${userId}`, {
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            });
-
-            if (!response.ok) {
-                throw new Error('Failed to fetch user data');
-            }
-
-            const data = await response.json();
-            setUser(data[0]);
+          setUser(data[0]);
         } catch (error) {
             console.error('Error fetching user data:', error);
         }
@@ -79,7 +61,7 @@ const NavBar = () => {
         <li><a href="/helpRequest">בקשת סיוע</a></li>
         <li><a href="/volunteer">התנדבות</a></li>
         <li><a href="#contact" onClick={handleContactClick}>צור קשר</a></li>
-        <li><a href="/profile">{user==''?"אורח":`${user.userName}`}</a></li>
+        <li><a href={user==""?"/login":"/profile"}>{user==''?"אורח":`${user.userName}`}</a></li>
       </ul>
     </nav>
   );

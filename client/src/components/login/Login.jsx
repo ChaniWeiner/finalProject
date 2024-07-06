@@ -1,10 +1,10 @@
-
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import Cookies from 'js-cookie'; 
+import Cookies from 'js-cookie';
 import ForgotPassword from './ForgotPassword';
-import './Login.css'; 
+import { loginUser } from '../httpController'; // ייבוא הפונקציה מהקובץ החדש
+import './Login.css';
 
 const Login = () => {
     const location = useLocation();
@@ -15,64 +15,48 @@ const Login = () => {
     const navigate = useNavigate();
     const { reset, register, handleSubmit, formState: { errors } } = useForm();
 
-    const login = (data) => {
-        getUserFromDb(data.userId, data.password);
-    }
+    const login = async (data) => {
+        try {
+            const response = await loginUser(data.userId, data.password);
 
-    function getUserFromDb(userId, password) {
-        fetch(`http://localhost:8082/login`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'charset': 'UTF-8'
-            },
-            body: JSON.stringify({
-                userId: userId,
-                password: password
-            })
-        })
-        .then(result => result.json())
-        .then(data => {
-            if (data.status === 200) {
-                let token = data.data.token; 
+            if (response.status === 200) {
+                const token = response.data.token;
                 setLoginStatus("inline");
 
                 Cookies.set('token', token, { secure: true, sameSite: 'strict' });
-
-                Cookies.set('userId', userId, { secure: true, sameSite: 'strict' });
+                Cookies.set('userId', data.userId, { secure: true, sameSite: 'strict' });
 
                 if (userType === "volunteer") {
-                    navigate(`/volunteer/volunteers`, { state: { userId: userId } });
+                    navigate(`/volunteer/volunteers`, { state: { userId: data.userId } });
                 } else if (userType === "helpRequest") {
-                    navigate(`/helpRequest/requests`, { state: { userId: userId } });
+                    navigate(`/helpRequest/requests`, { state: { userId: data.userId } });
                 } else {
-                    navigate(`/profile`, { state: { userId: userId } });
+                    navigate(`/profile`, { state: { userId: data.userId } });
                 }
             } else {
                 alert("User does not exist. Please sign up.");
             }
             reset();
-        })
-        .catch(error => {
-            console.error('Error fetching user data:', error);
+        } catch (error) {
+            console.error('Error logging in:', error.message);
             alert("Error logging in. Please try again later.");
-        });
-    }
+        }
+    };
 
     return (
         <div className="login-container">
             <form onSubmit={handleSubmit(login)}>
                 <h2>כניסה</h2>
-                <input type='text' placeholder='User ID' {...register("userId", { required: true })} />
-                <input type='password' placeholder='Password' {...register("password", { required: true })} />
-                <input type="submit" value="Sign in" />
+                <input type='text' placeholder='ת"ז' {...register("userId", { required: true })} />
+                <input type='password' placeholder='סיסמא' {...register("password", { required: true })} />
 
                 {errors.userId && errors.userId.type === "required" && (
-                    <p className="errorMsg">User ID is required.</p>
+                    <p className="errorMsg">ת"ז שדה חובה.</p>
                 )}
                 {errors.password && errors.password.type === "required" && (
-                    <p className="errorMsg">Password is required.</p>
+                    <p className="errorMsg">סיסמא שדה חובה.</p>
                 )}
+                <input type="submit" value="כניסה" />
             </form>
 
             <button className="register-button" onClick={() => {
