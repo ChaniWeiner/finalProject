@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { RiEdit2Fill } from "react-icons/ri";
-
 import { BiSave } from "react-icons/bi";
 import { MdCancel } from "react-icons/md";
 import './personalProfile.css';
-import { getUserData, updateUser,getCookie,removeCookie } from '../httpController'; // יבוא של הפונקציות המעדכנות ומבצעות בקשות
-
+import { getUserData, updateUser, getCookie } from '../httpController';
+import Manager from '../manager/Manager';
 
 const PersonalProfile = () => {
     const [user, setUser] = useState(null);
+    const [manager, setManager] = useState(false);
     const [formData, setFormData] = useState({
         userName: '',
         userId: '',
@@ -28,14 +28,15 @@ const PersonalProfile = () => {
             try {
                 const token = getCookie('token');
                 if (!token) {
-                    navigate('/login');  // Navigate to login if token is missing
+                    navigate('/login');
                     return;
                 }
 
-                const data = await getUserData(userId); // קריאה לפונקצית getUserData מה-HTTP Controller
+                const data = await getUserData(userId);
 
                 setUser(data[0]);
                 setFormData(data[0]);
+                setManager(data[0].userType == "manager" ? true : false)
             } catch (error) {
                 console.error('Error fetching user data:', error);
             }
@@ -66,7 +67,7 @@ const PersonalProfile = () => {
                 phoneNumber: formData.phoneNumber
             };
 
-            await updateUser(userId, updatedUser); // קריאה לפונקצית updateUser מה-HTTP Controller
+            await updateUser(userId, updatedUser);
 
             setIsEditing(false);
             alert('המשתמש עודכן בהצלחה');
@@ -74,12 +75,6 @@ const PersonalProfile = () => {
             console.error('Error updating user data:', error);
             alert(`התרחשה שגיאה בעדכון המשתמש: ${error.message}`);
         }
-    };
-
-    const handleLogout = () => {
-        removeCookie('token');
-        removeCookie('userId');
-        navigate('/login');
     };
 
     if (!userId) {
@@ -151,15 +146,15 @@ const PersonalProfile = () => {
                 <div className="button-container">
                     {isEditing ? (
                         <>
-                            <button type="submit"><BiSave /> שמור</button>
+                            <button type="button" onClick={handleSubmit} ><BiSave /> שמור</button>
                             <button type="button" onClick={() => setIsEditing(false)}><MdCancel /> ביטול</button>
                         </>
                     ) : (
                         <button type="button" onClick={() => setIsEditing(true)}><RiEdit2Fill /> עריכה</button>
                     )}
-                    {/* <button type="button" onClick={handleLogout}><FaSignOutAlt /> יציאה</button> */}
                 </div>
             </form>
+            {manager && <Manager />}
         </div>
     );
 }
