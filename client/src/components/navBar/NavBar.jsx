@@ -79,7 +79,6 @@ const NavBar = () => {
         <li><a href="/helpRequest">בקשת סיוע</a></li>
         <li><a href="/volunteer">התנדבות</a></li>
         <li><a href="#contact" onClick={handleContactClick}>צור קשר</a></li>
-        {/* <li><a href="/profile">אזור אישי</a></li> */}
         <li><a href="/profile">{user==''?"אורח":`${user.userName}`}</a></li>
       </ul>
     </nav>

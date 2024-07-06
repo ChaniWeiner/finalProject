@@ -3,7 +3,7 @@ import React from 'react';
 import Login from './components/login/Login';
 import Register from './components/register/Register';
 import Home from './components/home/Home';
-import NavBar from './components/NavBar';
+import NavBar from './components/navBar/NavBar';
 import Volunteer from './components/volunteer/Volunteer';
 import VolunteerLayout from './components/volunteer/Layout';
 import VolunteerPage from './components/volunteer/VolunteerPage';
