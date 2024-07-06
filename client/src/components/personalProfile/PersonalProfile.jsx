@@ -1,29 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { RiEdit2Fill } from "react-icons/ri";
+
 import { BiSave } from "react-icons/bi";
 import { MdCancel } from "react-icons/md";
 import './personalProfile.css';
-<<<<<<< HEAD
-import { getUserData, updateUser, getCookie } from '../httpController';
+import { getUserData, updateUser,getCookie,removeCookie } from '../httpController'; 
 import Manager from '../manager/Manager';
-=======
-import { getUserData, updateUser, getCookie, removeCookie } from '../httpController';
->>>>>>> 8fa91858b99534bbfd66a49bed825f2f3a3064a1
 
 const PersonalProfile = () => {
     const [user, setUser] = useState(null);
-    const [manager, setManager] = useState(false);
+    const [manager , setManager] = useState(false);
     const [formData, setFormData] = useState({
         userName: '',
         userId: '',
-        address: '',
-        region: '',
-        email: '',
-        phoneNumber: ''
-    });
-    const [editedFormData, setEditedFormData] = useState({
-        userName: '',
         address: '',
         region: '',
         email: '',
@@ -39,21 +29,15 @@ const PersonalProfile = () => {
             try {
                 const token = getCookie('token');
                 if (!token) {
-                    navigate('/login');
+                    navigate('/login'); 
                     return;
                 }
 
-                const data = await getUserData(userId);
-<<<<<<< HEAD
+                const data = await getUserData(userId); 
 
                 setUser(data[0]);
                 setFormData(data[0]);
-                setManager(data[0].userType == "manager" ? true : false)
-=======
-                setUser(data[0]);
-                setFormData(data[0]);
-                setEditedFormData(data[0]);
->>>>>>> 8fa91858b99534bbfd66a49bed825f2f3a3064a1
+                setManager(data[0].userType=="manager"?true:false)
             } catch (error) {
                 console.error('Error fetching user data:', error);
             }
@@ -66,33 +50,38 @@ const PersonalProfile = () => {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setEditedFormData({
-            ...editedFormData,
+        setFormData({
+            ...formData,
             [name]: value
         });
     };
 
     const handleSubmit = async (e) => {
-         e.preventDefault();
+        e.preventDefault();
         try {
             const token = getCookie('token');
             const updatedUser = {
-                userName: editedFormData.userName,
-                address: editedFormData.address,
-                region: editedFormData.region,
-                email: editedFormData.email,
-                phoneNumber: editedFormData.phoneNumber
+                userName: formData.userName,
+                address: formData.address,
+                region: formData.region,
+                email: formData.email,
+                phoneNumber: formData.phoneNumber
             };
 
             await updateUser(userId, updatedUser);
 
-            setFormData(editedFormData); // Update formData with editedFormData
             setIsEditing(false);
             alert('המשתמש עודכן בהצלחה');
         } catch (error) {
             console.error('Error updating user data:', error);
             alert(`התרחשה שגיאה בעדכון המשתמש: ${error.message}`);
         }
+    };
+
+    const handleLogout = () => {
+        removeCookie('token');
+        removeCookie('userId');
+        navigate('/login');
     };
 
     if (!userId) {
@@ -107,7 +96,7 @@ const PersonalProfile = () => {
                     <input
                         type="text"
                         name="userName"
-                        value={editedFormData.userName}
+                        value={formData.userName}
                         onChange={handleChange}
                         readOnly={!isEditing}
                     />
@@ -126,7 +115,7 @@ const PersonalProfile = () => {
                     <input
                         type="text"
                         name="address"
-                        value={editedFormData.address}
+                        value={formData.address}
                         onChange={handleChange}
                         readOnly={!isEditing}
                     />
@@ -136,7 +125,7 @@ const PersonalProfile = () => {
                     <input
                         type="text"
                         name="region"
-                        value={editedFormData.region}
+                        value={formData.region}
                         onChange={handleChange}
                         readOnly={!isEditing}
                     />
@@ -146,7 +135,7 @@ const PersonalProfile = () => {
                     <input
                         type="email"
                         name="email"
-                        value={editedFormData.email}
+                        value={formData.email}
                         onChange={handleChange}
                         readOnly={!isEditing}
                     />
@@ -156,7 +145,7 @@ const PersonalProfile = () => {
                     <input
                         type="text"
                         name="phoneNumber"
-                        value={editedFormData.phoneNumber}
+                        value={formData.phoneNumber}
                         onChange={handleChange}
                         readOnly={!isEditing}
                     />
@@ -164,7 +153,7 @@ const PersonalProfile = () => {
                 <div className="button-container">
                     {isEditing ? (
                         <>
-                            <button type="button" onClick={handleSubmit} ><BiSave /> שמור</button>
+                            <button type="submit"><BiSave /> שמור</button>
                             <button type="button" onClick={() => setIsEditing(false)}><MdCancel /> ביטול</button>
                         </>
                     ) : (
@@ -172,9 +161,9 @@ const PersonalProfile = () => {
                     )}
                 </div>
             </form>
-            {manager && <Manager />}
+            {manager&&<Manager/>}
         </div>
     );
-};
+}
 
 export default PersonalProfile;
