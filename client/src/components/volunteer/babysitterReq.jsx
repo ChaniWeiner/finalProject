@@ -3,7 +3,7 @@ import './requestStyles.css'; // קובץ CSS לעיצוב
 
 const BabysitterReq = ({ object }) => {
     return (
-        <div className="request">
+        <div>
             <h3>פרטי הבייביסיטר</h3>
             <p><strong>כמות ילדים:</strong> {object.numberOfChildren}</p>
             <p><strong>שעות :</strong> {object.babysittingHours}</p>

@@ -2,6 +2,6 @@
 .volunteer-page .requests_container {
     display: grid;
     grid-template-columns: repeat(3, 1fr); /* 3 עמודות */
-    gap: 20px; /* רווח בין האלמנטים */
+    gap: 20px;
     padding: 20px;
   }

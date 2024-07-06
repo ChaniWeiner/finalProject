@@ -6,6 +6,7 @@ const ForgotPassword = () => {
     const [message, setMessage] = useState('');
     const [loading, setLoading] = useState(false);
     const [newPas, setNewPas] = useState('');
+    const [changePasw,setChangePasw]=useState(false)
     const getCookie = (name) => {
         const value = `; ${document.cookie}`;
         const parts = value.split(`; ${name}=`);
@@ -31,6 +32,7 @@ const ForgotPassword = () => {
             }
 
             setMessage('OTP has been sent to your email.');
+            setChangePasw(true)
         } catch (error) {
             setMessage('Failed to send OTP. Please try again.');
         } finally {
@@ -57,6 +59,7 @@ const ForgotPassword = () => {
             }
 
             setMessage('Password has been reset successfully.');
+            setChangePasw(false)
         } catch (error) {
             setMessage('Failed to reset password. Please try again.');
         } finally {
@@ -82,7 +85,7 @@ const ForgotPassword = () => {
                     {loading ? 'Sending OTP...' : 'Send OTP'}
                 </button>
             </form>
-            <form onSubmit={handleResetPassword}>
+          {changePasw&& <form onSubmit={handleResetPassword}>
                 <div>
                     <label htmlFor="otp">קוד חד פעמי:</label>
                     <input
@@ -106,7 +109,7 @@ const ForgotPassword = () => {
                 <button type="submit" disabled={loading}>
                     {loading ? 'Resetting Password...' : 'Reset Password'}
                 </button>
-            </form>
+            </form>}
             {message && <p>{message}</p>}
         </div>
     );

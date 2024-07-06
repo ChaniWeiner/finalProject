@@ -189,6 +189,9 @@ const VolunteerPage = () => {
               </div>      
 
             ))}</div>
+            <div>
+            {requests.length==0&& <h2>אין בקשות מסוג זה</h2>}
+            </div>
         </>
       )}
     </div>

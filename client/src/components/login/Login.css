@@ -1,38 +1,79 @@
-form {
-    /* display: flex; */
-    flex-direction: column;
-    align-items: center;
-    width: 300px;
-    margin: auto;
-  }
-  
-  h1 {
-    font-size: 24px;
-    margin-bottom: 20px;
-  }
-  
-  input {
-    margin-bottom: 15px;
-    padding: 8px;
-    width: 100%;
-  }
-  
-  input[type="submit"] {
-    background-color: #4caf50;
-    color: white;
-    cursor: pointer;
-  }
-  
-  button {
-    background-color: #008CBA;
-    color: white;
-    cursor: pointer;
-    padding: 10px;
-    margin-top: 10px;
-  }
-  
-  .errorMsg {
-    color: red;
-    margin-top: 5px;
-    font-size: 14px;
-  }
+/* CSS לקומפוננטת Login */
+
+/* עיצוב הכללי של הקונטיינר */
+.login-container {
+  max-width: 400px;
+  margin: 50px auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+  text-align: center;
+}
+
+/* עיצוב הכותרת */
+.login-container h2 {
+  margin-bottom: 20px;
+  font-size: 24px;
+}
+
+/* עיצוב השדות */
+.login-container input[type='text'],
+.login-container input[type='password'],
+.login-container input[type='submit'] {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+/* עיצוב כפתור ההתחברות */
+.login-container input[type='submit'] {
+  background-color: #3498db;
+  color: white;
+  cursor: pointer;
+}
+
+.login-container input[type='submit']:hover {
+  background-color: #2980b9;
+}
+
+/* עיצוב הודעות השגיאה */
+.login-container .errorMsg {
+  color: red;
+  font-size: 14px;
+}
+
+/* עיצוב כפתור ההרשמה */
+.login-container .register-button {
+  background-color: #2ecc71;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+  width: 100%;
+}
+
+.login-container .register-button:hover {
+  background-color: #27ae60;
+}
+
+/* עיצוב כפתור "שכחתי סיסמא" */
+.login-container .forgot-password-button {
+  background: none;
+  color: #3498db;
+  border: none;
+  cursor: pointer;
+  text-decoration: underline;
+  padding: 0;
+  margin: 10px 0;
+  font-size: 16px;
+}
+
+.login-container .forgot-password-button:hover {
+  color: #2980b9;
+}

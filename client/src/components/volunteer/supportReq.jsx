@@ -3,7 +3,7 @@ import './requestStyles.css';
 
 const SupportReq = ({ object }) => {
     return (
-        <div className="request">
+        <div >
             <h3>פרטי התמיכה</h3>
             <p><strong>נושא השיחה:</strong> {object.supportCall}</p>
             <p><strong>כתובת:</strong> {object.address}</p>
