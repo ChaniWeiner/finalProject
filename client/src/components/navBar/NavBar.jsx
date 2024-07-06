@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { getUserData, getCookie, removeCookie } from '../httpController';
 import { FaUserCircle } from 'react-icons/fa';
 
-
+import { FaSignOutAlt } from "react-icons/fa";
 
 const NavBar = () => {
   const navigate = useNavigate();
@@ -65,7 +65,7 @@ const NavBar = () => {
               {showOptions && (
                 <ul className="profile-options">
                   <li><a href="/profile">הפרופיל שלי</a></li>
-                  <li><button onClick={handleLogout}>יציאה</button></li>
+                  <li><button onClick={handleLogout}>יציאה <FaSignOutAlt/> </button></li>
                 </ul>
               )}
             </>

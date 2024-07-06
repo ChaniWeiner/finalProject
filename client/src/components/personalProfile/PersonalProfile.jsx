@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { RiEdit2Fill } from "react-icons/ri";
-import { FaSignOutAlt } from "react-icons/fa";
+
 import { BiSave } from "react-icons/bi";
 import { MdCancel } from "react-icons/md";
 import './personalProfile.css';
