@@ -1,52 +1,63 @@
 import React, { useState } from "react";
 import Select from "react-select";
-const SearchRequest = ({ setRequests, allRequests, requests }) => {
-    const [searchValue, setSearchValue] = useState()
 
-    const selectOption = (e) => {
-        setSearchValue(e)
-        e === null && setRequests(allRequests)
+const SearchRequest = ({ setRequests, allRequests,setSearchRequests,setIsExist}) => {
+  const [searchValue, setSearchValue] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  const selectOption = (e) => {
+    setSearchValue(e);
+    if (e === null) {
+      setRequests(allRequests);
+      setSearchRequests([]);
+    }
+  };
+
+  const searchByOption = (event) => {
+    event.preventDefault();
+    setLoading(true);
+
+    setTimeout(() => {
+      setLoading(false);
+    }, 1000);
+
+    const searchKey = searchValue ? searchValue.value : null;
+    const inputValue = event.target[0].value.toLowerCase(); // לשים לב להמיר לאותיות קטנות
+
+    if (searchKey === "region") {
+      const filteredRequests = allRequests.filter(request => request.region.toLowerCase() === inputValue);
+      if(filteredRequests.length<0)
+        setIsExist(true);
+      setSearchRequests(filteredRequests);
+    } else {
+      setRequests(allRequests);
     }
 
-    const [loading, setLoading] = useState(false);
+    event.target.reset();
+  };
 
+  const searchRequestsOptions = [
+    { value: 'region', label: 'איזור' }
+  ];
 
-    const searchRequestsOptions = [
-        { value: 'איזור', label: 'region' },
-        { value: 'סוג התנדבות', label: 'requestType' }]
+  return (
+    <>
+      <Select
+        placeholder="חיפוש בקשות לפי..."
+        onChange={(e) => selectOption(e)}
+        options={searchRequestsOptions}
+        isClearable
+        isLoading={loading}
+        isSearchable={true}
+      />
+      {searchValue && (
+        <form onSubmit={searchByOption}>
+          <input name={searchValue.value} placeholder={searchValue.label} />
+          <input type="submit" value="חפש" />
+        </form>
+      )}
+    </>
+  );
+};
 
-    const searchByOption = (element) => {
-        element.preventDefault();
-        setLoading(true)
-        setTimeout(() => {
-            setLoading(false);
-        }, 1000);
-        let tempRequests = [];
-        debugger
-        switch (element.target[0].name) {
-            case "region":
-                tempRequests = allRequests.filter(post => (searchValue.label != '' ))
-                break;
-            case "requestType":
-                tempRequests = allRequests.filter(post => (searchValue.label != '' ))
-        }
-        element.target.reset()
-        setRequests(tempRequests)
-    }
-    return (<>
-        <Select
-            placeholder='search requests by...'
-            onChange={(e) => selectOption(e)}
-            options={searchRequestsOptions}
-            isClearable
-            isLoading={loading}
-            isSearchable={true}
-            getOptionLabel={(searchRequestsOptions) => searchRequestsOptions["label"]}
-            getOptionValue={(searchRequestsOptions) => searchRequestsOptions["value"]} />
-        {searchValue != null && <form onSubmit={searchByOption}>
-            <input name={searchValue.label} placeholder={searchValue.label} />
-            <input type="submit" value="search" />
-        </form>}
-    </>)
-}
-export default SearchRequest
+export default SearchRequest;

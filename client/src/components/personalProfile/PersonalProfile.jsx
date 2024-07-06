@@ -4,8 +4,12 @@ import { RiEdit2Fill } from "react-icons/ri";
 import { BiSave } from "react-icons/bi";
 import { MdCancel } from "react-icons/md";
 import './personalProfile.css';
+<<<<<<< HEAD
 import { getUserData, updateUser, getCookie } from '../httpController';
 import Manager from '../manager/Manager';
+=======
+import { getUserData, updateUser, getCookie, removeCookie } from '../httpController';
+>>>>>>> 8fa91858b99534bbfd66a49bed825f2f3a3064a1
 
 const PersonalProfile = () => {
     const [user, setUser] = useState(null);
@@ -13,6 +17,13 @@ const PersonalProfile = () => {
     const [formData, setFormData] = useState({
         userName: '',
         userId: '',
+        address: '',
+        region: '',
+        email: '',
+        phoneNumber: ''
+    });
+    const [editedFormData, setEditedFormData] = useState({
+        userName: '',
         address: '',
         region: '',
         email: '',
@@ -33,10 +44,16 @@ const PersonalProfile = () => {
                 }
 
                 const data = await getUserData(userId);
+<<<<<<< HEAD
 
                 setUser(data[0]);
                 setFormData(data[0]);
                 setManager(data[0].userType == "manager" ? true : false)
+=======
+                setUser(data[0]);
+                setFormData(data[0]);
+                setEditedFormData(data[0]);
+>>>>>>> 8fa91858b99534bbfd66a49bed825f2f3a3064a1
             } catch (error) {
                 console.error('Error fetching user data:', error);
             }
@@ -49,26 +66,27 @@ const PersonalProfile = () => {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setFormData({
-            ...formData,
+        setEditedFormData({
+            ...editedFormData,
             [name]: value
         });
     };
 
     const handleSubmit = async (e) => {
-        e.preventDefault();
+         e.preventDefault();
         try {
             const token = getCookie('token');
             const updatedUser = {
-                userName: formData.userName,
-                address: formData.address,
-                region: formData.region,
-                email: formData.email,
-                phoneNumber: formData.phoneNumber
+                userName: editedFormData.userName,
+                address: editedFormData.address,
+                region: editedFormData.region,
+                email: editedFormData.email,
+                phoneNumber: editedFormData.phoneNumber
             };
 
             await updateUser(userId, updatedUser);
 
+            setFormData(editedFormData); // Update formData with editedFormData
             setIsEditing(false);
             alert('המשתמש עודכן בהצלחה');
         } catch (error) {
@@ -89,7 +107,7 @@ const PersonalProfile = () => {
                     <input
                         type="text"
                         name="userName"
-                        value={formData.userName}
+                        value={editedFormData.userName}
                         onChange={handleChange}
                         readOnly={!isEditing}
                     />
@@ -108,7 +126,7 @@ const PersonalProfile = () => {
                     <input
                         type="text"
                         name="address"
-                        value={formData.address}
+                        value={editedFormData.address}
                         onChange={handleChange}
                         readOnly={!isEditing}
                     />
@@ -118,7 +136,7 @@ const PersonalProfile = () => {
                     <input
                         type="text"
                         name="region"
-                        value={formData.region}
+                        value={editedFormData.region}
                         onChange={handleChange}
                         readOnly={!isEditing}
                     />
@@ -128,7 +146,7 @@ const PersonalProfile = () => {
                     <input
                         type="email"
                         name="email"
-                        value={formData.email}
+                        value={editedFormData.email}
                         onChange={handleChange}
                         readOnly={!isEditing}
                     />
@@ -138,7 +156,7 @@ const PersonalProfile = () => {
                     <input
                         type="text"
                         name="phoneNumber"
-                        value={formData.phoneNumber}
+                        value={editedFormData.phoneNumber}
                         onChange={handleChange}
                         readOnly={!isEditing}
                     />
@@ -157,6 +175,6 @@ const PersonalProfile = () => {
             {manager && <Manager />}
         </div>
     );
-}
+};
 
 export default PersonalProfile;
