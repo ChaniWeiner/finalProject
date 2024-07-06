@@ -157,7 +157,7 @@ const PersonalProfile = () => {
                     ) : (
                         <button type="button" onClick={() => setIsEditing(true)}><RiEdit2Fill /> עריכה</button>
                     )}
-                    <button type="button" onClick={handleLogout}><FaSignOutAlt /> יציאה</button>
+                    {/* <button type="button" onClick={handleLogout}><FaSignOutAlt /> יציאה</button> */}
                 </div>
             </form>
         </div>

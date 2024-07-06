@@ -2,10 +2,14 @@ import React, { useState, useEffect } from 'react';
 import './NavBar.css';
 import { useNavigate } from 'react-router-dom';
 import { getUserData, getCookie, removeCookie } from '../httpController';
+import { FaUserCircle } from 'react-icons/fa';
+
+
 
 const NavBar = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
+  const [showOptions, setShowOptions] = useState(false); // State to manage visibility of profile options
   const userId = getCookie('userId');
 
   useEffect(() => {
@@ -20,6 +24,8 @@ const NavBar = () => {
 
     if (userId) {
       fetchUserData();
+    } else {
+      setUser(null); // Reset user state if userId is not present (guest user)
     }
   }, [userId]);
 
@@ -28,24 +34,14 @@ const NavBar = () => {
     navigate('/home/contact');
   };
 
-  const handleSelectOption = (option) => {
-    switch (option) {
-      case 'profile':
-        navigate('/profile');
-        break;
-      case 'logout':
-        handleLogout();
-        break;
-      default:
-        navigate('/login');
-        break;
-    }
+  const handleProfileClick = () => {
+    setShowOptions(!showOptions); // Toggle visibility of profile options
   };
 
   const handleLogout = () => {
     removeCookie('token');
     removeCookie('userId');
-    setUser(null); // עדכון הממשק למצב אורח
+    setUser("")
     navigate('/login');
   };
 
@@ -61,19 +57,32 @@ const NavBar = () => {
         <li><a href="/helpRequest">בקשת סיוע</a></li>
         <li><a href="/volunteer">התנדבות</a></li>
         <li><a href="#contact" onClick={handleContactClick}>צור קשר</a></li>
-        {user ? (
-          <>
-            <li>
-              <select onChange={(e) => handleSelectOption(e.target.value)}>
-                <option value="profile">פרופיל אישי</option>
-                <option value="logout">יציאה</option>
-              </select>
-            </li>
-            <li>{user.userName}</li>
+        <li className="user-profile">
+          {user ? (
+            <>
+              <FaUserCircle className="profile-icon" onClick={handleProfileClick} />
+              <span onClick={handleProfileClick}>{user.userName}</span>
+              {showOptions && (
+                <ul className="profile-options">
+                  <li><a href="/profile">הפרופיל שלי</a></li>
+                  <li><button onClick={handleLogout}>יציאה</button></li>
+                </ul>
+              )}
+            </>
+          ) : (
+            <>
+            <FaUserCircle className="profile-icon" onClick={handleProfileClick} />
+            <span onClick={handleProfileClick}>אורח</span>
+            {showOptions && (
+              <ul className="profile-options">
+                <li> <a href="/login">התחברות</a></li>
+               
+              </ul>
+            )}
           </>
-        ) : (
-          <li><a href="/login">התחברות</a></li>
-        )}
+           
+          )}
+        </li>
       </ul>
     </nav>
   );
