@@ -1,4 +1,6 @@
 import { UserService } from "../service/userService.js";
+import userValidationSchema from "../validition/userValid.js";
+
 export default class UsersController {
     async getAllUser(req, res, next) {
         try {
@@ -29,9 +31,14 @@ export default class UsersController {
 
     async updateUser(req, res,next) {
         try {
+            const { error } = userValidationSchema.validate(req.body);
+            if (error) {
+                return res.status(400).json({ message: error.details[0].message });
+            }
+
             const service = new UserService();
-            await service.update(req.body,req.params.id);
-            res.json(`user with id: ${req.params.id} updated succefuly`);
+            await service.update(req.body, req.params.id);
+            res.json(`user with id: ${req.params.id} updated successfully`);
         }
         catch (ex) {
             const err = {}

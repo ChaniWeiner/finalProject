@@ -6,7 +6,7 @@ export class ManagerService {
         try {
             const result = await executeQuery(`SELECT COUNT(*) AS nonManagerUserCount
             FROM ${process.env.DB_NAME}.users
-            WHERE userType != 'manager' OR userType IS NULL`);
+            WHERE userType != 'מנהל' OR userType IS NULL`);
             return result;
         } catch (ex) {
             console.error('Error in getAllMembers:', ex);

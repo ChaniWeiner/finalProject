@@ -1,14 +1,17 @@
-import 'dotenv/config'
-import { executeQuery } from './query.js'
+import 'dotenv/config';
+
+import userValidationSchema from '../validition/userValid.js'
+import { executeQuery } from './query.js';
 import { getAllQuery, getByIdQuery, updateQuery, getByParameterQuery } from './allQuery.js';
 
 export class UserService {
-   
+
     async getById(id) {
         const query = getByIdQuery("users");
         const result = await executeQuery(query, [id]);
         return result;
     }
+
     async getByParameter(user) {
         let query, conditionsParams = [], conditionsValues = [];
         const queryParams = user.query;
@@ -25,15 +28,21 @@ export class UserService {
         return result;
     }
 
-    async update(item, id,type) {
+    async update(item, id, type) {
+      
+        const { error } = userValidationSchema.validate(item);
+        if (error) {
+            throw new Error(error.details[0].message);
+        }
+
         let stringToQuery = "";
         Object.keys(item).forEach(key => { (key != "userId") && (stringToQuery += key += "=?,") });
         stringToQuery = stringToQuery.slice(0, -1);
         let values = Object.values(item);
         values.push(id);
-        const query = updateQuery("users",stringToQuery,type || "userId");
-        await executeQuery(query, values)
-        return { message: `user with id: ${id} updated successfully` }; 
+        const query = updateQuery("users", stringToQuery, type || "userId");
+        await executeQuery(query, values);
+        return { message: `user with id: ${id} updated successfully` };
     }
 
 }
