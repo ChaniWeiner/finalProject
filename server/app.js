@@ -6,6 +6,7 @@ import { passwordRouter } from "./routers/passwordRouter.js";
 import { resetPasswordRouter } from "./routers/resetPasswordRouter.js";
 import { regRouter } from "./routers/registrationRouter.js";
 import { requestRouter } from "./routers/requestsRouter.js";
+import { managerRouter } from "./routers/managerRouter.js";
 
 
 const app = express();
@@ -16,6 +17,8 @@ app.use('/resetPassword', resetPasswordRouter);
 app.use('/user', userRouter);
 app.use('/requests', requestRouter);
 app.use('/password', passwordRouter);
+app.use('/manager',managerRouter);
+
 app.use(logErrors);
 
 export default app;
