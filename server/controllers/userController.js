@@ -1,5 +1,5 @@
 import { UserService } from "../service/userService.js";
-import userValidationSchema from "../validition/userValid.js";
+import {userSchema} from "../validition/registrationValidation.js";
 
 export default class UsersController {
     async getAllUser(req, res, next) {
@@ -31,9 +31,9 @@ export default class UsersController {
 
     async updateUser(req, res,next) {
         try {
-            const { error } = userValidationSchema.validate(req.body);
+            const { error } = userSchema.validate(req.body);
             if (error) {
-                return res.status(400).json({ message: error.details[0].message });
+                return res.json({ message: error.details[0].message });
             }
 
             const service = new UserService();
