@@ -82,6 +82,12 @@ export const requestOtp = async (userId) => {
     return await fetchData(url, 'POST', body);
 };
 
+export const registerUser = async (userDetails, passwordDetails) => {
+    const url = `${BASE_URL}/register`;
+    const body = [userDetails, passwordDetails];
+    return await fetchData(url, 'POST', body);
+};
+
 export const resetPassword = async (userId, otp, newPassword) => {
     const url = `${BASE_URL}/resetPassword/reset-password`;
     const body = { userId, otp, newPassword };
@@ -112,9 +118,9 @@ export const getUserData = async (userId) => {
 
 export const updateUser = async (userId, userData) => {
     const url = `${BASE_URL}/user/${userId}`;
-
     try {
-        return await fetchData(url, 'PUT', userData);
+        console.log("i am hereeeeeeeeeeeeeeeeeee") ;
+               return await fetchData(url, 'PUT', userData);
     } catch (error) {
         console.error('Error updating user data:', error);
         throw error;

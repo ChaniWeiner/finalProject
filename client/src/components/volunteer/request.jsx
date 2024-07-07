@@ -1,12 +1,9 @@
-// Request.jsx
-
 import React, { useEffect } from "react";
-import { updateRequest } from "../httpController"; // Import the function for updating requests
-import GenericRequest from "./GenericRequest"; // Import the generic request component
+import { updateRequest } from "../httpController"; 
+import GenericRequest from "./GenericRequest"; 
 import { io } from "socket.io-client";
 
 const Request = ({ object, setRequests, requests, volunteerId }) => {
-    // Socket connection setup (if needed)
     useEffect(() => {
         const socket = io('http://localhost:8082');
 

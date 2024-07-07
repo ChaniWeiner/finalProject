@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { io } from "socket.io-client";
-import Request from "./request";
+import Request from "./Request";
 import { useLocation } from 'react-router-dom';
 import './volunteerPage.css';
 import { getRequests } from '../httpController'; // הוספתי את היבוא של פונקציית getRequests מה-HTTP Controller

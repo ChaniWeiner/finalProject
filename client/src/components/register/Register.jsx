@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from "react-router-dom";
 import { useForm } from 'react-hook-form';
-import { getCookie } from './cookie'; // ייבוא פונקציות לטיפול בעוגיות
+import { getCookie, registerUser, getUserData } from '../httpController';
 import Cookies from 'js-cookie';
 import './register.css';
 
@@ -14,58 +14,48 @@ const Register = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        const token = getCookie("token");
-        if (token) {
-            console.log("Token found:", token);
-        }
+        getCookie("token");
         setVerifyFail(false);
     }, []);
 
     const { reset, register, handleSubmit, formState: { errors } } = useForm();
 
-    const signUp = (data) => {
-        fetch("http://localhost:8082/register", {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify([{
-                userId: userIdentificationInformation.userId,
-                userName: data.username,
-                address: data.address,
-                region: data.region,
-                email: data.email,
-                phoneNumber: data.phoneNumber
-            },
-            { userId: userIdentificationInformation.userId, password: userIdentificationInformation.password }
-            ])
-        })
-            .then(response => {
-                if (!response.ok) throw new Error(`status: ${response.status}`);
-                return response.json();
-            })
-            .then((data) => {
-                console.log("User registered successfully:", data.user);
-
-                Cookies.set('token', data.token, { secure: true, sameSite: 'strict' });
-
-                const userId = userIdentificationInformation.userId;
-                Cookies.set('userId', userId, { secure: true, sameSite: 'strict' });
-                if (userType === "volunteer") {
-                    navigate(`/volunteer/volunteers`, { state: { userId: userId } });
-                } else if (userType === "helpRequest") {
-                    navigate(`/helpRequest/requests`, { state: { userId: userId } });
-                } else {
-                    navigate(`/profile`, { state: { userId: userId } });
+    const signUp = async (data) => {
+        try {
+            const response = await registerUser(
+                {
+                    userId: userIdentificationInformation.userId,
+                    userName: data.username,
+                    address: data.address,
+                    region: data.region,
+                    email: data.email,
+                    phoneNumber: data.phoneNumber
+                },
+                {
+                    userId: userIdentificationInformation.userId,
+                    password: userIdentificationInformation.password
                 }
+            );
+            Cookies.set('token', response.token, { secure: true, sameSite: 'strict' });
+            const userId = userIdentificationInformation.userId;
+            Cookies.set('userId', userId, { secure: true, sameSite: 'strict' });
 
-                reset();
-            })
-            .catch((err) => {
-                console.error("Registration failed:", err);
-                alert("משהו השתבש, נסה שוב מאוחר יותר.");
-            });
+            if (userType === "volunteer") {
+                navigate(`/volunteer/volunteers`, { state: { userId: userId } });
+            } else if (userType === "helpRequest") {
+                navigate(`/helpRequest/requests`, { state: { userId: userId } });
+            } else {
+                navigate(`/profile`, { state: { userId: userId } });
+            }
+
+            reset();
+        } catch (err) {
+            console.error("Registration failed:", err);
+            alert("משהו השתבש, נסה שוב מאוחר יותר.");
+        }
     }
 
-    const getIn = (data) => {
+    const getIn = async (data) => {
         setVerifyFail(false);
         let userId = data.userId;
         let password = data.password;
@@ -73,23 +63,20 @@ const Register = () => {
         if (password !== verifyPassword) {
             setVerifyFail(true);
         } else {
-            fetch(`http://localhost:8082/user?userId=${userId}`)
-                .then((response) => response.json())
-                .then((data) => {
-                    console.log(data.status);
-                    if (data.status === 200) {
-                        alert("המשתמש כבר קיים, אנא היכנס.");
-                    } else {
-                        setIsExtendedDetailsOpen(!isExtendedDetailsOpen);
-                        setUserIdentificationInformation({ userId: userId, password: password });
-                        navigate('details');
-                    }
-                    reset();
-                })
-                .catch((err) => {
-                    console.error("Error fetching user data:", err);
-                    alert("משהו השתבש, נסה שוב מאוחר יותר.");
-                });
+            try {
+                const userData = await getUserData(userId);
+                if (userData.status === 200) {
+                    alert("המשתמש כבר קיים, אנא היכנס.");
+                } else {
+                    setIsExtendedDetailsOpen(!isExtendedDetailsOpen);
+                    setUserIdentificationInformation({ userId: userId, password: password });
+                    navigate('details');
+                }
+                reset();
+            } catch (err) {
+                console.error("Error fetching user data:", err);
+                alert("משהו השתבש, נסה שוב מאוחר יותר.");
+            }
         }
     }
 
