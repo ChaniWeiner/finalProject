@@ -5,7 +5,7 @@ export class ManagerService {
     async getAll() {
         try {
             const result = await executeQuery(`SELECT COUNT(*) AS nonManagerUserCount
-            FROM ${process.env.DB_NAME}..users
+            FROM ${process.env.DB_NAME}.users
             WHERE userType != 'manager' OR userType IS NULL`);
             return result;
         } catch (ex) {

@@ -22,18 +22,17 @@ export const getRequests = async (filter, setRequests, setLoading) => {
 };
 
 export const getAllMembers = async (setMembers) => {
-    const url = `${BASE_URL}/manager`;
-
+    const url = `${BASE_URL}/manager`; 
     try {
-        const data = await fetchData(url, 'GET');
-        setMembers(data);
+        const data= await fetchData(url, 'GET');
+        console.log(data[0])
+        setMembers(data[0])
     } catch (error) {
-        console.error('שגיאה במהלך הבקשה:', error.message);
-        alert('שגיאה בקבלת הבקשות. נסה שוב מאוחר יותר.');
-    } finally {
-        setLoading(false);
+        console.error('שגיאה במהלך בקשת החברים:', error.message);
+        throw error;
     }
 };
+
 export const getCookie = (name) => {
     const value = `; ${document.cookie}`;
     const parts = value.split(`; ${name}=`);
