@@ -31,13 +31,16 @@ export default class UsersController {
 
     async updateUser(req, res,next) {
         try {
-            const { error } = userSchema.validate(req.body);
+            let item =req.body;
+            item.userId = req.params.id;
+            const { error } = userSchema.validate(item);
             if (error) {
                 return res.json({ message: error.details[0].message });
             }
-
+            delete item.userId;
+            console.log("h",item);
             const service = new UserService();
-            await service.update(req.body, req.params.id);
+            await service.update(item, req.params.id);
             res.json(`user with id: ${req.params.id} updated successfully`);
         }
         catch (ex) {

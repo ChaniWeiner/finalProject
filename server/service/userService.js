@@ -29,11 +29,16 @@ export class UserService {
     }
 
     async update(item, id, type) {
-      
+        
+        console.log(item)
+        item.userId = id;
         const { error } = userSchema.validate(item);
+        console.log(error);
         if (error) {
+            console.log(error);
             throw new Error(error.details[0].message);
         }
+        delete item.userId;
 
         let stringToQuery = "";
         Object.keys(item).forEach(key => { (key != "userId") && (stringToQuery += key += "=?,") });
