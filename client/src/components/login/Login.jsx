@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import Cookies from 'js-cookie';
 import ForgotPassword from './ForgotPassword';
-import { loginUser } from '../httpController'; // ייבוא הפונקציה מהקובץ החדש
+import { loginUser } from '../httpController'; 
 import './Login.css';
 
 const Login = () => {

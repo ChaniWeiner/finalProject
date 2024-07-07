@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { requestOtp, resetPassword } from '../httpController'; // ייבוא הפונקציות מהקובץ החדש
+import { requestOtp, resetPassword } from '../httpController'; 
 
 const ForgotPassword = () => {
     const [otp, setOtp] = useState('');
@@ -34,7 +34,7 @@ const ForgotPassword = () => {
         try {
             await resetPassword(id, otp, newPas);
             setMessage('הסיסמא שונתה בהצלחה.');
-            setPasswordChanged(true); // עדכון המצב לאחר שינוי הסיסמא
+            setPasswordChanged(true); 
             setChangePasw(false);
         } catch (error) {
             setMessage('שינוי סיסמא נכשל. נסה שוב.');
@@ -43,7 +43,6 @@ const ForgotPassword = () => {
         }
     };
 
-    // אם הסיסמא שונתה, לא נציג את הקומפוננטה
     if (passwordChanged) {
         return null;
     }

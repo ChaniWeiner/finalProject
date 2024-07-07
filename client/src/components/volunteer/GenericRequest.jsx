@@ -1,7 +1,6 @@
-// GenericRequest.jsx
 
 import React from "react";
-import './requestStyles.css'; // CSS file for styling (if needed)
+import './requestStyles.css'; 
 
 const GenericRequest = ({ object }) => {
   const renderRequestDetails = () => {
