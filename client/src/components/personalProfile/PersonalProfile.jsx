@@ -37,7 +37,7 @@ const PersonalProfile = () => {
 
                 setUser(data[0]);
                 setFormData(data[0]);
-                setManager(data[0].userType == "manager" ? true : false)
+                setManager(data[0].userType == "מנהל" ? true : false)
             } catch (error) {
                 console.error('Error fetching user data:', error);
             }
@@ -78,11 +78,7 @@ const PersonalProfile = () => {
         }
     };
 
-    const handleLogout = () => {
-        removeCookie('token');
-        removeCookie('userId');
-        navigate('/login');
-    };
+   
 
     if (!userId) {
         return <h1>טוען...</h1>;

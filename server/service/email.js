@@ -28,7 +28,7 @@ function sendHelpRequestEmail(userEmail) {
     `,
     attachments: [{
       filename: 'the_logo.png',
-      path: 'C:\\finalProject\\server\\the logo.png',
+      path: 'C:\\Users\\Shoshana\\פרויקט סופי\\finalProject\\server\\the logo.png',
       cid: 'unique@nodemailer.com' 
     }]
   };
@@ -61,7 +61,7 @@ function sendVolunteerEmail(userEmail) {
     `,
     attachments: [{
       filename: 'the_logo.png',
-      path: 'C:\\finalProject\\server\\the logo.png',
+      path: 'C:\\Users\\Shoshana\\פרויקט סופי\\finalProject\\server\\the logo.png',
       cid: 'unique@nodemailer.com' 
     }]
   };
