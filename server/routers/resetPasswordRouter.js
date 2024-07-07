@@ -1,4 +1,3 @@
-// routes/passwordRoutes.js
 import express from "express";
 import resetPasswordController from "../controllers/resetPasswordController.js";
 const resetPasswordRouter = express.Router();

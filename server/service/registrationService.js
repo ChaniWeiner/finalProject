@@ -1,5 +1,3 @@
-// service/registrationService.js
-
 import { executeQuery } from './query.js';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';

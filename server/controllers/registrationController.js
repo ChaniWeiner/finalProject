@@ -1,5 +1,3 @@
-// controllers/registrationController.js
-
 import { RegistrationService } from "../service/registrationService.js";
 import { loginSchema, userSchema } from "../validition/userValidation.js";
 
