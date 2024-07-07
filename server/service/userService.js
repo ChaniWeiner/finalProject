@@ -1,6 +1,6 @@
 import 'dotenv/config';
 
-import userValidationSchema from '../validition/userValid.js'
+import {userSchema} from '../validition/registrationValidation.js'
 import { executeQuery } from './query.js';
 import { getAllQuery, getByIdQuery, updateQuery, getByParameterQuery } from './allQuery.js';
 
@@ -30,7 +30,7 @@ export class UserService {
 
     async update(item, id, type) {
       
-        const { error } = userValidationSchema.validate(item);
+        const { error } = userSchema.validate(item);
         if (error) {
             throw new Error(error.details[0].message);
         }
