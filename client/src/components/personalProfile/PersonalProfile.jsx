@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { RiEdit2Fill } from "react-icons/ri";
-
 import { BiSave } from "react-icons/bi";
 import { MdCancel } from "react-icons/md";
 import './personalProfile.css';
-import { getUserData, updateUser, getCookie, removeCookie } from '../httpController';
+import { getUserData, updateUser, getCookie } from '../httpController';
 import Manager from '../manager/Manager';
 
 const PersonalProfile = () => {
@@ -70,10 +69,10 @@ const PersonalProfile = () => {
             };
 
             const resulet = await updateUser(userId, updatedUser);
-console.log(resulet);
+
             setIsEditing(false);
-            if (resulet.ok) {
-                alert('המשתמש עודכן בהצלחה');
+            if (resulet.message) {
+                alert(resulet.message);
             }
 
         } catch (error) {
