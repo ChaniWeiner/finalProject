@@ -33,13 +33,10 @@ export class RegistrationService {
             expiresIn: '1h',
         });
 
-        const hashedPassword = await bcrypt.hash(item.password, 10);
-
+        const hashedPassword = await bcrypt.hash(item[1].password, 10);
         await this.addUserToDb(item[0]);
-      
         let pswd = { userId: item[0].userId, password: hashedPassword };
         const result = await this.addPassword(pswd);
-       
         return { user: result, token: token };
     }
 
