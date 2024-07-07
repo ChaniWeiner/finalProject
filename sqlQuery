@@ -20,6 +20,7 @@ CREATE TABLE proposalrequests (
     volunteerId int
 );
 
+
 CREATE TABLE meals (
     mealId int AUTO_INCREMENT PRIMARY KEY,
     requestId int,
@@ -61,3 +62,6 @@ CREATE TABLE db_fp.support (
 
 ALTER TABLE db_fp.proposalrequests
 MODIFY requestType ENUM('ארוחה', 'בייביסיטר', 'נקיון', 'קניות', 'אוזן קשבת');
+
+ALTER TABLE db_fp.proposalrequests
+ADD COLUMN requestDate DATE;

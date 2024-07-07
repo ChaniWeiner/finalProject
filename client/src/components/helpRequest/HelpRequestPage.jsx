@@ -4,7 +4,7 @@ import { useLocation } from 'react-router-dom';
 import { io } from "socket.io-client";
 import { IoSend } from "react-icons/io5";
 import { addRequest } from '../httpController'; // ייבוא הפונקציה מהקובץ החדש
-import './helpRequest.css'
+import './helpRequest.css';
 
 const HelpRequestPage = () => {
     const location = useLocation();
@@ -12,6 +12,7 @@ const HelpRequestPage = () => {
 
     const { register, handleSubmit, formState: { errors }, reset, watch } = useForm();
     const [requestType, setRequestType] = useState('');
+    const [requestDate, setRequestDate] = useState('');
 
     const amountMeals = watch("amountMeals");
 
@@ -34,12 +35,13 @@ const HelpRequestPage = () => {
     const onSubmit = async (data) => {
         try {
             reset();
-
+console.log(requestDate)
             let body = {
                 requests: {
                     userId: userId,
                     requestStatus: "המתנה",
-                    requestType: data.requestType
+                    requestType: data.requestType,
+                    requestDate: requestDate // שימוש במשתנה המקומי לתאריך
                 }
             };
 
@@ -90,6 +92,10 @@ const HelpRequestPage = () => {
 
     const handleRequestTypeChange = (event) => {
         setRequestType(event.target.value);
+    };
+
+    const handleDateChange = (event) => {
+        setRequestDate(event.target.value);
     };
 
     return (
@@ -204,6 +210,12 @@ const HelpRequestPage = () => {
                         <br />
                     </>
                 )}
+
+                <label>
+                    תאריך הבקשה:
+                    <input type="date" name="requestDate" value={requestDate} onChange={handleDateChange} required />
+                </label>
+                <br />
 
                 <button type="submit">שליחה <IoSend /></button>
             </form>

@@ -69,7 +69,8 @@ export class RequestService {
         const requestItem = {
             requestType: requests.requestType,
             requestStatus: "המתנה",
-            userId: requests.userId
+            userId: requests.userId,
+            requestDate:requests.requestDate
         };
       let requestResult= await  this.addReq(requestItem);
       const requestId = requestResult.insertId;
@@ -125,7 +126,7 @@ return resultMessage
 
     async addReq(item) {
         try {
-            const result = await executeQuery(`INSERT INTO ${process.env.DB_NAME}.proposalrequests (requestType, requestStatus, userId) VALUES (?,?,?)`, [item.requestType, item.requestStatus, item.userId]);
+            const result = await executeQuery(`INSERT INTO ${process.env.DB_NAME}.proposalrequests (requestType, requestStatus, userId,requestDate) VALUES (?,?,?,?)`, [item.requestType, item.requestStatus, item.userId,item.requestDate]);
             return result;
         } catch (ex) {
             console.error('Error in addReq:', ex);

@@ -15,15 +15,18 @@ function executeInsertQuery(tableName, data) {
 }
 
 function getJoinTablesQuery(tableName1, tableName2, tableName3, statusColumn = 'requestStatus', statusValue = 'המתנה') {
+    const today = new Date().toISOString().split('T')[0]; // קבל את התאריך הנוכחי
     const query = `
     SELECT DISTINCT *
     FROM ${process.env.DB_NAME}.${tableName1}
     NATURAL JOIN ${process.env.DB_NAME}.${tableName2}
     NATURAL JOIN ${process.env.DB_NAME}.${tableName3}
-    WHERE ${statusColumn} = '${statusValue}';
+    WHERE ${statusColumn} = '${statusValue}'
+    AND DATE(requestDate) = '${today}';
     `;
     return query;
 }
+
 
 
 function getJoinTwoTablesQuery(tableName1, tableName2) {
