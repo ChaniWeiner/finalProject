@@ -20,6 +20,20 @@ export const getRequests = async (filter, setRequests, setLoading) => {
         setLoading(false);
     }
 };
+
+export const getAllMembers = async (setMembers) => {
+    const url = `${BASE_URL}/manager`;
+
+    try {
+        const data = await fetchData(url, 'GET');
+        setMembers(data);
+    } catch (error) {
+        console.error('שגיאה במהלך הבקשה:', error.message);
+        alert('שגיאה בקבלת הבקשות. נסה שוב מאוחר יותר.');
+    } finally {
+        setLoading(false);
+    }
+};
 export const getCookie = (name) => {
     const value = `; ${document.cookie}`;
     const parts = value.split(`; ${name}=`);

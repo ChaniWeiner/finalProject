@@ -1,12 +1,14 @@
 
-import React, { useEffect, useRef } from 'react';
-
+import React, { useState } from 'react';
+import { getAllMembers } from '../httpController';
 const Manager = () => {
-
+    const [members,setMembers]=useState('')
+    getAllMembers(setMembers); 
     return (
         <>
-            <h3>hi i am a Manager </h3>
-        
+            <h3>אתה המנהל </h3>
+             <h3>כמות מתנדבים ומבקשי סיוע הם:{members}</h3>
+
         </>
     );
 };

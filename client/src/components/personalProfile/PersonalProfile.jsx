@@ -5,12 +5,12 @@ import { RiEdit2Fill } from "react-icons/ri";
 import { BiSave } from "react-icons/bi";
 import { MdCancel } from "react-icons/md";
 import './personalProfile.css';
-import { getUserData, updateUser,getCookie,removeCookie } from '../httpController'; 
+import { getUserData, updateUser, getCookie, removeCookie } from '../httpController';
 import Manager from '../manager/Manager';
 
 const PersonalProfile = () => {
     const [user, setUser] = useState(null);
-    const [manager , setManager] = useState(false);
+    const [manager, setManager] = useState(false);
     const [formData, setFormData] = useState({
         userName: '',
         userId: '',
@@ -29,15 +29,15 @@ const PersonalProfile = () => {
             try {
                 const token = getCookie('token');
                 if (!token) {
-                    navigate('/login'); 
+                    navigate('/login');
                     return;
                 }
 
-                const data = await getUserData(userId); 
+                const data = await getUserData(userId);
 
                 setUser(data[0]);
                 setFormData(data[0]);
-                setManager(data[0].userType=="manager"?true:false)
+                setManager(data[0].userType == "manager" ? true : false)
             } catch (error) {
                 console.error('Error fetching user data:', error);
             }
@@ -153,7 +153,7 @@ const PersonalProfile = () => {
                 <div className="button-container">
                     {isEditing ? (
                         <>
-                            <button type="submit"><BiSave /> שמור</button>
+                            <button type="button" onClick={handleSubmit} ><BiSave /> שמור</button>
                             <button type="button" onClick={() => setIsEditing(false)}><MdCancel /> ביטול</button>
                         </>
                     ) : (
@@ -161,7 +161,7 @@ const PersonalProfile = () => {
                     )}
                 </div>
             </form>
-            {manager&&<Manager/>}
+            {manager && <Manager />}
         </div>
     );
 }
