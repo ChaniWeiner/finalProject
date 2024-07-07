@@ -10,10 +10,11 @@ import Manager from '../manager/Manager';
 
 const PersonalProfile = () => {
     const [user, setUser] = useState(null);
+ 
     const [manager, setManager] = useState(false);
     const [formData, setFormData] = useState({
         userName: '',
-        userId: '',
+        userId:'' ,
         address: '',
         region: '',
         email: '',
@@ -68,17 +69,20 @@ const PersonalProfile = () => {
                 phoneNumber: formData.phoneNumber
             };
 
-            await updateUser(userId, updatedUser);
-
+            const resulet = await updateUser(userId, updatedUser);
+console.log(resulet);
             setIsEditing(false);
-            alert('המשתמש עודכן בהצלחה');
+            if (resulet.ok) {
+                alert('המשתמש עודכן בהצלחה');
+            }
+
         } catch (error) {
             console.error('Error updating user data:', error);
             alert(`התרחשה שגיאה בעדכון המשתמש: ${error.message}`);
         }
     };
 
-   
+
 
     if (!userId) {
         return <h1>טוען...</h1>;
