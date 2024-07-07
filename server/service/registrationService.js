@@ -3,7 +3,7 @@
 import { executeQuery } from './query.js';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
-import { userSchema ,loginSchema} from '../validition/registrationValidation.js';
+import { userSchema ,loginSchema} from '../validition/userValidation.js';
 
 export class RegistrationService {
     

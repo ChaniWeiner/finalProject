@@ -1,5 +1,5 @@
 import { UserService } from "../service/userService.js";
-import {userSchema} from "../validition/registrationValidation.js";
+import {userSchema} from "../validition/userValidation.js";
 
 export default class UsersController {
     async getAllUser(req, res, next) {

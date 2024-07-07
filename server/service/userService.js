@@ -1,6 +1,6 @@
 import 'dotenv/config';
 
-import {userSchema} from '../validition/registrationValidation.js'
+import {userSchema} from '../validition/userValidation.js'
 import { executeQuery } from './query.js';
 import { getAllQuery, getByIdQuery, updateQuery, getByParameterQuery } from './allQuery.js';
 
