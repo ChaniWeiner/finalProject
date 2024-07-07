@@ -21,11 +21,7 @@ p{
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* .large-bold-span {
-  font-size: 2rem;
-  font-weight: bold;
-  display: block;
-} */
+
 .large-bold-span {
   font-size: 2rem; /* Increase font size */
   font-weight: bold;
@@ -35,10 +31,7 @@ p{
   font-size: 1rem; /* Increase font size */
   margin-top: 10px; /* Increase margin-top */
 }
-/* .large-bold-div {
-  font-size: 1rem;
-  margin-top: 5px;
-} */
+
   .contact-section {
     padding: 2rem;
     border-radius: 8px;

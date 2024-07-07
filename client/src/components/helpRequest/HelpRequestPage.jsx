@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { useLocation } from 'react-router-dom';
 import { io } from "socket.io-client";
 import { IoSend } from "react-icons/io5";
-import { addRequest } from '../httpController'; // ייבוא הפונקציה מהקובץ החדש
+import { addRequest } from '../httpController';
 import './helpRequest.css';
 
 const HelpRequestPage = () => {
@@ -41,7 +41,7 @@ console.log(requestDate)
                     userId: userId,
                     requestStatus: "המתנה",
                     requestType: data.requestType,
-                    requestDate: requestDate // שימוש במשתנה המקומי לתאריך
+                    requestDate: requestDate 
                 }
             };
 

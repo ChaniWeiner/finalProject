@@ -7,13 +7,13 @@ import { FaUserCircle, FaSignOutAlt } from 'react-icons/fa';
 const NavBar = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
-  const [showOptions, setShowOptions] = useState(false); // State to manage visibility of profile options
+  const [showOptions, setShowOptions] = useState(false); 
   const userId = getCookie('userId');
 
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const data = await getUserData(userId); // Fetch user data using getUserData function from HTTP Controller
+        const data = await getUserData(userId); 
         setUser(data[0]);
       } catch (error) {
         console.error('Error fetching user data:', error);
@@ -23,7 +23,7 @@ const NavBar = () => {
     if (userId) {
       fetchUserData();
     } else {
-      setUser(null); // Reset user state if userId is not present (guest user)
+      setUser(null); 
     }
   }, [userId]);
 
@@ -33,7 +33,7 @@ const NavBar = () => {
   };
 
   const handleProfileClick = () => {
-    setShowOptions(!showOptions); // Toggle visibility of profile options
+    setShowOptions(!showOptions); 
   };
 
   const handleLogout = () => {

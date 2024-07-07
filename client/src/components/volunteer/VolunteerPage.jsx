@@ -3,7 +3,7 @@ import { io } from "socket.io-client";
 import Request from "./Request";
 import { useLocation } from 'react-router-dom';
 import './volunteerPage.css';
-import { getRequests } from '../httpController'; // הוספתי את היבוא של פונקציית getRequests מה-HTTP Controller
+import { getRequests } from '../httpController'; 
 import SearchRequest from "./SearchRequest";
 const VolunteerPage = () => {
   const location = useLocation();
@@ -11,7 +11,7 @@ const VolunteerPage = () => {
   const [requests, setRequests] = useState([]);
   const [searchRequests, setSearchRequests] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [filter, setFilter] = useState("meals"); // ברירת מחדל: "meals"
+  const [filter, setFilter] = useState("meals"); 
 const[isExist,setIsExist]=useState(false)
   useEffect(() => {
     const socket = io('http://localhost:8082');
@@ -21,15 +21,14 @@ const[isExist,setIsExist]=useState(false)
     });
 
     socket.on('addRequest', (newRequest) => {
-      getRequests(filter, setRequests, setLoading); // קריאה לפונקציה getRequests מה-HTTP Controller עם הפרמטרים המתאימים
+      getRequests(filter, setRequests, setLoading); 
     });
 
     socket.on('disconnect', () => {
       console.log('Disconnected from server');
     });
 
-    getRequests(filter, setRequests, setLoading); // קריאה ראשונית לפונקציה getRequests מה-HTTP Controller עם הפרמטרים המתאימים
-
+    getRequests(filter, setRequests, setLoading);
     return () => {
       socket.disconnect();
     };
@@ -39,7 +38,6 @@ const[isExist,setIsExist]=useState(false)
     <div className="volunteer-page">
       {loading ? (
         <div className="loader">
-          {/* Add loader animation here */}
         </div>
       ) : (
         <>

@@ -4,18 +4,15 @@ import { useNavigate } from "react-router-dom";
 const Volunteer = () => {
     const navigate = useNavigate();
 
-    // בדיקה אם יש ערך קיים בעוגיית ה-TOKEN
     const checkAuth = () => {
         const token = getCookie('token');
         const userId = getCookie('userId');
 
-        // אם קיימים ערכים בעוגייה
         if (token && userId) {
             navigate('/volunteer/volunteers', { state: { userId: userId } });
         }
     };
 
-    // פונקציה לקבלת ערך מעוגייה
     const getCookie = (name) => {
         const value = `; ${document.cookie}`;
         const parts = value.split(`; ${name}=`);
@@ -23,10 +20,9 @@ const Volunteer = () => {
     };
 
     useEffect(() => {
-        // בכניסה לעמוד, בדוק את האוטוריזציה
         checkAuth();
-    }, []); // [] כדי להרץ פעם אחת בכניסה לעמוד
-
+    }, []); 
+    
     return (
         <>
             <h1>הי ברוכים הבאים</h1>

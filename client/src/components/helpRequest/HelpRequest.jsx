@@ -5,18 +5,15 @@ const HelpRequest = () => {
     const navigate = useNavigate();
     const location = useLocation();
 
-    // בדיקה אם יש ערך קיים בעוגיית ה-TOKEN
     const checkAuth = () => {
         const token = getCookie('token');
         const userId = getCookie('userId');
 
-        // אם קיימים ערכים בעוגייה
         if (token && userId) {
             navigate('/helpRequest/requests', { state: { userId: userId } });
         }
     };
 
-    // פונקציה לקבלת ערך מעוגייה
     const getCookie = (name) => {
         const value = `; ${document.cookie}`;
         const parts = value.split(`; ${name}=`);
@@ -24,9 +21,8 @@ const HelpRequest = () => {
     };
 
     useEffect(() => {
-        // בכניסה לעמוד, בדוק את האוטוריזציה
         checkAuth();
-    }, []); // [] כדי להרץ פעם אחת בכניסה לעמוד
+    }, []);
 
     return (
         <>
